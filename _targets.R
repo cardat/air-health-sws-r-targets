@@ -8,7 +8,8 @@ sapply(list.files(pattern="[.]R$", path="R/", full.names=TRUE), source)
 # Set target-specific options such as packages.
 tar_option_set(packages = c("data.table",
                             "sf",
-                            "raster"))
+                            "raster",
+                            "exactextractr"))
 
 list(
 #### Inputs ####
@@ -32,7 +33,13 @@ tar_target(study_pop_f, file.path(datadir, "ABS_data/ABS_Census_2016/abs_gcp_201
 #### Load data ####
 tar_target(exp_geog_raw, st_read(exp_geog_raw_f)),
 tar_target(exposure1_raw, raster(exposure1_raw_f)),
-tar_target(exp_pop_raw, fread(exp_pop_raw_f)),
+tar_target(data_exp_pop, 
+           extract_dt(exp_pop_raw_f,
+                      c("MB_CODE11" = "Mesh_Block_ID",
+                        "pop" = "Persons_Usually_Resident")
+           )
+),
+
 tar_target(impact_pop, fread(impact_pop_f)),
 tar_target(study_pop, fread(study_pop_f)),
 
@@ -53,12 +60,28 @@ tar_target(dat_linked_pop_health_enviro,
              )
              ),
 
-tar_target(dat_exposure1_prep,
-             load_exposure1(
-               exposure1_raw,
-               exp_geog_raw
-             )
-             ),
+tar_target(dat_exposure1_prep, {
+  if (endsWith(exposure1_raw_f, ".tif") & endsWith(exp_geog_raw_f, ".shp")){
+    load_exposure_raster(
+      exposure1_raw_f,
+      exp_geog_raw_f,
+      "MB_CODE11",
+      2015,
+      "pm25",
+      "MB_CODE11"
+    )
+  } else if (endsWirth(exposure1_raw_f, ".csv")) {
+    load_exposure_csv(
+      exposure1_raw_f,
+      col_gid,
+      col_year,
+      col_value,
+      poll,
+      area_code
+    )
+  }
+}
+),
 
 tar_target(dat_counterfactual_exposures,
            do_counterfactual_exposures(

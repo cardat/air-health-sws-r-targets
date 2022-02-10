@@ -7,7 +7,8 @@ pkgs_cran <-  c(
   "tarchetypes",
   "data.table",
   "sf",
-  "raster"
+  "raster",
+  "exactextractr"
   # "car",
   # "readr",
   # "rgdal",
