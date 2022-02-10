@@ -8,7 +8,7 @@ pkgs_cran <-  c(
   "data.table",
   "sf",
   "raster",
-  "exactextractr"
+  "exactextractr",
   # "car",
   # "readr",
   # "rgdal",

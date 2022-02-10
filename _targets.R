@@ -6,7 +6,8 @@ datadir <- "~/../cloudstor/Shared/Environment_General/"
 sapply(list.files(pattern="[.]R$", path="R/", full.names=TRUE), source)
 
 # Set target-specific options such as packages.
-tar_option_set(packages = c("data.table",
+tar_option_set(packages = c("rlang", 
+                            "data.table",
                             "sf",
                             "raster",
                             "exactextractr"))
@@ -35,13 +36,33 @@ tar_target(exp_geog_raw, st_read(exp_geog_raw_f)),
 tar_target(exposure1_raw, raster(exposure1_raw_f)),
 tar_target(data_exp_pop, 
            extract_dt(exp_pop_raw_f,
-                      c("MB_CODE11" = "Mesh_Block_ID",
-                        "pop" = "Persons_Usually_Resident")
+                      c("MB_CODE16" = "MB_CODE_2016",
+                        "pop" = "Person")
            )
 ),
 
-tar_target(impact_pop, fread(impact_pop_f)),
-tar_target(study_pop, fread(study_pop_f)),
+tar_target(impact_pop, 
+           {
+             dt <- extract_dt(impact_pop_f,
+                        c("STE11" = "ASGS_2011",
+                          "year" = "Time",
+                          "age" = "Age",
+                          "variable" = "Measure",
+                          "value" = "Value"),
+                        'Region == "Victoria" & Measure %in% c("Deaths", "Population") & Sex == "Persons" & !grepl("(All ages|not stated|^[0-9]+$)", Age)'
+             )
+             dcast(dt, formula = ... ~ variable)
+             
+           }
+           ),
+tar_target(study_pop,
+           extract_dt(study_pop_f,
+                      c("SA2_MAIN" = "SA2_MAINCODE_2016",
+                        "age" = "Age",
+                        "pop" = "value"),
+                      'Age != "All ages"'
+                      )
+),
 
 
 #### Analysis ####
