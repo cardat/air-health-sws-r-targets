@@ -7,9 +7,10 @@
 extract_dt <- function(
   input,
   fields,
-  subset_conditions = NULL
+  subset_conditions = NULL,
+  ...
 ) {
-  dat <- fread(input)
+  dat <- fread(input, ...)
   
   # filter
   if (!is.null(subset_conditions)){

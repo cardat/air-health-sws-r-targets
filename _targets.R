@@ -41,7 +41,7 @@ tar_target(data_exp_pop,
            )
 ),
 
-tar_target(impact_pop, 
+tar_target(standard_pop_health, 
            {
              dt <- extract_dt(impact_pop_f,
                         c("STE11" = "ASGS_2011",
@@ -49,18 +49,20 @@ tar_target(impact_pop,
                           "age" = "Age",
                           "variable" = "Measure",
                           "value" = "Value"),
-                        'Region == "Victoria" & Measure %in% c("Deaths", "Population") & Sex == "Persons" & !grepl("(All ages|not stated|^[0-9]+$)", Age)'
+                        'Region == "Victoria" & Measure %in% c("Deaths", "Population") & Sex == "Persons" & !grepl("(All ages|not stated|^[0-9]+$)", Age)',
+                        colClasses = list(character = "ASGS_2011")
              )
-             dcast(dt, formula = ... ~ variable)
+             dcast(dt, formula = STE11 + age ~ variable, fun.aggregate = mean)
              
            }
            ),
-tar_target(study_pop,
+tar_target(study_population,
            extract_dt(study_pop_f,
                       c("SA2_MAIN" = "SA2_MAINCODE_2016",
                         "age" = "Age",
                         "pop" = "value"),
-                      'Age != "All ages"'
+                      'Age != "All ages"',
+                      colClasses = list(character = "SA2_MAINCODE_2016")
                       )
 ),
 
@@ -91,7 +93,7 @@ tar_target(dat_exposure1_prep, {
       "pm25",
       "MB_CODE11"
     )
-  } else if (endsWirth(exposure1_raw_f, ".csv")) {
+  } else if (endsWith(exposure1_raw_f, ".csv")) {
     load_exposure_csv(
       exposure1_raw_f,
       col_gid,
@@ -103,32 +105,34 @@ tar_target(dat_exposure1_prep, {
   }
 }
 ),
-
-tar_target(dat_counterfactual_exposures,
-           do_counterfactual_exposures(
-             delta_x
-           )
-         ),
-
-tar_target(dat_exposures_counterfactual_linked,
-           do_exposures_counterfactual_linked(
-             exposure1_prep = dat_exposure1_prep,
-             counterfactual_exposures = dat_counterfactual_exposures
-           )
-          ),
-
-tar_target(dat_attributable_number,
-           do_attributable_number(
-             hif = health_impact_function,
-             linked_pop_health_enviro = dat_linked_pop_health_enviro
-           )
-           ),
+# 
+# tar_target(dat_counterfactual_exposures,
+#            do_counterfactual_exposures(
+#              delta_x
+#            )
+#          ),
+# 
+# tar_target(dat_exposures_counterfactual_linked,
+#            do_exposures_counterfactual_linked(
+#              exposure1_prep = dat_exposure1_prep,
+#              counterfactual_exposures = dat_counterfactual_exposures
+#            )
+#           ),
+# 
+# tar_target(dat_attributable_number,
+#            do_attributable_number(
+#              hif = health_impact_function,
+#              linked_pop_health_enviro = dat_linked_pop_health_enviro
+#            )
+#            ),
 
 tar_target(dat_study_pop_health,
            do_study_pop_health(
              study_population,
-             standard_pop_health
-           )
+             standard_pop_health,
+             "Deaths", "Population"
+           ),
+          
           )
 
 # end
