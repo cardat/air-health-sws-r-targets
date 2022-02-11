@@ -12,7 +12,7 @@ extract_dt <- function(
 ) {
   dat <- fread(input, ...)
   
-  # filter
+  # filter (replace with proper substitution)
   if (!is.null(subset_conditions)){
     dat <- dat[eval(parse(text = subset_conditions))]
   }

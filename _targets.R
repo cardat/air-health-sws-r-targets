@@ -32,8 +32,8 @@ tar_target(impact_pop_f, file.path(datadir, "Australian_Mortality_ABS/ABS_MORT_2
 tar_target(study_pop_f, file.path(datadir, "ABS_data/ABS_Census_2016/abs_gcp_2016_data_derived/abs_sa2_2016_agecatsV2_total_persons_20180405.csv"), format = "file"),
 
 #### Load data ####
-tar_target(exp_geog_raw, st_read(exp_geog_raw_f)),
-tar_target(exposure1_raw, raster(exposure1_raw_f)),
+# tar_target(exp_geog_raw, st_read(exp_geog_raw_f)),
+# tar_target(exposure1_raw, raster(exposure1_raw_f)),
 tar_target(data_exp_pop, 
            extract_dt(exp_pop_raw_f,
                       c("MB_CODE16" = "MB_CODE_2016",
@@ -105,26 +105,26 @@ tar_target(dat_exposure1_prep, {
   }
 }
 ),
-# 
-# tar_target(dat_counterfactual_exposures,
-#            do_counterfactual_exposures(
-#              delta_x
-#            )
-#          ),
-# 
-# tar_target(dat_exposures_counterfactual_linked,
-#            do_exposures_counterfactual_linked(
-#              exposure1_prep = dat_exposure1_prep,
-#              counterfactual_exposures = dat_counterfactual_exposures
-#            )
-#           ),
-# 
-# tar_target(dat_attributable_number,
-#            do_attributable_number(
-#              hif = health_impact_function,
-#              linked_pop_health_enviro = dat_linked_pop_health_enviro
-#            )
-#            ),
+
+tar_target(dat_counterfactual_exposures,
+           do_counterfactual_exposures(
+             delta_x
+           )
+         ),
+
+tar_target(dat_exposures_counterfactual_linked,
+           do_exposures_counterfactual_linked(
+             exposure1_prep = dat_exposure1_prep,
+             counterfactual_exposures = dat_counterfactual_exposures
+           )
+          ),
+
+tar_target(dat_attributable_number,
+           do_attributable_number(
+             hif = health_impact_function,
+             linked_pop_health_enviro = dat_linked_pop_health_enviro
+           )
+           ),
 
 tar_target(dat_study_pop_health,
            do_study_pop_health(
