@@ -1,7 +1,12 @@
 library(targets)
 library(tarchetypes)
+do_make_static_data <- FALSE
 
 source("code_setup/packages.R")
+if (do_make_static_data){
+  source("code_setup/main_static.R")
+}
+
 
 #### Debug ####
 library(data.table)
@@ -23,6 +28,6 @@ tar_read(data_exp_pop)
 tar_make() # run pipeline
 # tar_read(prep_exposure_pm25) # see results of specified target
 
-tar_visnetwork()
+tar_visnetwork(targets_only = T)
 
 #browseURL("index.html")

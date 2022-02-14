@@ -22,10 +22,12 @@ load_exposure_raster <- function(
   v <- st_transform(v, st_crs(r))
   e <- exactextractr::exact_extract(r, v, "mean")
   
-  dat <- data.table(area_code = v[[gid]],
-                    "year" = year,
-                    "variable" = poll,
-                    "value" = e)
+  dat <- data.table(gid = v[[gid]],
+                    year = year,
+                    variable = poll,
+                    value = e)
+  setnames(dat, "gid", area_code)
+  
   return(dat)
   
 }
@@ -49,3 +51,26 @@ load_exposure_csv <- function(
   return(dat)
 }
 
+
+### TODO add aggregation gid (correspondences/allocations)
+do_exposure_pop_weighted <- function(
+  exposure,
+  population,
+  gid = "MB_CODE16"
+){
+  dat <- merge(exposure, population, by = gid)
+  
+  ## set NAs to minimum pollution concentration
+  min_val <- min(dat$value, na.rm = TRUE)
+  dat[is.na(value), value := min_val]
+  
+  dat_agg_long <- dat[,
+                      .(x = sum(value * pop, na.rm = T)/
+                          sum(pop, na.rm = T),
+                        nMB = .N,
+                        pop = sum(pop, na.rm = T)),
+                      by = c(gid,  
+                             "year")]
+  
+  return(dat_agg_long)
+}
