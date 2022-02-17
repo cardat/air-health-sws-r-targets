@@ -39,18 +39,37 @@ targets_exposures <- tar_map(
                mode = "abs"
              )
   ),
-  tar_target(dat_exposure,
-             do_exposure_pop_weighted(
+  tar_target(dat_exposure, {
+             dat1 <- do_exposure_pop_weighted(
                dat_level,
                data_exp_pop
              )
-  ),
-  tar_target(dat_exposure_cf,
-             do_exposure_pop_weighted(
+             setnames(dat1, "value_pw", "x")
+             
+             dat2 <- do_exposure_pop_weighted(
                dat_level_cf,
                data_exp_pop
              )
+             setnames(dat2, "value_pw", "v1")
+             
+             dat_all <- merge(dat1, dat2)
+             dat_all[, pollutant := dataset]
+             
+  }
   ),
+  # tar_target(dat_exposure_cf,{
+  #            dat <- do_exposure_pop_weighted(
+  #              dat_level_cf,
+  #              data_exp_pop
+  #            )
+  #            setnames(dat, "value", "v1")
+  # }
+  # ),
+  # tar_target(
+  #     all_exposures,
+  #     targets_exposures$dat_exposure,
+  #     command = rbind(!!!.x)
+  #   ),
   names = dataset
 )
 
@@ -84,11 +103,7 @@ list(
     targets_exposures$dat_exposure,
     command = rbind(!!!.x)
   ),
-  tarchetypes::tar_combine(
-    all_exposures_cf,
-    targets_exposures$dat_exposure_cf,
-    command = rbind(!!!.x)
-  ),
+
 
 
 

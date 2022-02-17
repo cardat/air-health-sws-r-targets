@@ -56,20 +56,28 @@ load_exposure_csv <- function(
 do_exposure_pop_weighted <- function(
   exposure,
   population,
-  gid = "MB_CODE16"
+  gid = "MB_CODE16",
+  agg = "STE16"
 ){
   dat <- merge(exposure, population, by = gid)
+  
+  if (agg == "STE16"){
+    do <- substitute(dat[, agg := substr((gid), 1, 1)],
+               list(agg = sym(agg), gid = sym(gid)))
+    print(do)
+    eval(do)
+  }
   
   ## set NAs to minimum pollution concentration
   min_val <- min(dat$value, na.rm = TRUE)
   dat[is.na(value), value := min_val]
   
   dat_agg_long <- dat[,
-                      .(x = sum(value * pop, na.rm = T)/
+                      .(value_pw = sum(value * pop, na.rm = T)/
                           sum(pop, na.rm = T),
                         nMB = .N,
                         pop = sum(pop, na.rm = T)),
-                      by = c(gid,  
+                      by = c(agg,  
                              "year")]
   
   return(dat_agg_long)
