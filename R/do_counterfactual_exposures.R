@@ -6,12 +6,12 @@
 
 do_counterfactual_exposures <- function(exposure, delta_x, mode = "ratio"){
   if (mode == "abs"){
-    exposure[, v1 := sapply(value-delta_x, max, 0, na.rm = T)] # truncate at 0
+    exposure[, value := sapply(value-delta_x, max, 0, na.rm = T)] # truncate at 0
   } else if (mode == "ratio"){
-    exposure[, v1 := value * delta_x]
+    exposure[, value := value * delta_x]
   }
   
-  exposure[, value := NULL]
+  # exposure[, value := NULL]
   
   return(exposure)
   
