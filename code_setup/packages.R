@@ -9,6 +9,7 @@ pkgs_cran <-  c(
   "sf",
   "raster",
   "exactextractr",
+  "rlang"
   # "car",
   # "readr",
   # "rgdal",

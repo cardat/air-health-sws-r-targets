@@ -83,18 +83,18 @@ tar_target(dat_linked_pop_health_enviro,
              )
              ),
 
-tar_target(dat_exposure1_prep, {
+tar_target(dat_exposure1_prep,
   if (endsWith(exposure1_raw_f, ".tif") & endsWith(exp_geog_raw_f, ".shp")){
-    load_exposure_raster(
+    exp <- load_exposure_raster(
       exposure1_raw_f,
       exp_geog_raw_f,
-      "MB_CODE11",
+      "MB_CODE16",
       2015,
       "pm25",
-      "MB_CODE11"
+      "MB_CODE16"
     )
   } else if (endsWith(exposure1_raw_f, ".csv")) {
-    load_exposure_csv(
+    exp <- load_exposure_csv(
       exposure1_raw_f,
       col_gid,
       col_year,
@@ -103,20 +103,31 @@ tar_target(dat_exposure1_prep, {
       area_code
     )
   }
-}
 ),
+
+tar_target(dat_baseline_exposures,
+           # pop-weighted
+           do_exposure_pop_weighted(
+             dat_exposure1_prep,
+             data_exp_pop
+             )
+           ),
 
 tar_target(dat_counterfactual_exposures,
            do_counterfactual_exposures(
-             delta_x
+             dat_exposure1_prep,
+             delta_x = 1,
+             mode = "abs"
            )
          ),
 
 tar_target(dat_exposures_counterfactual_linked,
-           do_exposures_counterfactual_linked(
-             exposure1_prep = dat_exposure1_prep,
-             counterfactual_exposures = dat_counterfactual_exposures
-           )
+           # do_exposures_counterfactual_linked(
+           #   exposure1_prep = dat_baseline_exposures,
+           #   counterfactual_exposures = dat_counterfactual_exposures
+           # )
+           merge(dat_baseline_exposures,
+                 dat_counterfactual_exposures)
           ),
 
 tar_target(dat_attributable_number,
