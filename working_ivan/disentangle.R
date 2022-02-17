@@ -1,5 +1,12 @@
 # setwd("..")
 library(targets)
+if(!require(disentangle)) {
+  library(devtools)
+  install_github("ivanhanigan/disentangle")
+}
+library(disentangle)
+library(stringr)
+
 t_mf <- tar_glimpse()
 str(t_mf)
 # t_mf
@@ -21,8 +28,6 @@ steps <- merge(nd[,c("name", "id")], ed[,c("from","to")], by.x="name", by.y = "t
 steps$to <- steps$id
 steps$id <- NULL
 
-library(disentangle)
-library(stringr)
 #steps <- read.csv("apmma-mindmap.csv", stringsAsFactors = F)
 steps
 #steps <- steps[steps$PM25 %in% "TODO1",]
@@ -37,7 +42,7 @@ steps$STATUS <- "DONE"
 nodes <- newnode(steps, "name", "from", "to", "CLUSTER", todo_col="STATUS")
 
 # to run this graph sideways
-sideways <- T
+sideways <- F
 if(sideways){
 nodes <- gsub("digraph transformations \\{", "digraph transformations \\{ rankdir=LR;", nodes)
 nodes <- gsub('label="\\{\\{', 'label="\\{', nodes)
@@ -127,7 +132,6 @@ sink("mindmap_plan.dot")
 cat(gsub("'",'"', dotty2))
 sink()
 make_mindmap_png()
-
 
 #### dump the table of steps for clerical review ####
 # write.csv(steps, "foo.csv", row.names = F)
