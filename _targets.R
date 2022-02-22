@@ -15,15 +15,15 @@ tar_option_set(packages = c("rlang",
                             "exactextractr"))
 
 targets_exposures <- list(
-  spatial = tar_file(infile_geog, input_expo_pop_shp$path),
-  population = tar_file(infile_pop_exp, input_expo_pop$path),
-  population_load = tar_target(data_exp_pop,
-                               extract_dt(
-                                 infile_pop_exp,
-                                 c("MB_CODE16" = "MB_CODE_2016",
-                                   "pop" = "Person")
-                                 )
-                               ), 
+  # spatial = tar_file(infile_geog, input_expo_pop_shp$path),
+  # population = tar_file(infile_pop_exp, input_expo_pop$path),
+  # population_load = tar_target(data_exp_pop,
+  #                              extract_dt(
+  #                                infile_pop_exp,
+  #                                c("MB_CODE16" = "MB_CODE_2016",
+  #                                  "pop" = "Person")
+  #                                )
+  #                              ), 
   processing = tar_map(
     input_poll,
     tar_target(infile_exp, path, format = "file"),
