@@ -27,7 +27,7 @@ write_pipeline <- function(
       library(tarchetypes)
       library(data.table)
       
-      sapply(list.files(pattern="[.]R$", path="R/", full.names=TRUE), source) # functions
+      sapply(list.files(pattern="[.]R$", path="R/func_data", full.names=TRUE), source) # functions
       
       # Set target-specific options such as packages.
       tar_option_set(packages = c("data.table",
