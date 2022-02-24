@@ -1,21 +1,20 @@
 library(targets)
 library(tarchetypes)
-do_make_static_data <- FALSE
 
-source("code_setup/packages.R")
-if (do_make_static_data){
-  source("code_setup/main_static.R")
-}
+source("write_pipeline.R")
 
+write_pipeline(preset = "Perth_2014_2016")
 
-#### Debug ####
-library(data.table)
-library(sf)
-library(raster)
-library(exactextractr)
+# #### Debug ####
+# library(data.table)
+# library(sf)
+# library(raster)
+# library(exactextractr)
+# 
 
-tar_manifest()
-tar_read(data_exp_pop)
+# tar_destroy()
+# tar_manifest()
+# tar_read(data_exp_pop)
 
 # tar_option_set(debug = "health_impact_function")
 # tar_make(names = health_impact_function, callr_function = NULL)
