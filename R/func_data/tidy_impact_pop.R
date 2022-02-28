@@ -24,9 +24,11 @@ tidy_impact_pop <- function(path){
                & Sex == "Persons"]
   
   datV3 <- data.table::dcast(datV2[, .(ste_code16 = ASGS_2011, Sex, Age, Measure, Time, Value)], 
-                             ... ~ Measure, fun = mean)
+                             ste_code16 + Sex + Age ~ Measure, fun = mean) # + Time ??
   
   datV3[, rate := Deaths / Population]
+  
+  names(datV3) <- tolower(names(datV3))
   
   # plot(datV3$rate * 1000, datV3$`Age-specific death rate`)
   

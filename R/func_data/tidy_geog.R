@@ -9,7 +9,7 @@
 
 tidy_geog <- function(path){
   sf_geo <- sf::st_read(path)
-  sf_geo <- sf_geo[, c("MB_CODE16")]
+  sf_geo <- sf_geo[, c("MB_CODE16", "SA1_MAIN16", "SA2_MAIN16")]
   names(sf_geo) <- tolower(names(sf_geo))
   return(sf_geo)
 }

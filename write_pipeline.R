@@ -11,7 +11,8 @@ write_pipeline <- function(
     datadir <- "~/../cloudstor/Shared/Environment_General/"
     input_geog <- file.path(datadir, "ABS_data/ABS_meshblocks/abs_meshblocks_2016_data_provided/MB_2016_WA.shp")
     input_exp_pop <- file.path(datadir, "ABS_data/ABS_meshblocks/abs_meshblocks_2016_pops_data_provided/2016 census mesh block counts.csv")
-    input_exposure <- file.path(datadir, "Air_pollution_model_GlobalGWR_PM25/GlobalGWR_PM25_V4GL02/data_derived/GlobalGWR_PM25_GL_201501_201512-RH35-NoNegs_AUS_20180618.tif")
+    input_exposure <- c(file.path(datadir, "Air_pollution_model_GlobalGWR_PM25/GlobalGWR_PM25_V4GL02/data_derived/GlobalGWR_PM25_GL_201501_201512-RH35-NoNegs_AUS_20180618.tif"),
+                        file.path(datadir, "Air_pollution_model_GlobalGWR_PM25/GlobalGWR_PM25_V4GL02/data_derived/GlobalGWR_PM25_GL_201401_201412-RH35-NoNegs_AUS_20180618.tif"))
     input_impact_pop <- file.path(datadir, "Australian_Mortality_ABS/ABS_MORT_2006_2016/data_provided/DEATHS_AGESPECIFIC_OCCURENCEYEAR_04042018231304281.csv")
     input_study_pop <- file.path(datadir, "ABS_data/ABS_Census_2016/abs_gcp_2016_data_derived/abs_sa2_2016_agecatsV2_total_persons_20180405.csv")
   } else {
@@ -28,6 +29,8 @@ write_pipeline <- function(
       library(data.table)
       
       sapply(list.files(pattern="[.]R$", path="R/func_data", full.names=TRUE), source) # functions
+      sapply(list.files(pattern="[.]R$", path="R/func_analysis", full.names=TRUE), source)
+      sapply(list.files(pattern="[.]R$", path="R/func_data", full.names=TRUE), source)
       
       # Set target-specific options such as packages.
       tar_option_set(packages = c("data.table",
@@ -35,7 +38,7 @@ write_pipeline <- function(
                                   "raster",
                                   "exactextractr"))
       
-      #### Inputs ####
+      #### Inputs targets ####
       inputs <- list(
         geog = list(
           tar_files(
@@ -80,11 +83,8 @@ write_pipeline <- function(
           tar_target(
             tidy_data_exposure_part,
             tidy_exposure(infile_exposure),
-            pattern = map(infile_exposure)
-          ),
-          tar_target(
-            tidy_data_exposure,
-            rbind(tidy_data_exposure_part)
+            pattern = map(infile_exposure),
+            iteration = "list"
           )
         ),
         
@@ -123,6 +123,7 @@ write_pipeline <- function(
         )
       )
       
+      #### Derivation of data targets ####
       derive_data <- list(
         tar_target(
           data_study_pop_health,
@@ -130,22 +131,27 @@ write_pipeline <- function(
                               tidy_data_impact_pop)
         ),
         tar_target(
-          data_exposures_pop,
-          do_exposures(tidy_data_exposures,
-                       tidy_data_geog,
-                       tidy_data_exp_pop)
+          data_env_exposure,
+          do_env_exposure(tidy_data_exposure_part,
+                           tidy_data_geog),
+          pattern = map(tidy_data_exposure_part), iteration = "list"
         ),
         tar_target(
-          data_counterfactual_pop,
-          do_counterfactual_exposures(data_exposures_pop)
+          data_env_counterfactual,
+          do_env_counterfactual(data_env_exposure,
+                                      "min"),
+          pattern = map(data_env_exposure), iteration = "list"
         ),
+        tar_target(combined_exposures_pop, rbindlist(data_env_counterfactual)),
         tar_target(data_linked_pop_health_enviro,
-                   merge(data_study_pop_health,
-                         data_exposures_pop,
-                         data_counterfactual_pop))
+                   do_linked_pop_health_enviro(
+                     data_study_pop_health,
+                     combined_exposures_pop,
+                     tidy_data_exp_pop)
+        )
       )
       
-      
+      #### Analysis targets ####
       analysis <- list(
         tar_target(health_impact_function,
                    do_health_impact_function(
@@ -162,6 +168,7 @@ write_pipeline <- function(
         )
       )
       
+      #### Visualisation targets ####
       viz <- list(
       )
       
@@ -169,96 +176,10 @@ write_pipeline <- function(
         inputs = inputs,
         data = derive_data,
         analysis = analysis,
-        viz = viz,
-        !!test
-        
-      #   # targets_response,
-      #   # 
-      #   # targets_exposures,
-      #   # tarchetypes::tar_combine(
-      #   #   all_exposures,
-      #   #   targets_exposures$processing$dat_exposure,
-      #   #   command = rbind(!!!.x)
-      #   # ),
-      #   # 
-      #   # #### Analysis ####
-      #   # tar_target(health_impact_function,
-      #   #            do_health_impact_function(
-      #   #              case_definition = 'crd',
-      #   #              exposure_response_func = c(1.06, 1.02, 1.08),
-      #   #              theoretical_minimum_risk = 0
-      #   #            )
-      #   # ),
-      #   
-      #   tar_target(dat_linked_pop_health_enviro,
-      #              load_linked_pop_health_enviro(
-      #                study_pop_health = dat_study_pop_health,
-      #                exposures_counterfactual_linked = dat_exposures_counterfactual_linked
-      #              )
-      #   ),
-      #   
-      #   tar_target(dat_attributable_number,
-      #              do_attributable_number(
-      #                hif = health_impact_function,
-      #                linked_pop_health_enviro = dat_linked_pop_health_enviro
-      #              )
-      #   ),
-      #   
-      #   tar_target(dat_study_pop_health,
-      #              do_study_pop_health(
-      #                study_population,
-      #                standard_pop_health,
-      #                "Deaths", "Population"
-      #              ),
-      #              
-      # end
+        viz = viz
       )
       
     }
     )
   
 }
-# 
-# write_pipeline()
-# 
-# datadir <- "~/../cloudstor/Shared/Environment_General/"
-# params <- list(
-#   input_geog = list(
-#     file = file.path(datadir, "ABS_data/ABS_meshblocks/abs_meshblocks_2016_data_provided/MB_2016_VIC.shp")
-#   ),
-#   
-#   input_exp = list(
-#     file = file.path(datadir, "Air_pollution_model_GlobalGWR_PM25/GlobalGWR_PM25_V4GL02/data_derived/GlobalGWR_PM25_GL_201501_201512-RH35-NoNegs_AUS_20180618.tif")
-#   ),
-#   
-#   input_exp_pop = list(
-#     file = file.path(datadir, "ABS_data/ABS_meshblocks/abs_meshblocks_2016_pops_data_provided/2016 census mesh block counts.csv"),
-#     var = list(
-#       gid = list(
-#         name = "MB_CODE_2016",
-#         code = "MB_CODE16"
-#       ),
-#       pop = list(
-#         name = "Person",
-#         code = "pop"
-#       )
-#     )
-#   )
-# )
-# 
-# ## geographical geom
-# tar_target(exp_geog_raw_f, file.path(datadir, "ABS_data/ABS_meshblocks/abs_meshblocks_2016_data_provided/MB_2016_VIC.shp"), format = "file"),
-# 
-# ## pollutant concentration
-# tar_target(exposure1_raw_f, file.path(datadir, "Air_pollution_model_GlobalGWR_PM25/GlobalGWR_PM25_V4GL02/data_derived/GlobalGWR_PM25_GL_201501_201512-RH35-NoNegs_AUS_20180618.tif"), format = "file"),
-# ## counterfactual
-# # ??? numeric/raster/csv/shape
-# ## meshblock pops
-# tar_target(exp_pop_raw_f, file.path(datadir, "ABS_data/ABS_meshblocks/abs_meshblocks_2016_pops_data_provided/2016 census mesh block counts.csv"), format = "file"),
-# # mb_pops_varlist <- c("MB_CODE16", "MB_CATEGORY_NAME_2016", "Person")
-# 
-# ## impact
-# tar_target(impact_pop_f, file.path(datadir, "Australian_Mortality_ABS/ABS_MORT_2006_2016/data_provided/DEATHS_AGESPECIFIC_OCCURENCEYEAR_04042018231304281.csv"), format = "file"),
-# # indat_death_varlist <- c("Region", "Sex", "Age", "Measure", "Time", "Value")
-# ## baseline pop stats
-# tar_target(study_pop_f, file.path(datadir, "ABS_data/ABS_Census_2016/abs_gcp_2016_data_derived/abs_sa2_2016_agecatsV2_total_persons_20180405.csv"), format = "file"),
