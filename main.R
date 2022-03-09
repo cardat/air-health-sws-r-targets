@@ -1,9 +1,9 @@
 library(targets)
 library(tarchetypes)
 
-source("write_pipeline.R")
+source("R/pipelines/write_pipeline_perth.R")
 
-write_pipeline(preset = "Perth_2014_2016")
+write_pipeline_perth(preset = "Perth_2014_2016")
 
 # #### Debug ####
 # library(data.table)

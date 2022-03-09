@@ -1,22 +1,22 @@
-do_env_exposure <- function(ls_exposure, sf_geog){
+do_env_exposure <- function(exposure, sf_geog, variable){
   
   sf_geog_geom <- sf_geog[!sf::st_is_empty(sf_geog), ]
   geog_gid<- data.table::as.data.table(sf_geog_geom)
   geog_gid[, geometry := NULL]
-  extr <- #lapply(ls_exposure, function(x) 
-    {
-      x <- ls_exposure
-    e <- exactextractr::exact_extract(x$raster, sf_geog_geom, fun = "mean")
-    dt_e <- data.table::data.table(
-      geog_gid,
-      year = x$year,
-      variable = x$name,
-      value = e
-    )
-    return(dt_e)
+  
+  e <- exactextractr::exact_extract(exposure, sf_geog_geom, fun = "mean")
+  names(e) <- gsub(".*([0-9]{4}).*", "\\1", names(e))
+  
+  dt <- data.table::data.table(
+    geog_gid
+  )
+  if(!is.na(variable)){
+    dt[, variable := variable]
   }
-  #)
-  dt <- data.table::rbindlist(extr)
+  dt <- cbind(dt, e)
+  
+  # to long format
+  dt <- data.table::melt(dt, measure.vars = names(e), variable.name = "year", value.name = "value")
   
   return(dt)
 }

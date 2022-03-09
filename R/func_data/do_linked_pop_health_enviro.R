@@ -19,4 +19,4 @@ do_linked_pop_health_enviro <- function(
 
 # dt_study_pop_health <- tar_read(data_study_pop_health)
 # dt_env_counterfactual <- tar_read(combined_exposures_pop)
-# dt_exp_pop <- tar_read(tidy_data_exp_pop)
+# dt_exp_pop <- tar_read(tidy_exp_pop)
