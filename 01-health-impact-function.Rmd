@@ -1,0 +1,13 @@
+# Health impact function
+
+This is the place to start because this defines the function that relates exposure to outcomes.
+
+## Relative risk, odds ratio and hazard ratio
+
+Some useful epidemiology background
+
+## The PAF (population attributable fraction)
+
+More stuff
+
+
