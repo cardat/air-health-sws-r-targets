@@ -38,6 +38,7 @@ write_pipeline_perth <- function(
       sapply(list.files(pattern="[.]R$", path="R/import_data", full.names=TRUE), source)
       sapply(list.files(pattern="[.]R$", path="R/func_data", full.names=TRUE), source) # functions
       sapply(list.files(pattern="[.]R$", path="R/func_analysis", full.names=TRUE), source)
+      sapply(list.files(pattern="[.]R$", path="R/func_viz", full.names=TRUE), source)
       
       # Set target-specific options such as packages.
       tar_option_set(packages = c("data.table",
@@ -45,9 +46,12 @@ write_pipeline_perth <- function(
                                   "raster",
                                   "exactextractr"))
       
+      datadir <- "~/../cloudstor/Shared/Environment_General (2)"
+      
       #### Inputs targets ####
       inputs <- list(
         geog = import_abs_mb_2016(!!states),
+        geog_agg = import_abs_sa2_2016(!!states),
         # geog = list(
         #   tar_files_input(
         #     infile_geog,
@@ -98,7 +102,7 @@ write_pipeline_perth <- function(
         #   )
         # ),
         
-        impact_pop = import_abs_mortality_sa2_2006_2016(!!states),
+        impact_pop = import_abs_mortality_sa2_2006_2016(!!states, !!years),
         # list(
         #   tar_files_input(
         #     infile_impact_pop,
@@ -139,8 +143,8 @@ write_pipeline_perth <- function(
       derive_data <- list(
         ## Extraction of exposure by given geometry
         tar_target(data_env_exposure,
-                   do_env_exposure(tidy_env_exposure, tidy_geometry, "pm25"),
-                   map(tidy_geometry)
+                   do_env_exposure(tidy_env_exposure, tidy_geom_mb_2016, "pm25"),
+                   map(tidy_geom_mb_2016)
                     ),
         tar_target(
           data_study_pop_health,
@@ -172,7 +176,7 @@ write_pipeline_perth <- function(
                      theoretical_minimum_risk = 0
                    )
         ),
-        tar_target(ana_attributable_number,
+        tar_target(calc_attributable_number,
                    do_attributable_number(
                      hif = health_impact_function,
                      linked_pop_health_enviro = data_linked_pop_health_enviro
@@ -182,6 +186,11 @@ write_pipeline_perth <- function(
       
       #### Visualisation targets ####
       viz <- list(
+        tar_target(make_map_an,
+                   {sf <- merge(tidy_geom_sa2_2016, 
+                                calc_attributable_number[, .(sa2_main16, state, attributable)])
+                   viz_map_an(sf, "attributable")
+                   })
       )
       
       list(
