@@ -3,6 +3,6 @@
 #' 
 #' 
 
-viz_map_an(sf, field){
+viz_map_an <- function(sf, field){
   
 }
