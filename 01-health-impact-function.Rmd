@@ -9,5 +9,3 @@ Some useful epidemiology background
 ## The PAF (population attributable fraction)
 
 More stuff
-
-

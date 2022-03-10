@@ -1,0 +1,403 @@
+#+TITLE:air health r targets 
+#+AUTHOR: Ivan Hanigan
+#+email: ivan.hanigan@curtin.edu.au
+#+LaTeX_CLASS: article
+#+LaTeX_CLASS_OPTIONS: [a4paper]
+#+LATEX_HEADER: \usepackage{amssymb,amsmath}
+#+LATEX: \hypersetup{hidelinks=true}
+#+LATEX: \tableofcontents
+#+STARTUP: overview
+-----
+
+
+* notes
+* renv
+** renv
+#+begin_src R :session *R* :tangle no :exports none :eval no
+  setwd("..")
+  #renv::init()
+  renv::snapshot()
+#+end_src
+
+* workflow diagram
+  
+* main
+** main.R
+#+begin_src R :session *R* :tangle ../main.R :exports none :eval no
+  library(targets)
+  library(tarchetypes)
+
+  source("R/packages.R")
+
+  tar_visnetwork()
+  #tar_make()
+
+  #browseURL("index.html")
+
+#+end_src
+** index.Rmd
+#+begin_src markdown :tangle ../index.Rmd :eval no
+  --- 
+  title: "Air-Health SWS R targets (Last edited on `r Sys.Date()`)"
+  site: bookdown::bookdown_site
+  authors: Ivan Hanigan and Cassandra Yuen.
+  output: bookdown::gitbook
+  ---
+
+  # Executive summary
+
+  #### Authors
+
+  Ivan Hanigan and Cassandra Yuen
+
+  #### Introduction
+
+  This is a summary of the project.
+
+#+end_src
+** go_book.R
+#+begin_src R :session *R* :tangle ../go_book.R :exports none :eval no
+  library(bookdown)
+
+  render_book( "index.Rmd", gitbook(split_by = "section", self_contained = FALSE, config = list(sharing = NULL, toc = list(collapse = "section"))) )
+
+  flist <- dir("_book", full.names = T)
+  for(fi in flist){
+    #fi <- flist[1]
+    file.rename(fi, gsub("_book/", "", fi))
+  }
+  ## browseURL("index.html")
+#+end_src
+* disentangle
+** start  
+#+begin_src R :session *R* :tangle disentangle.R :exports none :eval no
+  # setwd("..")
+  library(targets)
+  if(!require(disentangle)) {
+    library(devtools)
+    install_github("ivanhanigan/disentangle")
+  }
+  library(disentangle)
+  library(stringr)
+
+  t_mf <- tar_glimpse()
+  str(t_mf)
+  # t_mf
+
+  nd <- t_mf$x$nodes
+  ed <- t_mf$x$edges
+  row.names(nd) <- NULL
+  row.names(ed) <- NULL
+
+  nd
+  ed
+
+  nd_todo = "dat_attributable_number"
+  nd[nd$name == nd_todo,]
+  ed[ed$from == nd_todo,]
+  ed[ed$to == nd_todo,]
+
+  steps <- merge(nd[,c("name", "id")], ed[,c("from","to")], by.x="name", by.y = "to", all.x = T)
+  steps$to <- steps$id
+  steps$id <- NULL
+
+  #steps <- read.csv("apmma-mindmap.csv", stringsAsFactors = F)
+  steps
+  #steps <- steps[steps$PM25 %in% "TODO1",]
+  #steps <- steps[!(steps$STATUS %in% "DONTSHOW"),]
+
+  steps$DESCRIPTION <- steps$name
+  # paste0(substr(steps$DESCRIPTION, 1, 24), "...")
+  #steps$DESCRIPTION <- paste0(substr(steps$CODE, 1, 24), "...")
+  steps$CLUSTER <- "all"
+  steps$STATUS <- "DONE"
+
+#+end_src
+** do old style newnode
+#+begin_src R :session *R* :tangle disentangle.R :exports none :eval no
+  nodes <- newnode(steps, "name", "from", "to", "CLUSTER", todo_col="STATUS")
+
+  # to run this graph sideways
+  sideways <- F
+  if(sideways){
+  nodes <- gsub("digraph transformations \\{", "digraph transformations \\{ rankdir=LR;", nodes)
+  nodes <- gsub('label="\\{\\{', 'label="\\{', nodes)
+  nodes <- gsub('\\{\\{]', '\\{]', nodes)
+  }
+  dir()
+  sink("mindmap_plan.dot")
+  cat(nodes)
+  sink()
+#+end_src
+** make mindmap png
+#+begin_src R :session *R* :tangle disentangle.R :exports none :eval no
+  make_mindmap_png <- function(dot_filename = "mindmap_plan", showme = TRUE){
+  # https://github.com/rich-iannone/DiagrammeR/issues/330#issuecomment-766090870
+  # 1. Make a play graph
+  #DiagrammeR::grViz("apmma_mindmap_plan.dot")
+  tmp <- DiagrammeR::grViz(sprintf("%s.dot", dot_filename))
+  # 2. Convert to SVG, then save as png
+  tmp <- DiagrammeRsvg::export_svg(tmp)
+  tmp <- charToRaw(tmp) # flatten
+  rsvg::rsvg_png(tmp, sprintf("%s.png", dot_filename)) # saved graph as png in current working directory
+
+  # If graphviz is installed and on linux
+  #system("dot -Tpdf apmma_mindmap_plan.dot -o apmma_mindmap_plan.pdf")
+  #if(show_mindmap) browseURL("apmma_mindmap_plan.pdf")
+  if(showme){
+  browseURL(sprintf("%s.png", dot_filename))
+  }
+  }
+#+end_src
+** GO do old style newnode
+#+begin_src R :session *R* :tangle disentangle.R :exports none :eval no
+  make_mindmap_png()
+#+end_src
+** do new style newgraph
+#+begin_src R :session *R* :tangle disentangle.R :exports none :eval no
+  #### or ####
+  library(DiagrammeR)
+  steps$tocolour <- ""
+  steps$pos <- NA
+  names(steps)
+  steps[,c("from", "to")]
+
+  #### format the table again ####
+  steps_list <- unique(steps$to)
+
+  steps2 <- data.frame(from=NA, to=NA, tocolour=NA, pos=NA)
+  for(step_i in steps_list){
+    ##step_i = steps_list[1]
+    step_i
+    inputs <- steps[steps$to==step_i,"from"]
+    inputs2 <- paste(inputs, sep = "", collapse = ", ")
+    dout <- data.frame(from=inputs2, to=step_i, tocolour='', pos='')
+    steps2 <- rbind(steps2,dout)
+  }
+  steps2 <- steps2[-1,]
+  steps2
+  steps2[,c("from", "to")]
+  ## cf
+  steps[,c("from", "to")]
+
+  #### do the graph ####
+  dotty <- newgraph(
+      indat2  = steps2[steps2$from != "NA",]
+     ,
+      in_col = "from"
+     ,
+      out_col  = "to"
+     ,
+      colour_col = "tocolour"
+     ,
+      pos_col = "pos"
+      )
+  ##
+  render_graph(dotty)
+  dotty1 <- generate_dot(dotty)
+  cat(dotty1)
+  substr(dotty1, 1, 446)
+  dotty2  <- c(
+  "digraph {
+
+  splines = true; 
+  node [fontname = Helvetica,
+        style = filled]
+   edge [color = gray20,
+        arrowsize = 1,
+        fontname = Helvetica]",
+  substr(dotty1, 446, nchar(dotty1))
+  )
+
+  ## render_graph(dotty)
+  sink("mindmap_plan.dot")  
+  cat(gsub("'",'"', dotty2))
+  sink()
+  make_mindmap_png()
+#+end_src
+
+** show a way to manage the development works with clerical review
+#+begin_src R :session *R* :tangle disentangle.R :exports none :eval no
+#### dump the table of steps for clerical review ####
+# write.csv(steps, "foo.csv", row.names = F)
+
+steps <- read.csv("foo2.csv")
+
+steps <- steps[steps$STATUS != 'DONTSHOW', ]
+
+nodes <- newnode(steps, "name", "from", "to", clusters_col = "CLUSTER", todo_col="STATUS")
+
+# to run this graph sideways
+sideways <- T
+if(sideways){
+nodes <- gsub("digraph transformations \\{", "digraph transformations \\{ rankdir=LR;", nodes)
+nodes <- gsub('label="\\{\\{', 'label="\\{', nodes)
+nodes <- gsub('\\{\\{]', '\\{]', nodes)
+}
+dir()
+sink("mindmap_plan.dot")
+cat(nodes)
+sink()
+
+make_mindmap_png()
+
+#+end_src
+
+* packages
+#+begin_src R :session *R* :tangle ../R/packages.R :exports none :eval no
+  library(data.table)
+
+#+end_src
+* targets
+** start 
+#+begin_src R :session *R* :tangle ../_targets.R :exports none :eval no
+  library(targets)
+  library(tarchetypes)
+
+  sapply(list.files(pattern="[.]R$", path="R/", full.names=TRUE), source)
+
+  list(
+#+end_src
+* HIF
+** hif
+#+begin_src R :session *R* :tangle ../_targets.R :exports none :eval no
+    tar_target(health_impact_function,
+               do_health_impact_function(
+                 case_definition = 'crd',
+                 exposure_response_func = c(1.06, 1.02, 1.08),
+                 theoretical_minimum_risk = 0
+               )
+               ),
+#+end_src
+** R do_health_impact_function
+#+begin_src R :rsession *R* :tangle ../R/do_health_impact_function.R :eval no
+do_health_impact_function <- function(
+                 case_definition = 'crd',
+                 exposure_response_func = c(1.06, 1.02, 1.08),
+                 theoretical_minimum_risk = 0,
+                 linked_pop_health_enviro = dat_linked_pop_health_enviro
+               ){
+
+}
+#+end_src
+
+** Rmd
+#+begin_src markdown :tangle ../01-health-impact-function.Rmd :eval no
+# Health impact function
+
+This is the place to start because this defines the function that relates exposure to outcomes.
+
+## Relative risk, odds ratio and hazard ratio
+
+Some useful epidemiology background
+
+## The PAF (population attributable fraction)
+
+More stuff
+
+#+end_src
+* Link pop hlth enviro
+** linked_pop_health_enviro
+#+begin_src R :session *R* :tangle ../_targets.R :exports none :eval no
+  tar_target(dat_linked_pop_health_enviro,
+               load_linked_pop_health_enviro(
+                 study_pop_health = dat_study_pop_health,
+                 exposures_counterfactual_linked = dat_exposures_counterfactual_linked
+               )
+               ),
+#+end_src
+** R load_linked_pop_health_enviro
+#+begin_src R :session *R* :tangle ../R/load_linked_pop_health_enviro.R :exports none :eval no
+  load_linked_pop_health_enviro <- function(
+                   study_pop_health = dat_study_pop_health,
+                   exposures_counterfactual_linked = dat_exposures_counterfactual_linked
+                 ){
+
+  }
+
+#+end_src
+
+* study pop hlth
+** study pop health
+#+begin_src R :session *R* :tangle ../_targets.R :exports none :eval no
+  tar_target(dat_study_pop_health,
+             do_study_pop_health(
+               study_population,
+               standard_pop_health
+             )
+            )
+#+end_src
+** R do_study_pop_health
+#+begin_src R :session *R* :tangle ../R/do_study_pop_health.R :exports none :eval no
+do_study_pop_health <- function(
+               study_population,
+               standard_pop_health
+             ){}
+#+end_src             
+
+* expo
+** expo1
+#+begin_src R :session *R* :tangle ../_targets.R :exports none :eval no
+  tar_target(dat_exposure1_prep,
+               load_exposure1(
+                 exposure1_raw
+               )
+               ),
+#+end_src
+** R load_exposure1
+#+begin_src R :session *R* :tangle ../R/load_exposure1.R :exports none :eval no
+  load_exposure1 <- function(
+                             exposure1_raw
+                             ){
+  }
+
+#+end_src
+* counterfactual
+** counterfactual
+#+begin_src R :session *R* :tangle ../_targets.R :exports none :eval no
+  tar_target(dat_counterfactual_exposures,
+             do_counterfactual_exposures(
+               delta_x
+             )
+           ),
+#+end_src
+** R do_counterfactual_exposures
+#+begin_src R :session *R* :tangle ../R/do_counterfactual_exposures.R :exports none :eval no
+do_counterfactual_exposures <- function(delta_x){}
+#+end_src
+
+* expo cf linked
+** expo counterfactual linked
+#+begin_src R :session *R* :tangle ../_targets.R :exports none :eval no
+  tar_target(dat_exposures_counterfactual_linked,
+             do_exposures_counterfactual_linked(
+               exposure1_prep = dat_exposure1_prep,
+               counterfactual_exposures = dat_counterfactual_exposures
+             )
+            ),
+#+end_src
+* attr num
+** attributable number
+#+begin_src R :session *R* :tangle ../_targets.R :exports none :eval no
+  tar_target(dat_attributable_number,
+             do_attributable_number(
+               hif = health_impact_function,
+               linked_pop_health_enviro = dat_linked_pop_health_enviro
+             )
+             ),
+#+end_src
+** R do_attributable_number
+#+begin_src R :session *R* :tangle ../R/do_attributable_number.R :exports none :eval no
+do_attributable_number <- function(
+                 hif = health_impact_function,
+                 linked_pop_health_enviro = dat_linked_pop_health_enviro
+               ){}   
+#+end_src
+* end
+#+begin_src R :session *R* :tangle ../_targets.R :exports none :eval no :append yes
+  # end
+  )
+#+end_src
+
+
+

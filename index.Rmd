@@ -5,7 +5,12 @@ authors: Ivan Hanigan and Cassandra Yuen.
 output: bookdown::gitbook
 ---
 
+# Executive summary
 
-# Introduction
+#### Authors
+
+Ivan Hanigan and Cassandra Yuen
+
+#### Introduction
 
 This is a summary of the project.
