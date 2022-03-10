@@ -7,3 +7,4 @@ for(fi in flist){
   #fi <- flist[1]
   file.rename(fi, gsub("_book/", "", fi))
 }
+## browseURL("index.html")
