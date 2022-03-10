@@ -10,7 +10,7 @@ sapply(list.files(pattern = "[.]R$", path = "R/func_analysis",
 sapply(list.files(pattern = "[.]R$", path = "R/func_viz", full.names = TRUE), 
     source)
 tar_option_set(packages = c("data.table", "sf", "raster", "exactextractr"))
-datadir <- "~/../cloudstor/Shared/Environment_General (2)"
+datadir <- "~/ownCloud/Shared/Environment_General"
 inputs <- list(geog = import_abs_mb_2016(c("TAS", "WA")), geog_agg = import_abs_sa2_2016(c("TAS", 
 "WA")), exp_pop = import_abs_pop_mb_2016(c("TAS", "WA")), exposure = import_globalgwr_pm25_2010_2015(2013:2014), 
     impact_pop = import_abs_mortality_sa2_2006_2016(c("TAS", 

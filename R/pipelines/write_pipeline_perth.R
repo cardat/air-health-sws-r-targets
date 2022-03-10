@@ -46,8 +46,8 @@ write_pipeline_perth <- function(
                                   "raster",
                                   "exactextractr"))
       
-      datadir <- "~/../cloudstor/Shared/Environment_General (2)"
-      
+      #datadir <- "~/../cloudstor/Shared/Environment_General (2)"
+      datadir <- "~/ownCloud/Shared/Environment_General" 
       #### Inputs targets ####
       inputs <- list(
         geog = import_abs_mb_2016(!!states),
@@ -193,7 +193,7 @@ write_pipeline_perth <- function(
                           year == 2013 & age == "30 - 34", 
                           .(sa2_main16, state, year, attributable)],
                         by = "sa2_main16")
-            viz_map_an(sf, "attributable")
+            sf
           })
       )
       
