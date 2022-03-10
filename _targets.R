@@ -28,8 +28,8 @@ analysis <- list(tar_target(health_impact_function, do_health_impact_function(ca
         linked_pop_health_enviro = data_linked_pop_health_enviro)))
 viz <- list(tar_target(make_map_an, {
     sf <- merge(tidy_geom_sa2_2016, calc_attributable_number[, 
-        .(sa2_main16, state, attributable)])
-    viz_map_an(sf, "attributable")
+        .(sa2_main16, state, attributable)], by = "sa2_main16")
+    sf
 }))
 list(inputs = inputs, data = derive_data, analysis = analysis, 
     viz = viz)

@@ -19,12 +19,12 @@ import_abs_sa2_2016 <- function(states){
   )
   
   tidy <- tar_target(tidy_geom_sa2_2016,
-                     {sf_geo <- sf::st_read(infile_abs_mb_2016)
+                     {sf_geo <- sf::st_read(infile_abs_sa2_2016)
                      sf_geo <- sf_geo[, c("SA2_MAIN16", "SA2_NAME16", "STE_CODE16")]
                      names(sf_geo) <- tolower(names(sf_geo))
                      return(sf_geo)
                      },
-                     pattern = map(infile_abs_mb_2016))
+                     pattern = map(infile_abs_sa2_2016))
   
   list(file = file,
        tidy = tidy)

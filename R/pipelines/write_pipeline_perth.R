@@ -188,8 +188,10 @@ write_pipeline_perth <- function(
       viz <- list(
         tar_target(make_map_an,
                    {sf <- merge(tidy_geom_sa2_2016, 
-                                calc_attributable_number[, .(sa2_main16, state, attributable)])
-                   viz_map_an(sf, "attributable")
+                                calc_attributable_number[, .(sa2_main16, state, attributable)],
+                                by = "sa2_main16")
+                   sf
+                   # viz_map_an(sf, "attributable")
                    })
       )
       
