@@ -296,6 +296,98 @@ Some useful epidemiology background
 More stuff
 
 #+end_src
+* study pop hlth
+** study pop health
+#+begin_src R :session *R* :tangle ../_targets.R :exports none :eval no
+  tar_target(dat_study_pop_health,
+             do_study_pop_health(
+               study_population,
+               standard_pop_health
+             ),
+            
+#+end_src
+** R do_study_pop_health
+#+begin_src R :session *R* :tangle ../R/do_study_pop_health.R :exports none :eval no
+do_study_pop_health <- function(
+               study_population,
+               standard_pop_health
+             ){}
+#+end_src             
+
+** Rmd
+#+begin_src markdown :tangle ../02-study-population-health.Rmd :eval no
+# Study population and health outcomes
+
+This is the place to start
+
+## Source, sample and study population
+
+Some useful epidemiology background
+
+#+end_src
+
+* expo
+** expo1
+#+begin_src R :session *R* :tangle ../_targets.R :exports none :eval no
+  tar_target(dat_exposure1_prep,
+               load_exposure1(
+                 exposure1_raw
+               )
+               ),
+#+end_src
+** R load_exposure1
+#+begin_src R :session *R* :tangle ../R/load_exposure1.R :exports none :eval no
+  load_exposure1 <- function(
+                             exposure1_raw
+                             ){
+  }
+
+#+end_src
+** Rmd
+#+begin_src markdown :tangle ../03-exposure-counterfactual-and-tmrel.Rmd :eval no
+# Exposure assessment
+
+This is the place to start
+
+## Spatial modelling and dealing with coverage issues or missingness
+
+Some useful background
+
+#+end_src
+
+* counterfactual
+** counterfactual
+#+begin_src R :session *R* :tangle ../_targets.R :exports none :eval no
+  tar_target(dat_counterfactual_exposures,
+             do_counterfactual_exposures(
+               delta_x
+             )
+           ),
+#+end_src
+** R do_counterfactual_exposures
+#+begin_src R :session *R* :tangle ../R/do_counterfactual_exposures.R :exports none :eval no
+do_counterfactual_exposures <- function(delta_x){}
+#+end_src
+
+** Rmd
+#+begin_src markdown :tangle ../03-exposure-counterfactual-and-tmrel.Rmd :eval no
+
+## Counterfactual
+
+Some useful background
+
+#+end_src
+
+* expo cf linked
+** expo counterfactual linked
+#+begin_src R :session *R* :tangle ../_targets.R :exports none :eval no
+  tar_target(dat_exposures_counterfactual_linked,
+             do_exposures_counterfactual_linked(
+               exposure1_prep = dat_exposure1_prep,
+               counterfactual_exposures = dat_counterfactual_exposures
+             )
+            ),
+#+end_src
 * Link pop hlth enviro
 ** linked_pop_health_enviro
 #+begin_src R :session *R* :tangle ../_targets.R :exports none :eval no
@@ -316,66 +408,16 @@ More stuff
   }
 
 #+end_src
+** Rmd 
+#+begin_src markdown :tangle ../04-link-pop-health-enviro.Rmd :eval no
+# Link population, health and environment data
 
-* study pop hlth
-** study pop health
-#+begin_src R :session *R* :tangle ../_targets.R :exports none :eval no
-  tar_target(dat_study_pop_health,
-             do_study_pop_health(
-               study_population,
-               standard_pop_health
-             )
-            )
-#+end_src
-** R do_study_pop_health
-#+begin_src R :session *R* :tangle ../R/do_study_pop_health.R :exports none :eval no
-do_study_pop_health <- function(
-               study_population,
-               standard_pop_health
-             ){}
-#+end_src             
+## Spatial and temporal issues
 
-* expo
-** expo1
-#+begin_src R :session *R* :tangle ../_targets.R :exports none :eval no
-  tar_target(dat_exposure1_prep,
-               load_exposure1(
-                 exposure1_raw
-               )
-               ),
-#+end_src
-** R load_exposure1
-#+begin_src R :session *R* :tangle ../R/load_exposure1.R :exports none :eval no
-  load_exposure1 <- function(
-                             exposure1_raw
-                             ){
-  }
+Some useful background
 
 #+end_src
-* counterfactual
-** counterfactual
-#+begin_src R :session *R* :tangle ../_targets.R :exports none :eval no
-  tar_target(dat_counterfactual_exposures,
-             do_counterfactual_exposures(
-               delta_x
-             )
-           ),
-#+end_src
-** R do_counterfactual_exposures
-#+begin_src R :session *R* :tangle ../R/do_counterfactual_exposures.R :exports none :eval no
-do_counterfactual_exposures <- function(delta_x){}
-#+end_src
 
-* expo cf linked
-** expo counterfactual linked
-#+begin_src R :session *R* :tangle ../_targets.R :exports none :eval no
-  tar_target(dat_exposures_counterfactual_linked,
-             do_exposures_counterfactual_linked(
-               exposure1_prep = dat_exposure1_prep,
-               counterfactual_exposures = dat_counterfactual_exposures
-             )
-            ),
-#+end_src
 * attr num
 ** attributable number
 #+begin_src R :session *R* :tangle ../_targets.R :exports none :eval no
@@ -384,7 +426,7 @@ do_counterfactual_exposures <- function(delta_x){}
                hif = health_impact_function,
                linked_pop_health_enviro = dat_linked_pop_health_enviro
              )
-             ),
+             )
 #+end_src
 ** R do_attributable_number
 #+begin_src R :session *R* :tangle ../R/do_attributable_number.R :exports none :eval no
@@ -393,6 +435,19 @@ do_attributable_number <- function(
                  linked_pop_health_enviro = dat_linked_pop_health_enviro
                ){}   
 #+end_src
+** Rmd
+#+begin_src markdown :tangle ../05-attributable-numbers.Rmd :eval no
+# Attributable number
+
+This is the place to start
+
+## Life tables
+
+Some useful background
+
+#+end_src
+
+
 * end
 #+begin_src R :session *R* :tangle ../_targets.R :exports none :eval no :append yes
   # end

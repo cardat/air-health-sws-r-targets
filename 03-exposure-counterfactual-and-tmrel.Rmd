@@ -1,0 +1,11 @@
+# Exposure assessment
+
+This is the place to start
+
+## Spatial modelling and dealing with coverage issues or missingness
+
+Some useful background
+
+## Counterfactual
+
+Some useful background

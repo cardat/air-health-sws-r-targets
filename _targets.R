@@ -13,12 +13,11 @@ tar_target(health_impact_function,
            )
            ),
 
-tar_target(dat_linked_pop_health_enviro,
-             load_linked_pop_health_enviro(
-               study_pop_health = dat_study_pop_health,
-               exposures_counterfactual_linked = dat_exposures_counterfactual_linked
-             )
-             ),
+tar_target(dat_study_pop_health,
+           do_study_pop_health(
+             study_population,
+             standard_pop_health
+           ),
 
 tar_target(dat_exposure1_prep,
              load_exposure1(
@@ -39,19 +38,19 @@ tar_target(dat_exposures_counterfactual_linked,
            )
           ),
 
+tar_target(dat_linked_pop_health_enviro,
+             load_linked_pop_health_enviro(
+               study_pop_health = dat_study_pop_health,
+               exposures_counterfactual_linked = dat_exposures_counterfactual_linked
+             )
+             ),
+
 tar_target(dat_attributable_number,
            do_attributable_number(
              hif = health_impact_function,
              linked_pop_health_enviro = dat_linked_pop_health_enviro
            )
-           ),
-
-tar_target(dat_study_pop_health,
-           do_study_pop_health(
-             study_population,
-             standard_pop_health
            )
-          )
 
 # end
 )
