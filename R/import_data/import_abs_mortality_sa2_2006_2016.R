@@ -7,7 +7,7 @@
 #' @examples
 #' tidy_impact_pop("data/agespecific_year_occurrence.csv")
 
-import_abs_mortality_sa2_2006_2016 <- function(states){
+import_abs_mortality_sa2_2006_2016 <- function(states, years, smooth_yy = 3){
   states <- unique(toupper(states))
   
   stopifnot("states must be a vector of at least one state abbreviation" = 
@@ -18,7 +18,7 @@ import_abs_mortality_sa2_2006_2016 <- function(states){
   
   file <- tar_target(
     infile_abs_mortality_sa2_2006_2016,
-    "~/../cloudstor/Shared/Environment_General/Australian_Mortality_ABS/ABS_MORT_2006_2016/data_provided/DEATHS_AGESPECIFIC_OCCURENCEYEAR_04042018231304281.csv",
+    file.path(datadir, "Australian_Mortality_ABS/ABS_MORT_2006_2016/data_provided/DEATHS_AGESPECIFIC_OCCURENCEYEAR_04042018231304281.csv"),
     format = "file"
   )
   
@@ -27,18 +27,27 @@ import_abs_mortality_sa2_2006_2016 <- function(states){
     substitute({
       dat <- data.table::fread(infile_abs_mortality_sa2_2006_2016)
       
-      datV2 <- dat[ASGS_2011 %in% c(states_code)
-                   & Sex == "Persons"]
+      datV2 <- rbindlist(
+        lapply(years, function(yy){
+          dat_window <- dat[ASGS_2011 %in% c(states_code)
+                            & Time %in% (yy-smooth_yy+1):yy
+                            & Sex == "Persons"]
+          
+          dat_mean <- data.table::dcast(dat_window[, .(ste_code16 = ASGS_2011, Sex, Age, Measure, Value)], 
+                                        ste_code16 + Sex + Age ~ Measure, fun = mean)
+          dat_mean[, year := yy]
+          return(dat_mean)
+        })
+      )
       
-      datV3 <- data.table::dcast(datV2[, .(ste_code16 = ASGS_2011, Sex, Age, Measure, Time, Value)], 
-                                 ste_code16 + Sex + Age ~ Measure, fun = mean) # + Time ??
+      datV2[, rate := Deaths / Population]
       
-      datV3[, rate := Deaths / Population]
+      names(datV2) <- tolower(names(datV2))
       
-      names(datV3) <- tolower(names(datV3))
-      
-      return(datV3)
-    }, list(states_code = states_code)
+      return(datV2)
+    }, list(states_code = states_code, 
+            years = years,
+            smooth_yy = smooth_yy)
     )
   )
   

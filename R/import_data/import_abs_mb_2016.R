@@ -15,10 +15,10 @@ import_abs_mb_2016 <- function(states){
   stopifnot("states must be a non-empty vector" = {length(states) != 0})
   
   file <- tar_files_input(infile_abs_mb_2016, 
-                          sprintf("~/../cloudstor/Shared/Environment_General/ABS_data/ABS_meshblocks/abs_meshblocks_2016_data_provided/MB_2016_%s.shp", states)
+                          file.path(datadir, sprintf("ABS_data/ABS_meshblocks/abs_meshblocks_2016_data_provided/MB_2016_%s.shp", states))
   )
   
-  tidy <- tar_target(tidy_geometry,
+  tidy <- tar_target(tidy_geom_mb_2016,
                      {sf_geo <- sf::st_read(infile_abs_mb_2016)
                      sf_geo <- sf_geo[, c("MB_CODE16", "SA1_MAIN16", "SA2_MAIN16")]
                      names(sf_geo) <- tolower(names(sf_geo))

@@ -18,7 +18,7 @@ import_abs_pop_mb_2016 <- function(states){
   
   file <- tar_target(
     infile_abs_mb_pop_2016,
-    "~/../cloudstor/Shared/Environment_General/ABS_data/ABS_meshblocks/abs_meshblocks_2016_pops_data_provided/2016 census mesh block counts.csv",
+    file.path(datadir, "ABS_data/ABS_meshblocks/abs_meshblocks_2016_pops_data_provided/2016 census mesh block counts.csv"),
     format = "file"
   )
   

@@ -19,7 +19,7 @@ import_abs_sa2_pop_age_2016 <- function(states){
   
   file <- tar_target(
     infile_abs_sa2_pop_age_2016,
-    "~/../cloudstor/Shared/Environment_General/ABS_data/ABS_Census_2016/abs_gcp_2016_data_derived/abs_sa2_2016_agecatsV2_total_persons_20180405.csv",
+    file.path(datadir, "ABS_data/ABS_Census_2016/abs_gcp_2016_data_derived/abs_sa2_2016_agecatsV2_total_persons_20180405.csv"),
     format = "file"
   )
   
