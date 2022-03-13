@@ -6,7 +6,7 @@ do_linked_pop_health_enviro <- function(
   #### population-weighted exposures ####
   dt_expo <- merge(dt_env_counterfactual, dt_exp_pop)
   dt_expo_agg <- dt_expo[, .(x = sum(value * pop, na.rm = T)/sum(pop, na.rm = T),
-            v1 = sum(value_cf_red * pop, na.rm = T)/sum(pop, na.rm = T),
+            v1 = sum(delta * pop, na.rm = T)/sum(pop, na.rm = T),
             pop = sum(pop, na.rm = T)),
      by = .(sa2_main16, year, variable)]
   

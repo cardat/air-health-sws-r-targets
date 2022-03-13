@@ -144,7 +144,7 @@ write_pipeline_perth <- function(
         ## Extraction of exposure by given geometry
         tar_target(data_env_exposure,
                    do_env_exposure(tidy_env_exposure, tidy_geom_mb_2016, "pm25"),
-                   map(tidy_geom_mb_2016)
+                  pattern = map(tidy_geom_mb_2016)
                     ),
         tar_target(
           data_study_pop_health,
@@ -155,7 +155,8 @@ write_pipeline_perth <- function(
         tar_target(
           combined_exposures_pop,
           do_env_counterfactual(data_env_exposure,
-                                      "min"),
+                                "abs",
+                                5),
           pattern = map(data_env_exposure),
         ),
         
@@ -172,7 +173,8 @@ write_pipeline_perth <- function(
         tar_target(health_impact_function,
                    do_health_impact_function(
                      case_definition = 'crd',
-                     exposure_response_func = c(1.06, 1.02, 1.08),
+                     # exposure_response_func = c(1.06, 1.02, 1.08),
+                     exposure_response_func = c(1.08, NA, NA),
                      theoretical_minimum_risk = 0
                    )
         ),
@@ -190,10 +192,13 @@ write_pipeline_perth <- function(
           {
             sf <- merge(tidy_geom_sa2_2016,
                         calc_attributable_number[
-                          year == 2013 & age == "30 - 34", 
+                          year == 2013 & age == "30 - 34",
                           .(sa2_main16, state, year, attributable)],
                         by = "sa2_main16")
-            viz_map_an(sf, "attributable")
+            sf
+            # viz_map_an(tidy_geom_sa2_2016, calc_attributable_number, "attributable")
+            # tidy_geom_sa2_2016
+            # tidy_geom_sa2_2016[1:10]
           })
       )
       
