@@ -2,3 +2,12 @@ introduction
 health-impact-function
 relative-risk-odds-ratio-and-hazard-ratio
 the-paf-population-attributable-fraction
+study-population-and-health-outcomes
+source-sample-and-study-population
+exposure-assessment
+spatial-modelling-and-dealing-with-coverage-issues-or-missingness
+counterfactual
+link-population-health-and-environment-data
+spatial-and-temporal-issues
+attributable-number
+life-tables
