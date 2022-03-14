@@ -1,5 +1,5 @@
 write_pipeline_perth <- function(
-  states = c("TAS", "WA"),
+  states = c("NT", "WA"),
   years = 2013:2014,
   preset = "Perth_2014_2016"
 ) {
@@ -33,7 +33,6 @@ write_pipeline_perth <- function(
     {
       library(targets)
       library(tarchetypes)
-      library(data.table)
       
       sapply(list.files(pattern="[.]R$", path="R/import_data", full.names=TRUE), source)
       sapply(list.files(pattern="[.]R$", path="R/func_data", full.names=TRUE), source) # functions
@@ -41,12 +40,13 @@ write_pipeline_perth <- function(
       sapply(list.files(pattern="[.]R$", path="R/func_viz", full.names=TRUE), source)
       
       # Set target-specific options such as packages.
-      tar_option_set(packages = c("data.table",
-                                  "sf",
+      tar_option_set(packages = c("sf",
+                                  "data.table",
                                   "raster",
-                                  "exactextractr"))
+                                  "exactextractr",
+                                  "ggplot2"))
       
-      datadir <- "~/../cloudstor/Shared/Environment_General (2)"
+      datadir <- "~/../cloudstor/Shared/Environment_General"
       
       #### Inputs targets ####
       inputs <- list(
@@ -185,21 +185,23 @@ write_pipeline_perth <- function(
                    )
         )
       )
-      
+
       #### Visualisation targets ####
       viz <- list(
-        tar_target(make_map_an,
+        # tar_target(
+        #   sf_attrib,
+        #   {dat <- tidy_geom_sa2_2016
+        #   dat <- merge(dat, calc_attributable_number[year == 2014 & age == "20 - 24"])}
+        # ),
+        tar_target(
+          viz_an,
           {
-            sf <- merge(tidy_geom_sa2_2016,
-                        calc_attributable_number[
-                          year == 2013 & age == "30 - 34",
-                          .(sa2_main16, state, year, attributable)],
-                        by = "sa2_main16")
-            sf
-            # viz_map_an(tidy_geom_sa2_2016, calc_attributable_number, "attributable")
-            # tidy_geom_sa2_2016
-            # tidy_geom_sa2_2016[1:10]
-          })
+            dat_an <- calc_attributable_number[year == 2013 & age == "30 - 34"]
+            sf_an <- tidy_geom_sa2_2016
+            sf_an <- merge(sf_an, dat_an)
+            viz_map_an(sf_an, "attributable")
+          }
+        )
       )
       
       list(
