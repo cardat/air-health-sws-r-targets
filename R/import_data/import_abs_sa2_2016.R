@@ -18,16 +18,21 @@ import_abs_sa2_2016 <- function(states){
                           file.path(datadir, sprintf("ABS_data/ABS_Census_2016/abs_sa2_2016_data_derived/SA2_2016_%s.shp", states))
   )
   
-  tidy <- tar_target(tidy_geom_sa2_2016,
-                     {sf_geo <- sf::st_read(infile_abs_sa2_2016)
+  tidy <- tar_target(tidy_geom_sa2_2016_state,
+                     {sf_geo <- st_read(infile_abs_sa2_2016)
                      sf_geo <- sf_geo[, c("SA2_MAIN16", "SA2_NAME16", "STE_CODE16")]
                      names(sf_geo) <- tolower(names(sf_geo))
-                     return(sf_geo)
+                     sf_geo
                      },
                      pattern = map(infile_abs_sa2_2016))
   
+  combine <- tar_target(tidy_geom_sa2_2016,
+                     tidy_geom_sa2_2016_state)
+  
   list(file = file,
-       tidy = tidy)
+       tidy = tidy,
+       combine = combine
+       )
 }
 
 # path <- "~/../cloudstor/Shared/Environment_General (2)/ABS_data/ABS_Census_2016/abs_sa2_2016_data_derived/SA2_2016_WA.shp"
