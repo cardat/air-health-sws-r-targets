@@ -11,7 +11,7 @@ do_linked_pop_health_enviro <- function(
      by = .(sa2_main16, year, variable)]
   
   #### merge with population response ####
-  dt_expo_agg <- dt_expo_agg[, .(x = mean(x), v1 = mean(v1)), by= .(sa2_main16, variable)]
+  dt_expo_agg <- dt_expo_agg[, .(x = mean(x, na.rm = T), v1 = mean(v1, na.rm = T)), by= .(sa2_main16, variable)]
   dt <- merge(dt_study_pop_health, dt_expo_agg[, .(sa2_main16, variable, x, v1)], by = c("sa2_main16"))
   
   return(dt)
