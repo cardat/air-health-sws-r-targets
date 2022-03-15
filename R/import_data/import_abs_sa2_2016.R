@@ -21,6 +21,12 @@ import_abs_sa2_2016 <- function(states){
   tidy <- tar_target(tidy_geom_sa2_2016_state,
                      {sf_geo <- st_read(infile_abs_sa2_2016)
                      sf_geo <- sf_geo[, c("SA2_MAIN16", "SA2_NAME16", "STE_CODE16")]
+                     
+                     # standardise geometry attributes
+                     sf_geo <- st_cast(sf_geo, "MULTIPOLYGON")
+                     sf_geo <- st_transform(sf_geo, 4283)
+                     
+                     # lower case names
                      names(sf_geo) <- tolower(names(sf_geo))
                      sf_geo
                      },
