@@ -5,14 +5,18 @@ do_env_exposure <- function(exposure, sf_geog, variable){
   geog_gid[, geometry := NULL]
   
   e <- exactextractr::exact_extract(exposure, sf_geog_geom, fun = "mean")
-  names(e) <- gsub(".*([0-9]{4}).*", "\\1", names(e))
   
+  ## construct data table for merged data
   dt <- data.table::data.table(
     geog_gid
   )
   if(!is.na(variable)){
     dt[, variable := variable]
   }
+  
+  ## attach extracted exposures
+  e <- as.data.table(e)
+  names(e) <- gsub(".*([0-9]{4}).*", "\\1", names(exposure))
   dt <- cbind(dt, e)
   
   # to long format
@@ -21,7 +25,7 @@ do_env_exposure <- function(exposure, sf_geog, variable){
   return(dt)
 }
 
-# ls_exposure <- tar_read(tidy_data_exposure)
-# str(ls_exposure, max.level = 2)
-# sf_geog <- tar_read(tidy_data_geog)
-# dt_exp_pop <- tar_read(tidy_data_exp_pop)
+# exposure <- tar_read(tidy_env_exposure)
+# str(exposure, max.level = 2)
+# sf_geog <- tar_read(tidy_geom_mb_2016)
+# variable <- "pm25"
