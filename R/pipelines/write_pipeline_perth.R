@@ -1,5 +1,5 @@
 write_pipeline_perth <- function(
-  states = c("NT", "WA"),
+  states = c("WA"),
   years = 2013:2014,
   preset = "Perth_2014_2016"
 ) {
@@ -46,120 +46,48 @@ write_pipeline_perth <- function(
                                   "exactextractr",
                                   "ggplot2"))
       
-      datadir <- "~/../cloudstor/Shared/Environment_General"
+      datadir <- "~/../cloudstor/Shared/Environment_General" # Environment_General folder
       
       #### Inputs targets ####
       inputs <- list(
         geog = import_abs_mb_2016(!!states),
         geog_agg = import_abs_sa2_2016(!!states),
-        # geog = list(
-        #   tar_files_input(
-        #     infile_geog,
-        #     !!input_geog$path,
-        #     format = "file"
-        #   ),
-        #   tar_target(
-        #     tidy_data_geog_part,
-        #     tidy_geog(infile_geog),
-        #     pattern = map(infile_geog)
-        #   )#,
-        #   # tar_target(
-        #   #   tidy_data_geog,
-        #   #   rbind(tidy_data_geog_part)
-        #   # )
-        # ),
         
         exp_pop = import_abs_pop_mb_2016(!!states),
-        # list(
-        #   tar_files_input(
-        #     infile_exp_pop,
-        #     !!input_exp_pop,
-        #     format = "file"
-        #   ),
-        #   tar_target(
-        #     tidy_data_exp_pop_part,
-        #     tidy_exp_pop(infile_exp_pop),
-        #     pattern = map(infile_exp_pop)
-        #   ),
-        #   tar_target(
-        #     tidy_data_exp_pop,
-        #     rbind(tidy_data_exp_pop_part)
-        #   )
-        # ),
         
         exposure = import_globalgwr_pm25_2010_2015(!!years),
-        #   list(
-        #   tar_files_input(
-        #     infile_exposure,
-        #     !!input_exposure$path,
-        #     format = "file"
-        #   ),
-        #   tar_target(
-        #     tidy_data_exposure_part,
-        #     tidy_exposure(infile_exposure),
-        #     pattern = map(infile_exposure),
-        #     iteration = "list"
-        #   )
-        # ),
         
         impact_pop = import_abs_mortality_sa2_2006_2016(!!states, !!years),
-        # list(
-        #   tar_files_input(
-        #     infile_impact_pop,
-        #     !!input_impact_pop,
-        #     format = "file"
-        #   ),
-        #   tar_target(
-        #     tidy_data_impact_pop_part,
-        #     tidy_impact_pop(infile_impact_pop),
-        #     pattern = map(infile_impact_pop)
-        #   ),
-        #   tar_target(
-        #     tidy_data_impact_pop,
-        #     rbind(tidy_data_impact_pop_part)
-        #   )
-        # ),
         
         study_pop = import_abs_sa2_pop_age_2016(!!states)
-        # list(
-        #   tar_files_input(
-        #     infile_study_pop,
-        #     !!input_study_pop,
-        #     format = "file"
-        #   ),
-        #   tar_target(
-        #     tidy_data_study_pop_part,
-        #     tidy_study_pop(infile_study_pop),
-        #     pattern = map(infile_study_pop)
-        #   ),
-        #   tar_target(
-        #     tidy_data_study_pop,
-        #     rbind(tidy_data_study_pop_part)
-        #   )
-        # )
       )
       
       #### Derivation of data targets ####
       derive_data <- list(
-        ## Extraction of exposure by given geometry
-        tar_target(data_env_exposure,
-                   do_env_exposure(tidy_env_exposure, tidy_geom_mb_2016, "pm25"),
-                  pattern = map(tidy_geom_mb_2016)
-                    ),
+      
+        # Extraction of exposure by given geometry
+        tar_target(
+          data_env_exposure,
+          do_env_exposure(tidy_env_exposure, tidy_geom_mb_2016, "pm25"),
+          pattern = map(tidy_geom_mb_2016)
+        ), 
+        
+        # apply impact rate to study population
         tar_target(
           data_study_pop_health,
           do_study_pop_impact(tidy_study_pop,
                               tidy_impact_pop)
         ),
         
+        # Provide counterfactual scenario and calculate delta
         tar_target(
           combined_exposures_pop,
           do_env_counterfactual(data_env_exposure,
-                                "abs",
-                                5),
+                                "min"),
           pattern = map(data_env_exposure),
         ),
         
+        # apply population weighting to baseline exposure and delta, aggregate to merge with study population
         tar_target(
           data_linked_pop_health_enviro,
           do_linked_pop_health_enviro(data_study_pop_health,
@@ -170,6 +98,7 @@ write_pipeline_perth <- function(
       
       #### Analysis targets ####
       analysis <- list(
+        # construct a function given relative risks and theoretical minimum risk
         tar_target(health_impact_function,
                    do_health_impact_function(
                      case_definition = 'crd',
@@ -178,6 +107,8 @@ write_pipeline_perth <- function(
                      theoretical_minimum_risk = 0
                    )
         ),
+        
+        # calculate the attributable number
         tar_target(calc_attributable_number,
                    do_attributable_number(
                      hif = health_impact_function,
@@ -188,15 +119,17 @@ write_pipeline_perth <- function(
 
       #### Visualisation targets ####
       viz <- list(
-        # tar_target(
-        #   sf_attrib,
-        #   {dat <- tidy_geom_sa2_2016
-        #   dat <- merge(dat, calc_attributable_number[year == 2014 & age == "20 - 24"])}
-        # ),
+        # create map of attributable number
         tar_target(
           viz_an,
           {
-            dat_an <- calc_attributable_number[year == 2013 & age == "30 - 34"]
+            dat_an <- calc_attributable_number#[year == 2015]# & age == "30 - 34"]
+            dat_an <- dat_an[,.(pop_tot = sum(value, na.rm = T),
+                                                  expected_tot = sum(expected, na.rm = T),
+                                                  attributable = sum(attributable, na.rm = T),
+                                                  pm25_cf_pw_sa2 = mean(v1, na.rm = T),
+                                                  pm25_pw_sa2 = mean(x, na.rm = T)),
+                                                  by = .(sa2_main16, year)]
             sf_an <- tidy_geom_sa2_2016
             sf_an <- merge(sf_an, dat_an)
             viz_map_an(sf_an, "attributable")
