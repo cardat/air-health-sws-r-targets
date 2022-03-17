@@ -1,18 +1,27 @@
-#' Tidy impact population data
+#' Construct targets to import and tidy ABS 2006-2016 SA2 Mortality data
 #'
-#' @param path 
+#' Creates two targets, the first to track the data file, the second to read and tidy the data. If a smooth_yy argument greater than 1 is specified, measures of mortality are averaged over smooth_yy number of years ending in the year of interest. For example, with a smooth_yy of 3, the measures of mortality for 2016 will be the result of averaging 2014-2016 statistics.
 #'
-#' @return Tidied data.table in format dt, containing gid, age groups, year, population, death, rate
+#' @param states A character vector of one or more Australian state or territory abbreviations. 
+#' @param years An integer vector of one or more years of interest. 
+#' @param smooth_yy An integer value indicating how many years to average over for smoothing. Default is 1 (no smoothing).
 #'
+#' @return List of targets that tracks the ABS 2006-2016 SA2 Mortality file, and reads and tidies the data in target 'tidy_impact_pop'.
+#' 
 #' @examples
-#' tidy_impact_pop("data/agespecific_year_occurrence.csv")
+#' import_abs_mortality_sa2_2006_2016(c("NSW", "ACT"), 2014:2015, smooth_yy = 1)
 
-import_abs_mortality_sa2_2006_2016 <- function(states, years, smooth_yy = 3){
+import_abs_mortality_sa2_2006_2016 <- function(states, years, smooth_yy = 1L){
   states <- unique(toupper(states))
   
+  ## Do checks of input argument
   stopifnot("states must be a vector of at least one state abbreviation" = 
-              length(setdiff(states, c("NSW", "VIC", "QLD", "SA", "TAS", "WA", "NT", "ACT"))) == 0)
+              all(states %in% c("NSW", "VIC", "QLD", "SA", "TAS", "WA", "NT", "ACT")))
   stopifnot("states must be a non-empty vector" = {length(states) != 0})
+  ## Do checks of input argument years and smooth_yy
+  stopifnot("smooth_yy must be a positive non-zero integer" = smooth_yy %% 1 == 0 & smooth_yy > 0)
+  stopifnot("All years (including those implicitly required by smooth_yy) must be within 2006-2016" = 
+              all(sapply(years, function(x) (x-smooth_yy+1):x) %in% 2006:2016))
   
   states_code <- car::recode(states, "'NSW'=1; 'VIC'=2; 'QLD'=3; 'SA'=4; 'WA'=5; 'TAS'=6; 'NT'=7; 'ACT'=8")
   
@@ -25,8 +34,10 @@ import_abs_mortality_sa2_2006_2016 <- function(states, years, smooth_yy = 3){
   tidy <- tar_target_raw(
     "tidy_impact_pop",
     substitute({
+      ## read in file
       dat <- data.table::fread(infile_abs_mortality_sa2_2006_2016)
       
+      ## take mean over smooth_yy values
       datV2 <- rbindlist(
         lapply(years, function(yy){
           dat_window <- dat[ASGS_2011 %in% c(states_code)
