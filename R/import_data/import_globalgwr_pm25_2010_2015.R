@@ -20,7 +20,7 @@ import_globalgwr_pm25_2010_2015 <- function(years){
   )
   
   tidy <- tar_target(
-    tidy_env_exposure,
+    tidy_env_exposure_pm25,
     {
       b <- brick(stack(infile_globalgwr_pm25_2010_2015))
       # retrieve year for layer label
