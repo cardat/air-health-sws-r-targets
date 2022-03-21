@@ -1,33 +1,21 @@
 write_pipeline_perth <- function(
   states = c("WA"),
   years = 2013:2014,
-  preset = "Perth_2014_2016"
+  # ,
+  # cf_scenario = "abs",
+  # cf_value = 5,
+  # case_definition = "crd",
+  # rr = c(),
+  # tmrel = 0
+  # ,
+  # presets = "Perth_2014_2016"
+  download_data = TRUE,
+  cardat_path = "~/CARDAT"
 ) {
-  #### Inbuilt case studies ####
-  # if (preset == "Perth_2014_2016"){
-  #   datadir <- "~/../cloudstor/Shared/Environment_General/"
-  #   input_geog <- data.frame(
-  #     state = states,
-  #     path = file.path(datadir,
-  #                      sprintf("ABS_data/ABS_meshblocks/abs_meshblocks_2016_data_provided/MB_2016_%s.shp", states))
-  #     )
-  #   
-  #   input_exp_pop <- file.path(datadir, "ABS_data/ABS_meshblocks/abs_meshblocks_2016_pops_data_provided/2016 census mesh block counts.csv")
-  #       
-  #   input_exposure <- data.frame(
-  #     year = years,
-  #     path = file.path(datadir, 
-  #                      sprintf("Air_pollution_model_GlobalGWR_PM25/GlobalGWR_PM25_V4GL02/data_derived/GlobalGWR_PM25_GL_%s01_%s12-RH35-NoNegs_AUS_20180618.tif", years, years)
-  #                      )
-  #   )
-  #   
-  #   input_impact_pop <- file.path(datadir, "Australian_Mortality_ABS/ABS_MORT_2006_2016/data_provided/DEATHS_AGESPECIFIC_OCCURENCEYEAR_04042018231304281.csv")
-  #   
-  #   input_study_pop <- file.path(datadir, "ABS_data/ABS_Census_2016/abs_gcp_2016_data_derived/abs_sa2_2016_agecatsV2_total_persons_20180405.csv")
-  # } else {
-  #   stop("No Preset.")
-  # }
   
+  cardat_envgen <- file.path(cardat_path, "Environment_General")
+  
+  #### write out _targets.R ####
   tar_helper(
     "_targets.R",
     {
@@ -46,7 +34,8 @@ write_pipeline_perth <- function(
                                   "exactextractr",
                                   "ggplot2"))
       
-      datadir <- "~/../cloudstor/Shared/Environment_General" # Environment_General folder
+      datadir <- !!cardat_envgen
+      download_data <- !!download_data
       
       #### Inputs targets ####
       inputs <- list(
@@ -55,20 +44,23 @@ write_pipeline_perth <- function(
         
         exp_pop = import_abs_pop_mb_2016(!!states),
         
-        exposure = import_globalgwr_pm25_2010_2015(!!years),
+        exposure = list(
+          import_globalgwr_pm25_2010_2015(!!years),
+          import_satlur_no2_2012_2015(!!years)
+        ),
         
-        impact_pop = import_abs_mortality_sa2_2006_2016(!!states, !!years),
+        impact_pop = import_abs_mortality_sa2_2006_2016(!!states, !!years, smooth_yy = 3),
         
         study_pop = import_abs_sa2_pop_age_2016(!!states)
       )
       
       #### Derivation of data targets ####
       derive_data <- list(
-      
+        
         # Extraction of exposure by given geometry
         tar_target(
-          data_env_exposure,
-          do_env_exposure(tidy_env_exposure, tidy_geom_mb_2016, "pm25"),
+          data_env_exposure_pm25,
+          do_env_exposure(tidy_env_exposure_pm25, tidy_geom_mb_2016, "pm25"),
           pattern = map(tidy_geom_mb_2016)
         ), 
         
@@ -82,9 +74,9 @@ write_pipeline_perth <- function(
         # Provide counterfactual scenario and calculate delta
         tar_target(
           combined_exposures_pop,
-          do_env_counterfactual(data_env_exposure,
+          do_env_counterfactual(data_env_exposure_pm25,
                                 "min"),
-          pattern = map(data_env_exposure),
+          pattern = map(data_env_exposure_pm25),
         ),
         
         # apply population weighting to baseline exposure and delta, aggregate to merge with study population
