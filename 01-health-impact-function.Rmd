@@ -2,10 +2,41 @@
 
 This is the place to start because this defines the function that relates exposure to outcomes.
 
+## Epidemiological study designs: source, sample and study populations
+
+This defines the weight of the evidence and the validity of the information base.
+
 ## Relative risk, odds ratio and hazard ratio
 
-Some useful epidemiology background
+Some useful epidemiology background. E.g.
+
+Epidemiologists often use relative measures of effect, such as relative risk or odds ratio. These calculations give a quantified measure of the risk of getting a disease or other health outcome given an exposure to a risk factor. This is shown below. First we can define a simple example where there are some cases of disease (D) who have been exposed to the risk factor (DE) and other cases who were not (DN). We may also know the number of people who were exposed but remained healthy (HE) and the number of healthy people who were not exposed (HN). The total exposed can be
+represented as NE and the total not exposed as NN.
+
+```{r, tab-preds-short, eval = T, echo = F, message=F, warning=F}
+tab_rr <- data.frame(exposure = c("Exposed", "Not exposed"), Diseased = c("DE", "DN"), Healthy = c("HE", "HN"), Row_totals= c("NE", "NN"))
+names(tab_rr)[1] <- ""
+knitr::kable(tab_rr, row.names = F)
+```
+
+The relative risk is the risk of disease given exposure calculated as the ratio of risks:
+
+\begin{equation}
+RR  = \frac{\frac{DE}{NE}}{\frac{DN}{NN}}
+\end{equation}
+
+The odds ratio is the ratio of the odds:
+
+OR = (DE/HE) / (DN/HN)
+
+We will summarise the material from the appendix of 
+
+Hanigan, I.C., Geromboux, C., Horsley, J., Phelan, S., Jegasothy, E., Heathcote, K. and Morgan, G.G. (2020). Environmental health indicators for selected environmental hazards in New South Wales. Human Health and Social Impacts (HHSI) Node and the NSW Department of Planning, Industry and Environment (DPIE). https://cloudstor.aarnet.edu.au/plus/s/BUkjIIsJC3VTqmO DOI:10.17605/OSF.IO/YJ98D
 
 ## The PAF (population attributable fraction)
 
 More stuff
+
+## TMREL
+
+And the related TMRED.
