@@ -44,10 +44,7 @@ write_pipeline_perth <- function(
         
         exp_pop = import_abs_pop_mb_2016(!!states),
         
-        exposure = list(
-          import_globalgwr_pm25_2010_2015(!!years),
-          import_satlur_no2_2012_2015(!!years)
-        ),
+        exposure = import_globalgwr_pm25_2010_2015(!!years),
         
         impact_pop = import_abs_mortality_sa2_2006_2016(!!states, !!years, smooth_yy = 3),
         
