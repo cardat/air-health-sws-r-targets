@@ -1,4 +1,4 @@
-write_pipeline_perth <- function(
+write_pipeline_pm25_hia <- function(
   states = c("WA"),
   years = 2013:2014,
   # ,
@@ -6,12 +6,16 @@ write_pipeline_perth <- function(
   # cf_value = 5,
   # case_definition = "crd",
   # rr = c(),
-  # tmrel = 0
-  # ,
-  # presets = "Perth_2014_2016"
+  # tmrel = 0,
   download_data = TRUE,
   cardat_path = "~/CARDAT"
 ) {
+  
+  if (file.exists("_targets.R")){
+    resp <- utils::menu(c("yes", "no"), title = "_targets.R already exists. Overwrite?")
+    print(resp)
+    if(!identical(as.integer(resp), 1L)) return(invisible())
+  }
   
   cardat_envgen <- file.path(cardat_path, "Environment_General")
   
