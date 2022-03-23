@@ -1,7 +1,0 @@
-# Appendix
-
-This is most technical description of the code and file structure
-
-## Link to R-targets walkthrough
-
-Some useful background
