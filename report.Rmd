@@ -3,8 +3,13 @@ title: "PM2.5 Health Impact Assessment"
 output: html_document
 ---
 
+<<<<<<< HEAD
 ```{r setup, include=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+=======
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+>>>>>>> 2d8e4058145503c547990ffb81b225e27b9bbf04
 ```
 
 ## Health Impact Assessment
