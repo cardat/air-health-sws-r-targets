@@ -12,9 +12,9 @@ test_cloudstor <- function(path = "Shared"){
     cloudstoR::cloud_meta(path),
     error = function(e){
       if (grepl("401", e$message)){
-        message("Invalid credentials. Rerun cloudstoR::cloud_auth() and enter valid credentials.")
+        message("Unable to authenticate. If your credentials are invalid, rerun cloudstoR::cloud_auth() and enter valid credentials. Otherwise it may be a server problem - wait a few minutes and try again.")
       } else if (grepl("(Could not resolve host|Host unreachable)", e$message)){
-        message("Could not contact CloudStor. Please check your internet connection and/or the CloudStor status (https://status.aarnet.edu.au)")
+        message("Could not contact CloudStor. Please check your internet connection and/or the CloudStor status (https://status.aarnet.edu.au).")
       }
       stop(e)
     }

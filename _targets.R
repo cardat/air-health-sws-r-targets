@@ -22,14 +22,20 @@ sapply(list.files(pattern="[.]R$", path="R/func_helpers", full.names=TRUE), sour
 
 #### study coverage
 years <- 2013:2014
-states <- c("NSW", "ACT") # character vector of state abbreviations
+states <- c("ACT", "TAS") # character vector of state abbreviations
 
 #### data location and retrieval
-# Provide directory to download CARDAT data to (datadir will be ignored), otherwise set to NULL
-download_data <- NULL ## TODO - unimplemented
-# path to Environment_General folder mirroring required CARDAT data
-datadir <- "~/../cloudstor/Shared/Environment_General"
+## boolean, set to TRUE to download data via cloudstoR - ensure you have authenticated before running pipeline
+download_data <- FALSE
 
+## path to directory mirroring required CARDAT data
+# if download_data is TRUE, this is the destination of downloaded data
+#     (ensure it is not a folder used by a sync client)
+# otherwise specify the location to which CARDAT's Environment_General should be mirrored
+dir_cardat <- "~/../cloudstor/Shared"
+
+## Environment General folder of CARDAT
+dir_envgen <- "Environment_General"
 
 # Set targets options -----------------------------------------------------
 
@@ -47,16 +53,33 @@ tar_option_set(
 
 # use custom functions to import data and tidy
 inputs <- list(
-  geog = import_abs_mb_2016(states), # meshblock geometry
-  geog_agg = import_abs_sa2_2016(states), # sa2 geometry
+  # meshblock geometry
+  geog = import_abs_mb_2016(states, 
+                            download = download_data, 
+                            datadir_envgen = file.path(dir_cardat, dir_envgen)),
+  # sa2 geometry
+  geog_agg = import_abs_sa2_2016(states, 
+                                 download = download_data, 
+                                 datadir_envgen = file.path(dir_cardat, dir_envgen)),
   
-  exp_pop = import_abs_pop_mb_2016(states), # meshblock populations
+  # meshblock populations
+  exp_pop = import_abs_pop_mb_2016(states, 
+                                   download = download_data, 
+                                   datadir_envgen = file.path(dir_cardat, dir_envgen)), 
   
-  exposure = import_globalgwr_pm25_2010_2015(years), # exposure rasters
+  # exposure rasters
+  exposure = import_globalgwr_pm25_2010_2015(years, 
+                                             download = download_data, 
+                                             datadir_envgen = file.path(dir_cardat, dir_envgen)), 
   
-  impact_pop = import_abs_mortality_sa2_2006_2016(states, years, smooth_yy = 3), # age-mortality
-  
-  study_pop = import_abs_sa2_pop_age_2016(states) # age-pop study population
+  # age-mortality
+  impact_pop = import_abs_mortality_sa2_2006_2016(states, years, smooth_yy = 3,
+                                                  download = download_data, 
+                                                  datadir_envgen = file.path(dir_cardat, dir_envgen)), 
+  # age-pop study population
+  study_pop = import_abs_sa2_pop_age_2016(states, 
+                                          download = download_data, 
+                                          datadir_envgen = file.path(dir_cardat, dir_envgen))
 )
 
 ## Data extraction and derivation -----------------------------------------
@@ -143,6 +166,20 @@ viz <- list(
 # List the targets in pipeline --------------------------------------------
 
 list(
+  ## target to check validity of data path
+  tar_target(check_data_loc,
+             {
+               if(download_data){ # if downloading, check it is not to a synced folder and cloudstoR can connect
+                 if(grepl("(Cloudstor|ownCloud)", dir_cardat, ignore.case = T)) stop("The download destination specified is likely used by a sync client. Please choose another destination.")
+                 test_cloudstor()
+               } else { # otherwise check the data path actually exists
+                 stopifnot("Data path not found. Check your specified datadir or toggle download_data to TRUE." = dir.exists(dir_cardat))
+               }
+             },
+             priority = 1 # run this first
+  ),
+  
+  ## list HIA pipeline targets
   inputs = inputs,
   data = derive_data,
   analysis = analysis,

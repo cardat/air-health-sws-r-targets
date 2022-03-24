@@ -5,13 +5,21 @@
 #' @param states A character vector of one or more Australian state or territory abbreviations. 
 #' @param years An integer vector of one or more years of interest. 
 #' @param smooth_yy An integer value indicating how many years to average over for smoothing. Default is 1 (no smoothing).
+#' @param name A string to name the tidied data target.
+#' @param download A boolean indicating whether the data should be downloaded from Cloudstor.
+#' @param datadir_envgen The path to Environment_General, mirroring the CARDAT Environment_General directory structure. If download is TRUE, CARDAT's data will be mirrored here, else an existing mirror directory should be specified.
 #'
 #' @return List of targets that tracks the ABS 2006-2016 SA2 Mortality file, and reads and tidies the data in target 'tidy_impact_pop'.
 #' 
 #' @examples
 #' import_abs_mortality_sa2_2006_2016(c("NSW", "ACT"), 2014:2015, smooth_yy = 1)
 
-import_abs_mortality_sa2_2006_2016 <- function(states, years, smooth_yy = 1L){
+import_abs_mortality_sa2_2006_2016 <- function(
+  states, years, smooth_yy = 1L,
+  name = "tidy_impact_pop",
+  download = FALSE,
+  datadir_envgen = "~/../Cloudstor/Shared/Environment_General"
+){
   states <- unique(toupper(states))
   
   ## Do checks of input argument
@@ -25,14 +33,35 @@ import_abs_mortality_sa2_2006_2016 <- function(states, years, smooth_yy = 1L){
   
   states_code <- car::recode(states, "'NSW'=1; 'VIC'=2; 'QLD'=3; 'SA'=4; 'WA'=5; 'TAS'=6; 'NT'=7; 'ACT'=8")
   
-  file <- tar_target(
-    infile_abs_mortality_sa2_2006_2016,
-    file.path(datadir, "Australian_Mortality_ABS/ABS_MORT_2006_2016/data_provided/DEATHS_AGESPECIFIC_OCCURENCEYEAR_04042018231304281.csv"),
-    format = "file"
-  )
+  if(download){
+    file <- tar_target_raw(
+      "infile_abs_mortality_sa2_2006_2016", 
+      substitute({
+        # download metadata
+        pths_meta <- file.path(
+          basename(datadir_envgen), 
+          c("Australian_Mortality_ABS/ABS_MORT_2006_2016/abs_mort_2006_2016_metadata.pdf",
+            "Australian_Mortality_ABS/ABS_MORT_2006_2016/data_provided/33020_README.txt")
+        )
+        download_cardat(pths_meta, dirname(datadir_envgen))
+        # download data files
+        pths_data <- file.path(
+          basename(datadir_envgen), "Australian_Mortality_ABS/ABS_MORT_2006_2016/data_provided/DEATHS_AGESPECIFIC_OCCURENCEYEAR_04042018231304281.csv"
+        )
+        download_cardat(pths_data, dirname(datadir_envgen))
+      }, list(datadir_envgen = datadir_envgen))
+    )
+  } else {
+    file <- tar_target_raw(
+      "infile_abs_mortality_sa2_2006_2016",
+      substitute(file.path(datadir_envgen, "Australian_Mortality_ABS/ABS_MORT_2006_2016/data_provided/DEATHS_AGESPECIFIC_OCCURENCEYEAR_04042018231304281.csv"),
+                 list(datadir_envgen = datadir_envgen)),
+      format = "file"
+    )
+  }
   
   tidy <- tar_target_raw(
-    "tidy_impact_pop",
+    name,
     substitute({
       ## read in file
       dat <- data.table::fread(infile_abs_mortality_sa2_2006_2016)

@@ -29,17 +29,18 @@ download_cardat <- function(paths, outdir, force_download = FALSE){
                    recursive = TRUE)
       }
       # retrieve data
+      message(paste("Downloading", basename(p)))
       outpath <- cloudstoR::cloud_get(
         file.path("Shared", p),
         dest = file.path(outdir, p),
         open_file = FALSE
       )
-      write(paste("Downloaded", p), stdout())
+      message("Download complete")
     } else {
       
       ## otherwise return the existing file path
       outpath <- file.path(outdir, p)
-      write(paste("Data file already exists at", file.path(outdir, p)), stdout())
+      message(paste("Data file already exists at", file.path(outdir, p)), stdout())
     }
     
     # return the file path
