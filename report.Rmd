@@ -1,0 +1,30 @@
+---
+title: "PM2.5 Health Impact Assessment"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Health Impact Assessment
+
+In the study area (`r states`) over years `r min(years)`-`r max(years)`, the attributable number of deaths to PM2.5 is shown below, aggregated to SA2, summed over age groups.
+
+```{r plot-sa2, echo=FALSE}
+targets::tar_read(viz_an) + ggplot2::scale_fill_viridis_c(option = "magma") + ggplot2::scale_colour_viridis_c(option = "magma")
+```
+
+Table format:
+
+```{r dt-sa2, echo=FALSE}
+dat_an <- targets::tar_read(calc_attributable_number)
+dat_an <- dat_an[,.(Population = sum(value, na.rm = T),
+                    "Expected Deaths" = sum(expected, na.rm = T),
+                    "Attributable Deaths" = sum(attributable, na.rm = T),
+                    "Mean CF PM2.5 Exposure" = mean(v1, na.rm = T),
+                    "Mean baseline PM2.5 Exposure" = mean(x, na.rm = T)),
+                 by = .(State = state,  Year = year)]
+knitr::kable(dat_an,
+             caption = "Attributable number of deaths (PM2.5) by state and year with associated counterfactual delta and  population-weighted exposure for baseline case.")
+```
