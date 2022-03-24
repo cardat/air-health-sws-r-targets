@@ -1,0 +1,53 @@
+name|type|data|command|depend|seed|path|time|size|bytes|format|iteration|parent|children|seconds|warnings|error
+infile_abs_mb_pop_2016|stem|af053f4efc503387|f0a623024c31d0b5|8266a1dbbe07d07e|-1933192946|~/ownCloud/Shared/Environment_General/ABS_data/ABS_meshblocks/abs_meshblocks_2016_pops_data_provided/2016 census mesh block counts.csv|t17620.307962963s|db800e749c21b0d5|14048728|file|vector|||7.232||
+infile_abs_sa2_pop_age_2016|stem|2bee542dc7d9c52a|3348f7777597cdd6|8266a1dbbe07d07e|74496822|~/ownCloud/Shared/Environment_General/ABS_data/ABS_Census_2016/abs_gcp_2016_data_derived/abs_sa2_2016_agecatsV2_total_persons_20180405.csv|t17625.9024074074s|f061e86ff3934023|2063956|file|vector|||0.001||
+infile_abs_mb_2016_files|stem|d1d8643a9015c472|f9a3cd23437e0ea8|8fb75deda0f036e8|1233690246||t19061.4857508489s|a3b619bb96f5618a|159|rds|list||infile_abs_mb_2016_files_678004d4*infile_abs_mb_2016_files_5e1b8cf2|0.001||
+infile_abs_sa2_2016_files|stem|26200d7d38e2b5d6|5962ed5957092d32|8fb75deda0f036e8|1650470250||t19061.4857509877s|2059933ece86081f|158|rds|list||infile_abs_sa2_2016_files_7bf42431*infile_abs_sa2_2016_files_c1664f91|0||
+health_impact_function|stem|a2eca5ec45b4fc6d|9e723b972c628d06|0d7ca0c9e4c748ae|-682289829||t19061.4857514967s|214f857d75f770f7|1141|rds|vector|||0.028||
+infile_globalgwr_pm25_2010_2015_files|stem|0594141991730db5|c6505649482348d7|8fb75deda0f036e8|-413020087||t19061.4857517743s|2721c650416a264a|204|rds|list||infile_globalgwr_pm25_2010_2015_files_d0d666d4*infile_globalgwr_pm25_2010_2015_files_7804306f|0||
+infile_abs_mortality_sa2_2006_2016|stem|1be1852b6a2a6eb2|702edd184f40a9c9|8266a1dbbe07d07e|2003468045|~/ownCloud/Shared/Environment_General/Australian_Mortality_ABS/ABS_MORT_2006_2016/data_provided/DEATHS_AGESPECIFIC_OCCURENCEYEAR_04042018231304281.csv|t17625.5514467593s|865e353b04a6936d|10911234|file|vector|||0.001||
+tidy_exp_pop|stem|bfe1edc7e8a49ab7|9b59ad36d2dcc441|a5d07e0b0533590c|-1470254987||t19061.4857626483s|ac46e2201743f0f6|212328|rds|vector|||0.801||
+tidy_study_pop|stem|2a9a2b7eab69b3f9|8f32f9880f385c5a|1e7cca7f5ebdd080|56020447||t19061.4857639439s|0acf511511cedd89|23599|rds|vector|||0.077|NAs introduced by coercion|
+infile_abs_mb_2016_8df496a4|branch|9cc2493e276d6c41|4279ddcc0faec2d7|97260bf87a7a5af4|-279285055|~/ownCloud/Shared/Environment_General/ABS_data/ABS_meshblocks/abs_meshblocks_2016_data_provided/MB_2016_TAS.shp|t16959.7536805556s|65f9479218a2d22d|34116120|file|vector|infile_abs_mb_2016||0.001||
+infile_abs_mb_2016_b4e5a725|branch|418741530c124992|4279ddcc0faec2d7|f9cf2fe2025acde1|2113320800|~/ownCloud/Shared/Environment_General/ABS_data/ABS_meshblocks/abs_meshblocks_2016_data_provided/MB_2016_WA.shp|t16959.7536805556s|057cfa7bfb878708|31932768|file|vector|infile_abs_mb_2016||0||
+infile_abs_mb_2016|pattern|f22db1d043154f36|4279ddcc0faec2d7||-781404244||||66048888|file|vector||infile_abs_mb_2016_8df496a4*infile_abs_mb_2016_b4e5a725|0.001||
+infile_abs_sa2_2016_41e6800e|branch|1ec474e90765eea6|89a25d8546b19ec8|137b0136314acf41|1067828868|~/ownCloud/Shared/Environment_General/ABS_data/ABS_Census_2016/abs_sa2_2016_data_derived/SA2_2016_TAS.shp|t17625.9443287037s|3cbbaa86d4c951a9|12700408|file|vector|infile_abs_sa2_2016||0.001||
+infile_abs_sa2_2016_5106e03d|branch|1db4c0aea645ca8c|89a25d8546b19ec8|0e29cd8c7f6b3367|-915992123|~/ownCloud/Shared/Environment_General/ABS_data/ABS_Census_2016/abs_sa2_2016_data_derived/SA2_2016_WA.shp|t17625.9443402778s|1a17028e27d3bdc9|6220356|file|vector|infile_abs_sa2_2016||0.001||
+infile_abs_sa2_2016|pattern|6323a30176856c50|89a25d8546b19ec8||-485398557||||18920764|file|vector||infile_abs_sa2_2016_41e6800e*infile_abs_sa2_2016_5106e03d|0.002||
+infile_globalgwr_pm25_2010_2015_32a4815d|branch|7e5d92447cfaa96e|20b9edcbf6786232|ebc30f3cc27d1897|1346814622|~/ownCloud/Shared/Environment_General/Air_pollution_model_GlobalGWR_PM25/GlobalGWR_PM25_V4GL02/data_derived/GlobalGWR_PM25_GL_201301_201312-RH35-NoNegs_AUS_20180618.tif|t17700.1607523148s|0025bb72ce90226f|7113004|file|vector|infile_globalgwr_pm25_2010_2015||0.001||
+infile_globalgwr_pm25_2010_2015_252caaa7|branch|1ec70ba4f789387b|20b9edcbf6786232|73695d739ff494f8|56703728|~/ownCloud/Shared/Environment_General/Air_pollution_model_GlobalGWR_PM25/GlobalGWR_PM25_V4GL02/data_derived/GlobalGWR_PM25_GL_201401_201412-RH35-NoNegs_AUS_20180618.tif|t17700.162650463s|5aab915c9980ae6f|7444299|file|vector|infile_globalgwr_pm25_2010_2015||0||
+infile_globalgwr_pm25_2010_2015|pattern|1a27c09b2962ab22|20b9edcbf6786232||-218921083||||14557303|file|vector||infile_globalgwr_pm25_2010_2015_32a4815d*infile_globalgwr_pm25_2010_2015_252caaa7|0.001||
+tidy_impact_pop|stem|ce5c4b82239287ea|f953a2d4f781d8c9|b375b26aa3097aa2|416953838||t19061.4857701907s|af6350671d225b05|9022|rds|vector|||0.211||
+tidy_geom_mb_2016_753b141f|branch|66661b8b4c016e6c|9601848b3c18dfc9|228172a31a7d5475|463101621||t19061.4858529298s|52b322dc5d32be6c|24412587|rds|vector|tidy_geom_mb_2016||1.72||
+tidy_geom_mb_2016_cfcd894f|branch|3c47031948845ecf|9601848b3c18dfc9|bf05ef3b844532d6|-2002402923||t19061.4859295189s|942e02f809aea1a1|21109531|rds|vector|tidy_geom_mb_2016||2.013||
+tidy_geom_mb_2016|pattern|0991bba73488bef1|9601848b3c18dfc9||-967446732||||45522118|rds|vector||tidy_geom_mb_2016_753b141f*tidy_geom_mb_2016_cfcd894f|3.733||
+tidy_geom_sa2_2016|stem|ecb5d692894bc5d7|9d7ee8830c5d85fd|7da2b42fe9d80468|1322853104||t19061.4859379416s|f044ad654cded868|4796|rds|vector|||0.7||
+tidy_env_exposure|stem|7e4a7acdabe59aa5|88c8347ed6869c5e|2b7ac59e1e367866|470194949||t19061.4879572886s|a347dd4d8a5aa226|4345087|rds|vector|||12.075||
+data_study_pop_health|stem|f2fb976e2fba24a4|8aca139f49acfc69|74ef4f801c688f4e|960323573||t19061.48795877s|6bd02042957d6fc7|111094|rds|vector|||0.046||
+data_env_exposure_3894e297|branch|465a86717c62e214|0443b9077cc4f81b|bff5dadc3e27e5a6|-340137661||t19061.4881359315s|ef21996ab6577fc2|168721|rds|vector|data_env_exposure||14.696|Polygons transformed to raster CRS EPSGNA|
+data_env_exposure_570ace45|branch|6efc8cda7bfd82c8|0443b9077cc4f81b|763838c77780e29a|152778274||t19061.4885881556s|3edb6f58c4d4eb73|591067|rds|vector|data_env_exposure||38.013|Polygons transformed to raster CRS EPSGNA|
+data_env_exposure|pattern|eaffaff49e20e8c1|0443b9077cc4f81b||68914054||||759788|rds|vector||data_env_exposure_3894e297*data_env_exposure_570ace45|52.709||
+combined_exposures_pop_4e77dc9d|branch|cf4e17e51e64ef86|543caafbd2f1c84d|b799702b2ab901b9|1746218346||t19061.4885898683s|75956f83238f37d3|212146|rds|vector|combined_exposures_pop||0.003||
+combined_exposures_pop_0beed197|branch|a5d5df361b25d25c|543caafbd2f1c84d|b980feb7d3d993b2|-1940940439||t19061.4885952844s|107949fbedc6d54d|761332|rds|vector|combined_exposures_pop||0.011||
+combined_exposures_pop|pattern|16efc07fc31ecc28|543caafbd2f1c84d||-1976523009||||973478|rds|vector||combined_exposures_pop_4e77dc9d*combined_exposures_pop_0beed197|0.014||
+data_linked_pop_health_enviro|stem|658e376a9a853da5|942a0f0c1b2080b0|304408c5e06a85f3|1456316878||t19061.4885986637s|88a426033f93ad8b|117573|rds|vector|||0.146||
+calc_attributable_number|stem|ce1a989230a860b0|0796cbc766916b92|1357e86ffc836fe2|1666355352||t19061.4886002376s|ca686b932e66a4dd|416098|rds|vector|||0.038||
+make_map_an|stem|e59a92e4f9672b36|62b30a9bd9cf9f96|cc1e72da3d697513|-1909597360||t19061.5336256091s|85b2129f307bb979|7916|rds|vector|||6.55||
+datadir|object|623ad65905bc0784||||||||||||||
+do_linked_pop_health_enviro|function|c29dcfdf79cdf8a2||||||||||||||
+do_attributable_number|function|d2e7ec288766ac0a||||||||||||||
+do_health_impact_function|function|1f21b5e7268d8669||||||||||||||
+viz_map_an|function|e747f5672af464ad||||||||||||||
+analysis|object|f32ed3fb8477f28b||||||||||||||
+derive_data|object|397915b89272b9c1||||||||||||||
+do_env_counterfactual|function|d4f2d085da60afd2||||||||||||||
+do_env_exposure|function|29004969728de0ed||||||||||||||
+do_study_pop_impact|function|40f21c943f06bc26||||||||||||||
+viz|object|ba08951207c343f4||||||||||||||
+inputs|object|2b96bf2f6d7dcc90||||||||||||||
+import_globalgwr_pm25_2010_2015|function|ff1767889e88942a||||||||||||||
+import_abs_mb_2016|function|2aa5e3ebf6d0f000||||||||||||||
+import_abs_sa2_pop_age_2016|function|b48605d7e31e3558||||||||||||||
+import_abs_mortality_sa2_2006_2016|function|c767e4ddcfaa6935||||||||||||||
+import_abs_sa2_2016|function|839f11b488b0fb10||||||||||||||
+import_abs_pop_mb_2016|function|50f6e546651a9760||||||||||||||

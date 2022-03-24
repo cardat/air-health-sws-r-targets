@@ -6,6 +6,10 @@ This is the place to start because this defines the function that relates exposu
 
 This defines the weight of the evidence and the validity of the information base.
 
+## Case definition
+
+Deal with it here.
+
 ## Relative risk, odds ratio and hazard ratio
 
 Some useful epidemiology background. E.g.
