@@ -22,7 +22,7 @@ sapply(list.files(pattern="[.]R$", path="R/func_helpers", full.names=TRUE), sour
 
 #### study coverage
 years <- 2013:2014
-states <- c("ACT", "TAS") # character vector of state abbreviations
+states <- c("WA") # character vector of state abbreviations
 
 #### data location and retrieval
 ## boolean, set to TRUE to download data via cloudstoR - ensure you have authenticated before running pipeline
@@ -132,10 +132,12 @@ analysis <- list(
   
   # calculate the attributable number
   tar_target(calc_attributable_number,
-             do_attributable_number(
+             {dat <- do_attributable_number(
                hif = health_impact_function,
                linked_pop_health_enviro = data_linked_pop_health_enviro
              )
+             dat <- dat[!age %in% c("0 - 4", "5 - 9", "10 - 14", "15 - 19", "20 - 24", "25 - 29")]
+             }
   )
 )
 
@@ -159,7 +161,8 @@ viz <- list(
       sf_an <- merge(sf_an, dat_an)
       viz_map_an(sf_an, "attributable")
     }
-  )
+  ),
+  tar_render(report, "report.Rmd")
 )
 
 
