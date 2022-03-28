@@ -11,6 +11,8 @@
 
 # restore the environment
 renv::restore()
+# or use this helper download function
+source("R/func_helpers/helper_install_pkgs.R"); install_pkgs()
 
 # Load libraries and functions --------------------------------------------
 library(targets)
