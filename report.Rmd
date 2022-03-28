@@ -9,17 +9,17 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 
 ## Health Impact Assessment
 
-In the study area (`r states`) over years `r min(years)`-`r max(years)`, the attributable number of deaths to PM2.5 is shown below, aggregated to SA2, summed over age groups.
+In the study area (`r states`) over years `r min(years)`-`r max(years)`, the attributable number of deaths to PM2.5 is shown below, aggregated to SA2 by summing over age groups, then averaged across years.
 
 ```{r plot-sa2, echo=FALSE}
-targets::tar_read(viz_an) + ggplot2::scale_fill_viridis_c(option = "magma") + ggplot2::scale_colour_viridis_c(option = "magma")
+targets::tar_read(leaflet_an) %>% leaflet::addProviderTiles("CartoDB.Positron")
 ```
 
 Table format:
 
 ```{r dt-sa2, echo=FALSE}
 dat_an <- targets::tar_read(calc_attributable_number)
-dat_an <- dat_an[,.(Population = sum(value, na.rm = T),
+dat_an <- dat_an[,.(Population = sum(pop_study, na.rm = T),
                     "Expected Deaths" = sum(expected, na.rm = T),
                     "Attributable Deaths" = sum(attributable, na.rm = T),
                     "Mean CF PM2.5 Exposure" = mean(v1, na.rm = T),

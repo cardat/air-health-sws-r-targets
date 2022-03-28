@@ -24,21 +24,31 @@ library(targets)
 ## run this if test_cloudstor() raises an authentication error
 # cloud_auth()
 
-# visualise targets
+## visualise targets
 tar_glimpse()
 tar_manifest() # or get a tibble
-# run pipeline
+## run pipeline
 tar_make()
 
-# visualise target status
+## visualise target status
 tar_visnetwork(targets_only = T)
+# click a target to highlight linked targets (use argument degree_to/degree_from to control number of edges to highlight, default 1)
 
 # View target output ------------------------------------------------------
 
-tar_read(calc_attributable_number) # see results of specified target
-tar_read(viz_an) # see results of specified target
+## table
+# see results of specified target
+tar_read(calc_attributable_number)
 
-#browseURL("index.html")
+## maps
+## with leaflet
+library(leaflet)
+tar_read(leaflet_an) %>% addProviderTiles("CartoDB.Positron")
+## with ggplot  
+# tar_read(viz_an)
+
+## view report
+browseURL("report.html")
 
 # Debugging help ----------------------------------------------------------
 

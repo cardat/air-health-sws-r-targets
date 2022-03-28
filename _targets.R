@@ -44,6 +44,7 @@ tar_option_set(
                "data.table",
                "raster",
                "exactextractr",
+               "leaflet",
                "ggplot2")
 )
 
@@ -144,13 +145,13 @@ analysis <- list(
 ## Visualise --------------------------------------------------------------
 
 viz <- list(
-  # create map of attributable number
+  # create map of attributable number, faceted by year (with ggplot2)
   tar_target(
     viz_an,
     {
       # summarise data and merge with spatial for plotting
       dat_an <- calc_attributable_number
-      dat_an <- dat_an[,.(pop_tot = sum(value, na.rm = T),
+      dat_an <- dat_an[,.(pop_tot = sum(pop_study, na.rm = T),
                           expected_tot = sum(expected, na.rm = T),
                           attributable = sum(attributable, na.rm = T),
                           pm25_cf_pw_sa2 = mean(v1, na.rm = T),
@@ -158,9 +159,38 @@ viz <- list(
                        by = .(sa2_main16, year)]
       sf_an <- tidy_geom_sa2_2016
       sf_an <- merge(sf_an, dat_an)
-      viz_map_an(sf_an, "attributable")
+      viz_map_an(sf_an)
     }
   ),
+  
+  # leaflet map of attributable number, summed over SA2s, averaged over years (with leaflet)
+  tar_target(
+    leaflet_an,
+    {
+      # get and summarise data
+      dat_an <- calc_attributable_number
+      dat_an <- dat_an[,.(pop_tot = sum(pop_study, na.rm = T),
+                          expected_tot = sum(expected, na.rm = T),
+                          attributable = sum(attributable, na.rm = T),
+                          pm25_cf = mean(v1, na.rm = T),
+                          pm25 = mean(x, na.rm = T)),
+                       by = .(sa2_main16, year)]
+      # aggregate over years (mean)
+      dat_an <- dat_an[,.(pop_tot = mean(pop_tot),
+                          expected_tot = mean(expected_tot),
+                          attributable = mean(attributable),
+                          pm25_cf = mean(pm25_cf),
+                          pm25 = mean(pm25)),
+                       by = .(sa2_main16, year)]
+        
+      # merge with spatial for plotting
+      sf_an <- merge(tidy_geom_sa2_2016, dat_an)
+      sf_an <- st_simplify(sf_an, dTolerance = 10)
+      viz_leaflet_an(sf_an)
+    }
+  ),
+  
+  # render an Rmarkdown report
   tar_render(report, "report.Rmd")
 )
 
