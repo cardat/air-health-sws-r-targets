@@ -80,9 +80,12 @@ import_abs_mortality_sa2_2006_2016 <- function(
         })
       )
       
+      ## calculate death rate
       datV2[, rate := Deaths / Population]
       
+      ## format
       names(datV2) <- tolower(names(datV2))
+      datV2[, ste_code16 := as.character(ste_code16)]
       
       return(datV2)
     }, list(states_code = states_code, 

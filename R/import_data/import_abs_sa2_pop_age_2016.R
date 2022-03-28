@@ -63,8 +63,9 @@ import_abs_sa2_pop_age_2016 <- function(
       ## set column names
       data.table::setnames(dat, names(dat), tolower(names(dat)))
       data.table::setnames(dat, "sa2_maincode_2016", "sa2_main16")
+      data.table::setnames(dat, "value", "pop")
       ## get state code
-      dat[, ste_code16 := as.integer(substr(sa2_main16, 1, 1))]
+      dat[, ste_code16 := substr(sa2_main16, 1, 1)]
       dat[, state := car::recode(
         ste_code16,
         "'1'='NSW'; '2'='VIC'; '3'='QLD'; '4'='SA'; '5'='WA'; '6'='TAS'; '7'='NT';'8'='ACT'; '9' = 'OT'"                          

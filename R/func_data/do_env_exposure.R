@@ -4,7 +4,7 @@
 #' @param sf_geog An sf object of Polygons or MultiPolygons.
 #' @param variable A string naming the pollutant, recorded in the output data table.
 #'
-#' @return A data.table in long format of input geometry attributes, variable (pollutant), year and value (concentration).
+#' @return A data.table in long format of input geometry attributes, state, variable (pollutant), year and value (concentration).
 #' 
 #' @example 
 #' do_env_exposure(brick_pm25, sf_abs_meshblock, "pm25")
@@ -43,6 +43,8 @@ do_env_exposure <- function(exposure, sf_geog, variable){
   
   # to long format
   dt <- data.table::melt(dt, measure.vars = names(e), variable.name = "year", value.name = "value")
+  dt[, year := as.integer(levels(year))[year]]
+  dt[, ste_code16 := substr(sa2_main16, 1, 1)]
   
   return(dt)
 }

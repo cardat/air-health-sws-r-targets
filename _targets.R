@@ -102,7 +102,7 @@ derive_data <- list(
   
   # Provide counterfactual scenario and calculate delta
   tar_target(
-    combined_exposures_pop,
+    combined_exposures,
     do_env_counterfactual(data_env_exposure_pm25,
                           "min"),
     pattern = map(data_env_exposure_pm25),
@@ -112,7 +112,7 @@ derive_data <- list(
   tar_target(
     data_linked_pop_health_enviro,
     do_linked_pop_health_enviro(data_study_pop_health,
-                                combined_exposures_pop,
+                                combined_exposures,
                                 tidy_exp_pop)
   )
 )
@@ -124,8 +124,7 @@ analysis <- list(
   tar_target(health_impact_function,
              do_health_impact_function(
                case_definition = 'crd',
-               # exposure_response_func = c(1.06, 1.02, 1.08),
-               exposure_response_func = c(1.08, NA, NA),
+               exposure_response_func = c(1.06, 1.02, 1.08),
                theoretical_minimum_risk = 0
              )
   ),

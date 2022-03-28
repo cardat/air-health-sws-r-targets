@@ -65,14 +65,20 @@ import_abs_sa2_2016 <- function(
       names(sf_geo) <- tolower(names(sf_geo))
       sf_geo
     },
-    pattern = map(infile_abs_sa2_2016)
+    pattern = map(infile_abs_sa2_2016),
+    iteration = "list" 
+    # target does not seem to load correctly in other targets as a single sf object, so iterate then explicitly combine
   )
   
   # return single sf
   combine <- tar_target_raw(
     name,
-    substitute(tidy_geom_sa2_2016_state)
-  )
+    substitute({
+      sf_sa2 <- do.call(rbind, tidy_geom_sa2_2016_state)
+      row.names(sf_sa2) <- NULL
+      sf_sa2
+      })
+    )
   
   list(file = file,
        tidy = tidy,
