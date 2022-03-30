@@ -1,6 +1,7 @@
 introduction
 health-impact-function
 epidemiological-study-designs-source-sample-and-study-populations
+case-definition
 relative-risk-odds-ratio-and-hazard-ratio
 the-paf-population-attributable-fraction
 tmrel
@@ -13,5 +14,9 @@ link-population-health-and-environment-data
 spatial-and-temporal-issues
 attributable-number
 life-tables
-appendix
-link-to-r-targets-walkthrough
+code-overview
+r-targets-package
+directory-and-file-structure
+targets.r-script
+metaprogramming
+case-study---who-guidelines
