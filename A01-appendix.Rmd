@@ -1,41 +1,4 @@
 # (APPENDIX) Appendix {-}
 
-# Code overview
+# Getting started
 
-## R targets package
-
-The [R targets package][R-target], a set of pipeline implementation and management tools, forms the basis of the Air health Scientific Workflow System. Using targets aids the reproducibility of analyses, tracking input data, parameters, code and dependencies to determine which steps need to be rerun when a change is detected.
-
-A targets pipeline is structured as a list of targets, each of which has a name and associated code block (this may be a simple call to a single function, or a. Dependency of one target on another is indicated by referencing a target by name within the code block.
-
-
-## Directory and File Structure
-
-```{r, eval = FALSE}
-├── main.R
-├── _targets.R
-├── R/
-├──── func_analysis/
-├──── func_data/
-├──── func_helpers/
-├──── func_viz/
-├──── import_data/
-├──── pipelines/
-
-```
-
-## _targets.R Script
-
-- libraries
-- load functions
-- set target options
-- set global variables (typically parameters)
-- define targets
-
-## Metaprogramming
-
-
-
-[R-target]: https://github.com/ropensci/targets
-[R-target-manual]: https://books.ropensci.org/targets/
-[R-target-doc]: https://docs.ropensci.org/targets/

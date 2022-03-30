@@ -1,0 +1,98 @@
+# (APPENDIX) Appendix {-}
+
+# Code overview
+
+## R targets package
+
+The [R targets package][R-target], a set of pipeline implementation and management tools, forms the basis of the Air health Scientific Workflow System. Using targets aids the reproducibility of analyses, tracking input data, parameters, code and dependencies to determine which steps need to be rerun when a change is detected.
+
+A targets pipeline is structured as a list of targets, each of which has a name and associated code block. The result of each target is saved and can be used in other targets by referring to it by name.
+
+On running the pipeline, each target is checked for changes to format, metadata and data, and is rerun if a change is detected. If there has been no change, the target is skipped (code is not run). Note that if a target changes, all dependent downstream targets will be run as the dependencies are recorded in target metadata.
+
+More complex pipelines can be set up with targets branching functionality and [tarchetypes package][R-tarchetypes]. See the [targets manual][R-target-manual] and [documentation][R-target-doc] for further information.
+
+### Function-oriented programming
+
+Targets is designed to be function-oriented, writing and calling functions. This is in contrast to the style of programming that runs step-by-step, top to bottom.
+
+An example of the latter:
+
+```{r, eval = FALSE}
+x <- 2
+y <- 3
+z <- x*y
+```
+
+In targets:
+
+```{r, eval = FALSE}
+do_multiply <- function(a, b){
+  a*b
+}
+
+list(
+  tar_target(x, 2),
+  tar_target(y, 3),
+  tar_target(z, do_multiply(x, y))
+)
+```
+
+While for this example, there seems to be little benefit from creating a function (indeed one could simply write `tar_target(z, x*y)`), it aids code clarity and efficiency for more complex workflows. Clearly named functions can self-describe their intended purpose, with defined inputs (arguments) and output(s) (return value). Carefully defined generalised functions may be reused as needed within or across projects.
+
+## Directory and File Structure
+
+The key files and folders of the Air Health SWS targets pipeline are as follows:
+
+```{r, eval = FALSE}
+├── main.R
+├── _targets.R
+├── renv.lock
+├── R/
+├──── func_analysis/
+├──── func_data/
+├──── func_helpers/
+├──── func_viz/
+├──── import_data/
+├──── pipelines/
+├── renv/
+
+```
+
+The **main.R** script is where you should start. It contains a few lines of code for restoring the packages, visualising the targets pipeline, running the pipeline and viewing target results. It does not make any changes to the workflow. Further exploratory analysis, outside of the pipeline, can be added here.
+
+The file **renv.lock** and folder **renv/** are part of [renv][R-renv-doc], a package management library. Opening the R project should automatically prompt renv to install and activate the project environment. Running `renv::restore()` will install required packages (as according to **renv.lock**).
+
+The **\_targets.R** script forms the essential core of the targets pipeline, This is where the targets are defined, along with sourcing of required functions and specification of required libraries. See Section [B.3][_targets.R script] for more information.
+
+All custom functions are stored in the **R/** folder. These are sourced near the top of the _targets.R script (and in main.R where needed). For clarity, the functions are arranged in a series of folders:
+
+- **func_analysis/**: functions to analyse input data, acting on tidied and combined data
+- **func_data/**: functions to combine and derive tidied input data to prepare for analysis
+- **func_helpers/**: miscellaneous helper functions that are not directly concerned with the processing or analysis of data
+- **func_viz/**: functions to visualise or output data
+- **import_data/**: functions to create targets for the import and tidying of specific datasets
+- **pipelines/**: examples of metaprogramming in targets package (not implemented)
+
+## _targets.R script
+
+As is standard with any _targets.R script, the structure is as follows:
+
+- Load targets (and tarchetypes if using)
+- Source custom functions
+- Set global variables
+- Set target options (set what R packages are to be available to the pipeline)
+- Define targets
+
+
+
+## Metaprogramming
+
+The R targets package includes some functions that
+
+
+[R-target]: https://github.com/ropensci/targets
+[R-tarchetypes]: https://github.com/ropensci/tarchetypes
+[R-target-manual]: https://books.ropensci.org/targets/
+[R-target-doc]: https://docs.ropensci.org/targets/
+[R-renv-doc]: https://rstudio.github.io/renv/articles/renv.html
