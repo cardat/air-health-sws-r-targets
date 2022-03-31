@@ -1,6 +1,6 @@
 # Packages ----------------------------------------------------------------
 
-install_pkgs <- function(){
+install_pkgs <- function(repos = getOption("repos")){
   
   message("\n########################\nPackage Install - Starting\n########################\n")
   
@@ -28,7 +28,7 @@ install_pkgs <- function(){
   ## check for cran packages, install if not installed
   for(pkg_i in pkgs_cran){
     #pkg_i = pkg_cran[1]
-    if(!(pkg_i %in% installed.packages()[,"Package"])) install.packages(pkg_i)
+    if(!(pkg_i %in% installed.packages()[,"Package"])) install.packages(pkg_i, repos = repos)
   }
   
   ## check for github packages, install if not installed

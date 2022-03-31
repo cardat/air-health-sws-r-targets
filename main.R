@@ -9,10 +9,11 @@
 
 ## Opening this project should have autoloaded renv - if not, use install.package("renv") to install then renv::activate() to load the renv lockfile
 
-# restore the environment
+## restore the environment
 renv::restore()
-# or use this helper download function
-source("R/func_helpers/helper_install_pkgs.R"); install_pkgs()
+## or use this helper download function
+# source("R/func_helpers/helper_install_pkgs.R")
+# install_pkgs(repos = getOption("repos")) # provide a repository URL if necessary
 
 # Load libraries and functions --------------------------------------------
 library(targets)
