@@ -1,8 +1,15 @@
+#' Construct a health impact function to calculate attributable number
+#'
+#' @param case_definition A character string - to be implemented
+#' @param exposure_response_func A numeric vector of length 3, denoting the relative risk, lower confidence interval, upper confidence interval. Relative risk is per 10 unit change
+#' @param theoretical_minimum_risk A numeric - to be implemented
+#'
+#' @return A data table of linked_pop_health_enviro with attached attributable number and confidence intervals.
+
 do_health_impact_function <- function(
                  case_definition = 'crd',
                  exposure_response_func = c(1.06, 1.02, 1.08),
-                 theoretical_minimum_risk = 0,
-                 linked_pop_health_enviro = dat_linked_pop_health_enviro
+                 theoretical_minimum_risk = 0
                ){
   ## Note the case_definition and theoretical minimum risk are not yet implemented
   

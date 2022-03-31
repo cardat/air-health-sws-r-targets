@@ -1,6 +1,6 @@
 #' Run a connection test of Cloudstor via the cloudstoR package
 #'
-#' @param path A Cloudstor file path to attempt to access. Defaults to Shared folder.
+#' @param path A Cloudstor file path to attempt to access using cloudstoR::cloud_meta. Defaults to Shared folder.
 #'
 #' @return Returns TRUE if no error encountered, otherwise tries to print a more explanatory error message.
 #' 

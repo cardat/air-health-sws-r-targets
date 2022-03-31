@@ -1,3 +1,9 @@
+#' Install latest version of libraries required (using install.packages)
+#'
+#' @param repos A character vector to pass to install.packages repos argument.
+#'
+#' @return Returns NULL.
+
 # Packages ----------------------------------------------------------------
 
 install_pkgs <- function(repos = getOption("repos")){

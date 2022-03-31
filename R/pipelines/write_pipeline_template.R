@@ -1,4 +1,8 @@
-## Write out a _targets.R script from template_targets.R
+#' Write out a template _targets.R script from template_targets.R
+#' 
+#' Writes the HIA targets pipeline to _targets.R. Prompts for confirmation if _targets.R exists.
+#' 
+#' @return NULL
 
 write_pipeline <- function() {
   

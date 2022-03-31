@@ -1,9 +1,17 @@
-## Dynamically generate a _targets.R script given parameters
+#' Dynamically generate a HIA pipeline in _targets.R script
+#' 
+#' Writes the HIA targets pipeline to _targets.R, given the states and years of study coverage.
+#' 
+#' @param states A character vector of Australian state abbreviations
+#' @param years A numeric vector of 4-digit years of interest
+#' @param download_data A boolean indicating whether or not to retrieve data via the cloudstoR package
+#' @param cardat_path A character string of the parent directory of the Environment_General folder. If download_data is TRUE, this is the location the download will save to
+#' 
+#' @return NULL
 
 write_pipeline_pm25_hia <- function(
   states = c("WA"),
   years = 2013:2014,
-  # ,
   # cf_scenario = "abs",
   # cf_value = 5,
   # case_definition = "crd",
