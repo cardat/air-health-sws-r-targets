@@ -37,7 +37,7 @@ import_abs_sa2_2016 <- function(
         pths_data_files <- expand.grid(states = states, format = c("shp", "shx", "dbf", "prj"))
         pths_data <- file.path(
           basename(datadir_envgen),
-          sprintf("ABS_data/ABS_meshblocks/abs_meshblocks_2016_data_provided/MB_2016_%s.%s",
+          sprintf("ABS_data/ABS_Census_2016/abs_sa2_2016_data_derived/SA2_2016_%s.%s",
                   pths_data_files$states, pths_data_files$format)
         )
         file_path <- download_cardat(pths_data, dirname(datadir_envgen))
