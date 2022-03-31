@@ -1,5 +1,7 @@
 # Code overview
 
+The structure and syntax of an R targets pipeline may be unfamiliar to you depending on your level of coding experience. Depending on your intended usage, some or all of the following may guide your understanding of the workflow. Links to further useful examples and documentation are provided.
+
 ## R targets package
 
 The [R targets package][R-targets], a set of pipeline implementation and management tools, forms the basis of the Air health Scientific Workflow System. Using targets aids the reproducibility of analyses, tracking input data, parameters, code and dependencies to determine which steps need to be rerun when a change is detected.
