@@ -22,7 +22,7 @@ sapply(list.files(pattern="[.]R$", path="R/func_helpers", full.names=TRUE), sour
 
 #### study coverage
 years <- 2013:2014
-states <- c("ACT", "TAS") # character vector of state abbreviations
+states <- c("WA") # character vector of state abbreviations
 
 #### data location and retrieval
 ## boolean, set to TRUE to download data via cloudstoR - ensure you have authenticated before running pipeline
@@ -44,6 +44,7 @@ tar_option_set(
                "data.table",
                "raster",
                "exactextractr",
+               "leaflet",
                "ggplot2")
 )
 
@@ -102,7 +103,7 @@ derive_data <- list(
   
   # Provide counterfactual scenario and calculate delta
   tar_target(
-    combined_exposures_pop,
+    combined_exposures,
     do_env_counterfactual(data_env_exposure_pm25,
                           "min"),
     pattern = map(data_env_exposure_pm25),
@@ -112,7 +113,7 @@ derive_data <- list(
   tar_target(
     data_linked_pop_health_enviro,
     do_linked_pop_health_enviro(data_study_pop_health,
-                                combined_exposures_pop,
+                                combined_exposures,
                                 tidy_exp_pop)
   )
 )
@@ -124,18 +125,20 @@ analysis <- list(
   tar_target(health_impact_function,
              do_health_impact_function(
                case_definition = 'crd',
-               # exposure_response_func = c(1.06, 1.02, 1.08),
-               exposure_response_func = c(1.08, NA, NA),
+               exposure_response_func = c(1.06, 1.02, 1.08),
                theoretical_minimum_risk = 0
              )
   ),
   
   # calculate the attributable number
   tar_target(calc_attributable_number,
-             do_attributable_number(
+             {dat <- do_attributable_number(
                hif = health_impact_function,
                linked_pop_health_enviro = data_linked_pop_health_enviro
              )
+             # limit to ages 30+
+             dat <- dat[!age %in% c("0 - 4", "5 - 9", "10 - 14", "15 - 19", "20 - 24", "25 - 29")]
+             }
   )
 )
 
@@ -143,13 +146,13 @@ analysis <- list(
 ## Visualise --------------------------------------------------------------
 
 viz <- list(
-  # create map of attributable number
+  # create map of attributable number, faceted by year (with ggplot2)
   tar_target(
     viz_an,
     {
       # summarise data and merge with spatial for plotting
       dat_an <- calc_attributable_number
-      dat_an <- dat_an[,.(pop_tot = sum(value, na.rm = T),
+      dat_an <- dat_an[,.(pop_tot = sum(pop_study, na.rm = T),
                           expected_tot = sum(expected, na.rm = T),
                           attributable = sum(attributable, na.rm = T),
                           pm25_cf_pw_sa2 = mean(v1, na.rm = T),
@@ -157,9 +160,39 @@ viz <- list(
                        by = .(sa2_main16, year)]
       sf_an <- tidy_geom_sa2_2016
       sf_an <- merge(sf_an, dat_an)
-      viz_map_an(sf_an, "attributable")
+      viz_map_an(sf_an)
     }
-  )
+  ),
+  
+  # leaflet map of attributable number, summed over SA2s, averaged over years (with leaflet)
+  tar_target(
+    leaflet_an,
+    {
+      # get and summarise data
+      dat_an <- calc_attributable_number
+      dat_an <- dat_an[,.(pop_tot = sum(pop_study, na.rm = T),
+                          expected_tot = sum(expected, na.rm = T),
+                          attributable = sum(attributable, na.rm = T),
+                          pm25_cf = mean(v1, na.rm = T),
+                          pm25 = mean(x, na.rm = T)),
+                       by = .(sa2_main16, year)]
+      # aggregate over years (mean)
+      dat_an <- dat_an[,.(pop_tot = mean(pop_tot),
+                          expected_tot = mean(expected_tot),
+                          attributable = mean(attributable),
+                          pm25_cf = mean(pm25_cf),
+                          pm25 = mean(pm25)),
+                       by = .(sa2_main16, year)]
+        
+      # merge with spatial for plotting
+      sf_an <- merge(tidy_geom_sa2_2016, dat_an)
+      sf_an <- st_simplify(sf_an, dTolerance = 10)
+      viz_leaflet_an(sf_an)
+    }
+  ),
+  
+  # render an Rmarkdown report
+  tar_render(report, "report.Rmd")
 )
 
 

@@ -136,6 +136,7 @@ analysis <- list(
                hif = health_impact_function,
                linked_pop_health_enviro = data_linked_pop_health_enviro
              )
+             # limit to ages 30+
              dat <- dat[!age %in% c("0 - 4", "5 - 9", "10 - 14", "15 - 19", "20 - 24", "25 - 29")]
              }
   )
