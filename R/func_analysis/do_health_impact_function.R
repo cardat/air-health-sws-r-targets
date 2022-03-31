@@ -4,6 +4,7 @@ do_health_impact_function <- function(
                  theoretical_minimum_risk = 0,
                  linked_pop_health_enviro = dat_linked_pop_health_enviro
                ){
+  ## Note the case_definition and theoretical minimum risk are not yet implemented
   
   # this is a RR per 10 unit change
   unit_change <- 10
@@ -16,7 +17,7 @@ do_health_impact_function <- function(
   # exposure_response_func^(x/10)
   
   resp_func <- function(x){
-    res <- sapply(x, function(i)(exp(beta * (i-theoretical_minimum_risk)) -1))
+    res <- sapply(x, function(i)(exp(beta * i) -1))
     res <- t(res)
     res <- as.data.table(res)
     names(res) <- c("resp", "lci", "uci")
