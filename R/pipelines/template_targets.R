@@ -182,11 +182,11 @@ viz <- list(
                           attributable = mean(attributable),
                           pm25_cf = mean(pm25_cf),
                           pm25 = mean(pm25)),
-                       by = .(sa2_main16, year)]
+                       by = .(sa2_main16)]
         
       # merge with spatial for plotting
       sf_an <- merge(tidy_geom_sa2_2016, dat_an)
-      sf_an <- st_simplify(sf_an, dTolerance = 10)
+      sf_an <- st_simplify(sf_an, dTolerance = 75)
       viz_leaflet_an(sf_an)
     }
   ),
