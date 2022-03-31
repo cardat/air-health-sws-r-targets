@@ -31,7 +31,8 @@ import_abs_mortality_sa2_2006_2016 <- function(
   stopifnot("All years (including those implicitly required by smooth_yy) must be within 2006-2016" = 
               all(sapply(years, function(x) (x-smooth_yy+1):x) %in% 2006:2016))
   
-  states_code <- car::recode(states, "'NSW'=1; 'VIC'=2; 'QLD'=3; 'SA'=4; 'WA'=5; 'TAS'=6; 'NT'=7; 'ACT'=8")
+  states_recode <- c("NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT")
+  states_code <- which(states_recode %in% states)
   
   if(download){
     file <- tar_target_raw(

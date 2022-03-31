@@ -26,8 +26,6 @@ import_abs_sa2_pop_age_2016 <- function(
               length(setdiff(states, c("NSW", "VIC", "QLD", "SA", "TAS", "WA", "NT", "ACT"))) == 0)
   stopifnot("states must be a non-empty vector" = {length(states) != 0})
   
-  states_code <- car::recode(states, "'NSW'=1; 'VIC'=2; 'QLD'=3; 'SA'=4; 'WA'=5; 'TAS'=6; 'NT'=7; 'ACT'=8")
-  
   if(download){
     file <- tar_target_raw(
       "infile_abs_sa2_pop_age_2016", 
@@ -65,17 +63,15 @@ import_abs_sa2_pop_age_2016 <- function(
       data.table::setnames(dat, "sa2_maincode_2016", "sa2_main16")
       data.table::setnames(dat, "value", "pop")
       ## get state code
+      states_recode <- c("NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT")
       dat[, ste_code16 := substr(sa2_main16, 1, 1)]
-      dat[, state := car::recode(
-        ste_code16,
-        "'1'='NSW'; '2'='VIC'; '3'='QLD'; '4'='SA'; '5'='WA'; '6'='TAS'; '7'='NT';'8'='ACT'; '9' = 'OT'"                          
-      )]
+      dat[, state := states_recode[as.integer(ste_code16)]]
       
       # subset
-      datV2 <- dat[ste_code16 %in% c(states_code)]
+      datV2 <- dat[state %in% states]
       
       return(datV2)
-    }, list(states_code = states_code)
+    }, list(states = states)
     )
   )
   

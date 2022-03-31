@@ -23,7 +23,8 @@ import_abs_pop_mb_2016 <- function(
               all(states %in% c("NSW", "VIC", "QLD", "SA", "TAS", "WA", "NT", "ACT")))
   stopifnot("states must be a non-empty vector" = {length(states) != 0})
   
-  states_code <- car::recode(states, "'NSW'=1; 'VIC'=2; 'QLD'=3; 'SA'=4; 'WA'=5; 'TAS'=6; 'NT'=7; 'ACT'=8")
+  states_recode <- c("NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT")
+  states_code <- which(states_recode %in% states)
   
   if(download){
     file <- tar_target_raw(
