@@ -1,16 +1,14 @@
-# (APPENDIX) Appendix {-}
-
 # Code overview
 
 ## R targets package
 
-The [R targets package][R-target], a set of pipeline implementation and management tools, forms the basis of the Air health Scientific Workflow System. Using targets aids the reproducibility of analyses, tracking input data, parameters, code and dependencies to determine which steps need to be rerun when a change is detected.
+The [R targets package][R-targets], a set of pipeline implementation and management tools, forms the basis of the Air health Scientific Workflow System. Using targets aids the reproducibility of analyses, tracking input data, parameters, code and dependencies to determine which steps need to be rerun when a change is detected.
 
 A targets pipeline is structured as a list of targets, each of which has a name and associated code block. The result of each target is saved and can be used in other targets by referring to it by name.
 
 On running the pipeline, each target is checked for changes to format, metadata and data, and is rerun if a change is detected. If there has been no change, the target is skipped (code is not run). Note that if a target changes, all dependent downstream targets will be run as the dependencies are recorded in target metadata.
 
-More complex pipelines can be set up with targets branching functionality and [tarchetypes package][R-tarchetypes]. See the [targets manual][R-target-manual] and [documentation][R-target-doc] for further information.
+More complex pipelines can be set up with targets branching functionality and [tarchetypes package][R-tarchetypes]. See the [targets manual][R-targets-manual] and [documentation][R-targets-doc] for further information.
 
 ### Function-oriented programming
 
@@ -78,21 +76,85 @@ All custom functions are stored in the **R/** folder. These are sourced near the
 
 As is standard with any _targets.R script, the structure is as follows:
 
-- Load targets (and tarchetypes if using)
+- Load targets library (and tarchetypes if using)
 - Source custom functions
 - Set global variables
 - Set target options (set what R packages are to be available to the pipeline)
 - Define targets
 
+Custom functions used in the pipeline are loaded from the `R/` folder. Though one can define the functions within `_targets.R`, keeping functions separately helps to keep code tidy. Additionally, the function files can be sourced or copied as needed for other projects.
 
+Global variables, here `state` and `year`, are a tidier way to specify parameters that are repeatedly used. In this case, the state and/or year are passed into various import data functions to indicate which subset of available data to use. The boolean `download_data`, to indicate whether to retrieve data from Cloudstor using the [cloudstoR library][R-cloudstoR], and data paths are also specified as global variables for ease of modification.
+
+Packages specified in `tar_option_set` are globally available to subsequent targets. If a target fails because a function cannot be found, double-check the required package is listed here.
+
+Finally, targets are defined in a list. For legibility, targets are divided into four lists, assigned to variables `input`, `data`, `analysis` and `viz`. These are then combined in the final list that defines the pipeline. Each of the target divisions has a corresponding function folder.
+
+```
+input ....... R/import_data
+data ........ R/func_data
+analysis .... R/func_analysis
+viz ......... R/func_viz
+```
+
+It is, of course, not necessary to use this organisation of targets and function files. All targets can be directly defined within the pipeline list and all function files can be stored under `R/`, or some alternative arrangement is possible.
+
+### input targets
+
+Each element in the `input` list is the result of calling a function to import and tidy a specific dataset. Unlike the subsequent target lists `data`, `analysis`, and `viz` where an element defines one target, the functions called in `input` generate a series of targets. The series of targets tracks the data file(s), reads and tidies the data. Since each data has its own formats and quirks, the tidying process is unique to each and thus the code block is defined in the command argument of the target rather than as a separate function. (See any one of the functions under `R/import_data`.)
+
+Note that some of the import functions use `tar_target_raw` to include outside parameters such as the state or year.
+
+Datasets are not combined or dependent on one another at this stage. Data is manipulated into a tidy format (e.g. standardised names, converting column data types, converting to long format), and may be subsetted to relevant columns if the dataset is large. 
+
+Further processing of data, such as calculation, combination and extraction takes place in `data` list.
+
+### data targets
+
+The separate tidied datasets are combined and processed to a stage where the data is ready to be passed to an analysis function. In this pipeline, this covers the extraction of environmental exposure (from source rasters), calculation of counterfactual exposure, calculation of mortality rate in the impact population, application of mortality rate to the study population and aggregation of population-weighted exposure to study population regions.
+
+The end result of this section of targets is a data table of the study population with expected deaths (from application of mortality data) and exposure in baseline and counterfactual cases (from exposure rasters and defined counterfactual value).
+
+It is not necessary to gather all data into a single table, but avoids redundancy if you have several analysis targets working on the same data - you will not have to combine the data at the start of every analysis target.
+
+As a sidenote, it may be observed that some datasets are split over multiple files, for instance, the ABS meshblock files are by state. Depending on the dataset, tidying and processing may be best done file by file. This is possible through dynamic branching, where target B iterates over the output of other target(s) as defined by the `pattern` argument. Such dynamically-branched targets appear as a square with `tar_glimpse` or `tar_visnetwork`. (Read more at the [targets manual][R-targets-manual-dynamic])
+
+Consider the raster extraction to polygon step, one of the more time-consuming steps, where the inputs are exposure rasters (one file = one year) and ABS meshblock polygons (one file = one state). All the exposure rasters share the same projection, extent and resolution and thus can be stacked into a multi-layer raster - extracting a multi-layer raster does not cost much more than extracting from a single-layer raster. On the other hand, the cost of extraction is heavily dependent on the number and complexity of polygons. If an extra state were to be added to the pipeline, it would minimise cost to process and extract each set of state meshblocks separately via dynamic branching. Consequently, dynamic branching is used only on the ABS meshblocks dataset and not the exposure rasters, and branches recombined only after the extraction process is complete.
+
+### analysis targets
+
+After data processing, analysis is performed through two targets - one defining the health impact response and the other applying the response to the processed data to calculate the attributable number of deaths. Further targets can be added to determine other health measures such as years of life lost.
+
+### viz targets
+
+Naturally the results of analysis should be visualised in some form, at the very least for common-sense check. A target can be defined to produce a plot, or, if using `tarchetypes`, render an R Markdown report which can draw on output of other targets in its content.
+
+In the targets `viz_an` and `leaflet_an`, the code block no longer consists of a single function call. Instead, it is a series of data manipulation statements, aggregating and merging with spatial data, before calling the custom plot function. This structure keeps the plot function generalisable rather than specific to the data inputs. The data manipulation code can also be split off into a separation function or even a separate target if the results will be used in multiple targets.
+
+The R Markdown report is rendered in a target by specifying the appropriate `.Rmd` file in the `tarchetypes::tar_render` function. To minimise computation time and take advantage of the targets pipeline features, minimal processing should occur in R Markdown code. Target outputs are retrieved with `tar_read` or `tar_load`, Read more in the [R targets manual - Literate Programming][R-targets-manual-markdown].
+
+### Pipeline list
+
+The `_targets.R` script must end with a list of targets defining the pipeline, hence all targets previously defined are included as nested lists in this final list. 
+
+One more target is introduced here to ensure the existence of the data path (if not downloading data) or valid authentication of Cloudstor access (if downloading data). It is set to run first with the argument `priority = 1`.
 
 ## Metaprogramming
 
-The R targets package includes some functions that
+The R targets package includes metaprogramming tools (based on the `rlang` package), that is, tools using code to generate code. One of the simpler cases is [static branching][R-targets-manual-static], generating a number of branched targets over a series of varying parameters, e.g. using different methods of analysis or modelling, or changing an input parameter to the modelling function.
+
+Full sets of targets (target factories) and full pipelines can also be generated on given parameters. These simplify the construction of a new targets pipeline, but is less customisable. See the [stantargets package][R-stantargets] for an example of a target factory and [targets-shiny] for a fully-generated `_targets.R` script with Shiny interface built on top.
+
+An example of the pipeline-generating function resides in `R/pipelines/write_pipeline_pm25_hia.R`. Here the global variables in the original `targets.R` file are instead taken as arguments to the function. The targets pipeline code is written into the `tar_helper` function (which writes out to the `_targets.R` or other specified location). Variables (like `states` and `years`) are substituted into this code using the `!!` operator which forces the evaluation of the following expression. (There is also a `!!!` operator which both evaluates and unpacks, but it is not demonstrated here.)
 
 
-[R-target]: https://github.com/ropensci/targets
+[R-targets]: https://github.com/ropensci/targets
 [R-tarchetypes]: https://github.com/ropensci/tarchetypes
-[R-target-manual]: https://books.ropensci.org/targets/
-[R-target-doc]: https://docs.ropensci.org/targets/
+[R-targets-manual]: https://books.ropensci.org/targets/
+[R-targets-doc]: https://docs.ropensci.org/targets/
 [R-renv-doc]: https://rstudio.github.io/renv/articles/renv.html
+[R-cloudstoR]: https://github.com/pdparker/cloudstoR
+[R-targets-manual-dynamic]: https://books.ropensci.org/targets/dynamic.html
+[R-targets-manual-markdown]: https://books.ropensci.org/targets/markdown.html#rendering-within-a-target
+[R-targets-manual-static]: https://books.ropensci.org/targets/static.html
+[R-stantargets]: https://github.com/ropensci/stantargets
