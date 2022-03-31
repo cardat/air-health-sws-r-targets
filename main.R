@@ -20,12 +20,12 @@ library(targets)
 
 # Run pipeline ------------------------------------------------------------
 
-## If download_data is not NULL in _targets.R, please ensure you have authenticated cloudstoR's access to CloudStor
+## If download_data is TRUE in _targets.R, please ensure you have authenticated cloudstoR's access to CloudStor
 ## Run the next couple of lines to check your cloudstoR access
 # source("R/func_helpers/helper_test_cloudstor.R")
 # test_cloudstor()
-## run this if test_cloudstor() raises an authentication error
-# cloud_auth()
+# # run this if test_cloudstor() raises an authentication error
+# cloudstoR::cloud_auth()
 
 ## visualise targets
 tar_glimpse()
@@ -34,7 +34,7 @@ tar_manifest() # or get a tibble
 tar_make()
 
 ## visualise target status
-tar_visnetwork(targets_only = T)
+tar_visnetwork(targets_only = T, level_separation = 200)
 # click a target to highlight linked targets (use argument degree_to/degree_from to control number of edges to highlight, default 1)
 
 # View target output ------------------------------------------------------
