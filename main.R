@@ -21,10 +21,11 @@ library(targets)
 # Run pipeline ------------------------------------------------------------
 
 ## If download_data is TRUE in _targets.R, please ensure you have authenticated cloudstoR's access to CloudStor
-## Run the next couple of lines to check your cloudstoR access
+## Uncomment and run the next couple of lines to check your cloudstoR access
+
 # source("R/func_helpers/helper_test_cloudstor.R")
 # test_cloudstor()
-# # run this if test_cloudstor() raises an authentication error
+# # run the next line if test_cloudstor() raises an authentication error
 # cloudstoR::cloud_auth()
 
 ## visualise targets
@@ -54,6 +55,9 @@ tar_read(leaflet_an) %>% addProviderTiles("CartoDB.Positron")
 browseURL("report.html")
 
 # Debugging help ----------------------------------------------------------
+
+tar_meta(fields = warnings)
+tar_meta(fields = error)
 
 ## lOad libraries here
 # library(data.table)
