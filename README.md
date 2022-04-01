@@ -21,6 +21,6 @@ Load the R project and open the `_targets.R` script.
 Open the `main.R` script. Follow instructions and hints in comments.
 
 - `renv` should automatically install and activate. Install the packages using `renv::restore()` or try the alternative custom installation function `install_pkgs()` (installs the latest version if library not already available). Installation may take some time.
-- If you have set `download_data <- FALSE` in `_targets.R`, uncomment and run the lines at the top of the *Run pipeline* section to authenticate your cloudstoR package's access to Cloudstor.
+- If you have set `download_data <- FALSE` in `_targets.R`, uncomment and run the lines at the top of the *Run pipeline* section to authenticate your `cloudstoR` package's access to Cloudstor.
 - Visualise the targets with `tar_glimpse()` or `tar_visnetwork()`, or get a table of targets with `tar_manifest()`.
 - Run the pipeline with `tar_make()`.
