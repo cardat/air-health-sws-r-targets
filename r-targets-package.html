@@ -4,19 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>A.1 R targets package | Air-Health SWS R targets (Last edited on 2022-03-24)</title>
-  <meta name="description" content="A.1 R targets package | Air-Health SWS R targets (Last edited on 2022-03-24)" />
-  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+  <title>B.1 R targets package | Air-Health SWS R targets (Last edited on 2022-04-02)</title>
+  <meta name="description" content="B.1 R targets package | Air-Health SWS R targets (Last edited on 2022-04-02)" />
+  <meta name="generator" content="bookdown 0.25 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="A.1 R targets package | Air-Health SWS R targets (Last edited on 2022-03-24)" />
+  <meta property="og:title" content="B.1 R targets package | Air-Health SWS R targets (Last edited on 2022-04-02)" />
   <meta property="og:type" content="book" />
-  
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="A.1 R targets package | Air-Health SWS R targets (Last edited on 2022-03-24)" />
+  <meta name="twitter:title" content="B.1 R targets package | Air-Health SWS R targets (Last edited on 2022-04-02)" />
   
   
   
@@ -31,7 +30,6 @@
   
 <link rel="prev" href="code-overview.html"/>
 <link rel="next" href="directory-and-file-structure.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -49,8 +47,9 @@
 
 
 
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 
 
 <style type="text/css">
@@ -131,41 +130,52 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
-<li class="chapter" data-level="2" data-path="health-impact-function.html"><a href="health-impact-function.html"><i class="fa fa-check"></i><b>2</b> Health impact function</a>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction<span></span></a></li>
+<li class="chapter" data-level="2" data-path="health-impact-function.html"><a href="health-impact-function.html"><i class="fa fa-check"></i><b>2</b> Health impact function<span></span></a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="epidemiological-study-designs-source-sample-and-study-populations.html"><a href="epidemiological-study-designs-source-sample-and-study-populations.html"><i class="fa fa-check"></i><b>2.1</b> Epidemiological study designs: source, sample and study populations</a></li>
-<li class="chapter" data-level="2.2" data-path="case-definition.html"><a href="case-definition.html"><i class="fa fa-check"></i><b>2.2</b> Case definition</a></li>
-<li class="chapter" data-level="2.3" data-path="relative-risk-odds-ratio-and-hazard-ratio.html"><a href="relative-risk-odds-ratio-and-hazard-ratio.html"><i class="fa fa-check"></i><b>2.3</b> Relative risk, odds ratio and hazard ratio</a></li>
-<li class="chapter" data-level="2.4" data-path="the-paf-population-attributable-fraction.html"><a href="the-paf-population-attributable-fraction.html"><i class="fa fa-check"></i><b>2.4</b> The PAF (population attributable fraction)</a></li>
-<li class="chapter" data-level="2.5" data-path="tmrel.html"><a href="tmrel.html"><i class="fa fa-check"></i><b>2.5</b> TMREL</a></li>
+<li class="chapter" data-level="2.1" data-path="epidemiological-study-designs-source-sample-and-study-populations.html"><a href="epidemiological-study-designs-source-sample-and-study-populations.html"><i class="fa fa-check"></i><b>2.1</b> Epidemiological study designs: source, sample and study populations<span></span></a></li>
+<li class="chapter" data-level="2.2" data-path="case-definition.html"><a href="case-definition.html"><i class="fa fa-check"></i><b>2.2</b> Case definition<span></span></a></li>
+<li class="chapter" data-level="2.3" data-path="relative-risk-odds-ratio-and-hazard-ratio.html"><a href="relative-risk-odds-ratio-and-hazard-ratio.html"><i class="fa fa-check"></i><b>2.3</b> Relative risk, odds ratio and hazard ratio<span></span></a></li>
+<li class="chapter" data-level="2.4" data-path="the-paf-population-attributable-fraction.html"><a href="the-paf-population-attributable-fraction.html"><i class="fa fa-check"></i><b>2.4</b> The PAF (population attributable fraction)<span></span></a></li>
+<li class="chapter" data-level="2.5" data-path="tmrel.html"><a href="tmrel.html"><i class="fa fa-check"></i><b>2.5</b> TMREL<span></span></a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="study-population-and-health-outcomes.html"><a href="study-population-and-health-outcomes.html"><i class="fa fa-check"></i><b>3</b> Study population and health outcomes</a>
+<li class="chapter" data-level="3" data-path="study-population-and-health-outcomes.html"><a href="study-population-and-health-outcomes.html"><i class="fa fa-check"></i><b>3</b> Study population and health outcomes<span></span></a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="source-sample-and-study-population.html"><a href="source-sample-and-study-population.html"><i class="fa fa-check"></i><b>3.1</b> Source, sample and study population</a></li>
+<li class="chapter" data-level="3.1" data-path="source-sample-and-study-population.html"><a href="source-sample-and-study-population.html"><i class="fa fa-check"></i><b>3.1</b> Source, sample and study population<span></span></a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="exposure-assessment.html"><a href="exposure-assessment.html"><i class="fa fa-check"></i><b>4</b> Exposure assessment</a>
+<li class="chapter" data-level="4" data-path="exposure-assessment.html"><a href="exposure-assessment.html"><i class="fa fa-check"></i><b>4</b> Exposure assessment<span></span></a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="spatial-modelling-and-dealing-with-coverage-issues-or-missingness.html"><a href="spatial-modelling-and-dealing-with-coverage-issues-or-missingness.html"><i class="fa fa-check"></i><b>4.1</b> Spatial modelling and dealing with coverage issues or missingness</a></li>
-<li class="chapter" data-level="4.2" data-path="counterfactual.html"><a href="counterfactual.html"><i class="fa fa-check"></i><b>4.2</b> Counterfactual</a></li>
+<li class="chapter" data-level="4.1" data-path="spatial-modelling-and-dealing-with-coverage-issues-or-missingness.html"><a href="spatial-modelling-and-dealing-with-coverage-issues-or-missingness.html"><i class="fa fa-check"></i><b>4.1</b> Spatial modelling and dealing with coverage issues or missingness<span></span></a></li>
+<li class="chapter" data-level="4.2" data-path="counterfactual.html"><a href="counterfactual.html"><i class="fa fa-check"></i><b>4.2</b> Counterfactual<span></span></a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="link-population-health-and-environment-data.html"><a href="link-population-health-and-environment-data.html"><i class="fa fa-check"></i><b>5</b> Link population, health and environment data</a>
+<li class="chapter" data-level="5" data-path="link-population-health-and-environment-data.html"><a href="link-population-health-and-environment-data.html"><i class="fa fa-check"></i><b>5</b> Link population, health and environment data<span></span></a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="spatial-and-temporal-issues.html"><a href="spatial-and-temporal-issues.html"><i class="fa fa-check"></i><b>5.1</b> Spatial and temporal issues</a></li>
+<li class="chapter" data-level="5.1" data-path="spatial-and-temporal-issues.html"><a href="spatial-and-temporal-issues.html"><i class="fa fa-check"></i><b>5.1</b> Spatial and temporal issues<span></span></a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="attributable-number.html"><a href="attributable-number.html"><i class="fa fa-check"></i><b>6</b> Attributable number</a>
+<li class="chapter" data-level="6" data-path="attributable-number.html"><a href="attributable-number.html"><i class="fa fa-check"></i><b>6</b> Attributable number<span></span></a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="life-tables.html"><a href="life-tables.html"><i class="fa fa-check"></i><b>6.1</b> Life tables</a></li>
+<li class="chapter" data-level="6.1" data-path="life-tables.html"><a href="life-tables.html"><i class="fa fa-check"></i><b>6.1</b> Life tables<span></span></a></li>
 </ul></li>
-<li class="appendix"><span><b>Appendix</b></span></li>
-<li class="chapter" data-level="A" data-path="code-overview.html"><a href="code-overview.html"><i class="fa fa-check"></i><b>A</b> Code overview</a>
+<li class="appendix"><span><b>Appendix<span></span></b></span></li>
+<li class="chapter" data-level="A" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>A</b> Getting started<span></span></a></li>
+<li class="chapter" data-level="B" data-path="code-overview.html"><a href="code-overview.html"><i class="fa fa-check"></i><b>B</b> Code overview<span></span></a>
 <ul>
-<li class="chapter" data-level="A.1" data-path="r-targets-package.html"><a href="r-targets-package.html"><i class="fa fa-check"></i><b>A.1</b> R targets package</a></li>
-<li class="chapter" data-level="A.2" data-path="directory-and-file-structure.html"><a href="directory-and-file-structure.html"><i class="fa fa-check"></i><b>A.2</b> Directory and File Structure</a></li>
-<li class="chapter" data-level="A.3" data-path="targets.r-script.html"><a href="targets.r-script.html"><i class="fa fa-check"></i><b>A.3</b> _targets.R Script</a></li>
-<li class="chapter" data-level="A.4" data-path="metaprogramming.html"><a href="metaprogramming.html"><i class="fa fa-check"></i><b>A.4</b> Metaprogramming</a></li>
+<li class="chapter" data-level="B.1" data-path="r-targets-package.html"><a href="r-targets-package.html"><i class="fa fa-check"></i><b>B.1</b> R targets package<span></span></a>
+<ul>
+<li class="chapter" data-level="B.1.1" data-path="r-targets-package.html"><a href="r-targets-package.html#function-oriented-programming"><i class="fa fa-check"></i><b>B.1.1</b> Function-oriented programming<span></span></a></li>
 </ul></li>
-<li class="chapter" data-level="B" data-path="case-study---who-guidelines.html"><a href="case-study---who-guidelines.html"><i class="fa fa-check"></i><b>B</b> Case Study - WHO guidelines</a></li>
+<li class="chapter" data-level="B.2" data-path="directory-and-file-structure.html"><a href="directory-and-file-structure.html"><i class="fa fa-check"></i><b>B.2</b> Directory and File Structure<span></span></a></li>
+<li class="chapter" data-level="B.3" data-path="targets.r-script.html"><a href="targets.r-script.html"><i class="fa fa-check"></i><b>B.3</b> _targets.R script<span></span></a>
+<ul>
+<li class="chapter" data-level="B.3.1" data-path="targets.r-script.html"><a href="targets.r-script.html#input-targets"><i class="fa fa-check"></i><b>B.3.1</b> input targets<span></span></a></li>
+<li class="chapter" data-level="B.3.2" data-path="targets.r-script.html"><a href="targets.r-script.html#data-targets"><i class="fa fa-check"></i><b>B.3.2</b> data targets<span></span></a></li>
+<li class="chapter" data-level="B.3.3" data-path="targets.r-script.html"><a href="targets.r-script.html#analysis-targets"><i class="fa fa-check"></i><b>B.3.3</b> analysis targets<span></span></a></li>
+<li class="chapter" data-level="B.3.4" data-path="targets.r-script.html"><a href="targets.r-script.html#viz-targets"><i class="fa fa-check"></i><b>B.3.4</b> viz targets<span></span></a></li>
+<li class="chapter" data-level="B.3.5" data-path="targets.r-script.html"><a href="targets.r-script.html#pipeline-list"><i class="fa fa-check"></i><b>B.3.5</b> Pipeline list<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="B.4" data-path="metaprogramming.html"><a href="metaprogramming.html"><i class="fa fa-check"></i><b>B.4</b> Metaprogramming<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="C" data-path="case-study---who-guidelines.html"><a href="case-study---who-guidelines.html"><i class="fa fa-check"></i><b>C</b> Case Study - WHO guidelines<span></span></a></li>
 </ul>
 
       </nav>
@@ -175,7 +185,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Air-Health SWS R targets (Last edited on 2022-03-24)</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Air-Health SWS R targets (Last edited on 2022-04-02)</a>
           </h1>
         </div>
 
@@ -183,10 +193,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="r-targets-package" class="section level2" number="7.1">
-<h2><span class="header-section-number">A.1</span> R targets package</h2>
+<div id="r-targets-package" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">B.1</span> R targets package<a href="r-targets-package.html#r-targets-package" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The <a href="https://github.com/ropensci/targets">R targets package</a>, a set of pipeline implementation and management tools, forms the basis of the Air health Scientific Workflow System. Using targets aids the reproducibility of analyses, tracking input data, parameters, code and dependencies to determine which steps need to be rerun when a change is detected.</p>
-<p>A targets pipeline is structured as a list of targets, each of which has a name and associated code block (this may be a simple call to a single function, or a. Dependency of one target on another is indicated by referencing a target by name within the code block.</p>
+<p>A targets pipeline is structured as a list of targets, each of which has a name and associated code block. The result of each target is saved and can be used in other targets by referring to it by name.</p>
+<p>On running the pipeline, each target is checked for changes to format, metadata and data, and is rerun if a change is detected. If there has been no change, the target is skipped (code is not run). Note that if a target changes, all dependent downstream targets will be run as the dependencies are recorded in target metadata.</p>
+<p>More complex pipelines can be set up with targets branching functionality and <a href="https://github.com/ropensci/tarchetypes">tarchetypes package</a>. See the <a href="https://books.ropensci.org/targets/">targets manual</a> and <a href="https://docs.ropensci.org/targets/">documentation</a> for further information.</p>
+<div id="function-oriented-programming" class="section level3 hasAnchor" number="8.1.1">
+<h3><span class="header-section-number">B.1.1</span> Function-oriented programming<a href="r-targets-package.html#function-oriented-programming" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Targets is designed to be function-oriented, writing and calling functions. This is in contrast to the style of programming that runs step-by-step, top to bottom.</p>
+<p>An example of the latter:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="r-targets-package.html#cb1-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb1-2"><a href="r-targets-package.html#cb1-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb1-3"><a href="r-targets-package.html#cb1-3" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> x<span class="sc">*</span>y</span></code></pre></div>
+<p>In targets:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="r-targets-package.html#cb2-1" aria-hidden="true" tabindex="-1"></a>do_multiply <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b){</span>
+<span id="cb2-2"><a href="r-targets-package.html#cb2-2" aria-hidden="true" tabindex="-1"></a>  a<span class="sc">*</span>b</span>
+<span id="cb2-3"><a href="r-targets-package.html#cb2-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-4"><a href="r-targets-package.html#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="r-targets-package.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(</span>
+<span id="cb2-6"><a href="r-targets-package.html#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(x, <span class="dv">2</span>),</span>
+<span id="cb2-7"><a href="r-targets-package.html#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(y, <span class="dv">3</span>),</span>
+<span id="cb2-8"><a href="r-targets-package.html#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(z, <span class="fu">do_multiply</span>(x, y))</span>
+<span id="cb2-9"><a href="r-targets-package.html#cb2-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>While for this example, there seems to be little benefit from creating a function (indeed one could simply write <code>tar_target(z, x*y)</code>), it aids code clarity and efficiency for more complex workflows. Clearly named functions can self-describe their intended purpose, with defined inputs (arguments) and output(s) (return value). Carefully defined generalised functions may be reused as needed within or across projects.</p>
+</div>
 </div>
             </section>
 

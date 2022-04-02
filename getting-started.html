@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>2 Health impact function | Air-Health SWS R targets (Last edited on 2022-04-02)</title>
-  <meta name="description" content="2 Health impact function | Air-Health SWS R targets (Last edited on 2022-04-02)" />
+  <title>A Getting started | Air-Health SWS R targets (Last edited on 2022-04-02)</title>
+  <meta name="description" content="A Getting started | Air-Health SWS R targets (Last edited on 2022-04-02)" />
   <meta name="generator" content="bookdown 0.25 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="2 Health impact function | Air-Health SWS R targets (Last edited on 2022-04-02)" />
+  <meta property="og:title" content="A Getting started | Air-Health SWS R targets (Last edited on 2022-04-02)" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="2 Health impact function | Air-Health SWS R targets (Last edited on 2022-04-02)" />
+  <meta name="twitter:title" content="A Getting started | Air-Health SWS R targets (Last edited on 2022-04-02)" />
   
   
   
@@ -28,8 +28,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="index.html"/>
-<link rel="next" href="epidemiological-study-designs-source-sample-and-study-populations.html"/>
+<link rel="prev" href="life-tables.html"/>
+<link rel="next" href="code-overview.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -193,17 +193,39 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="health-impact-function" class="section level1 hasAnchor" number="2">
-<h1><span class="header-section-number">2</span> Health impact function<a href="health-impact-function.html#health-impact-function" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>This is the place to start because this defines the function that relates exposure to outcomes.</p>
+<div id="getting-started" class="section level1 hasAnchor" number="7">
+<h1><span class="header-section-number">A</span> Getting started<a href="getting-started.html#getting-started" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>The Air-Health SWS R targets pipeline requires R &gt;= 4.0.0 and access to CARDAT’s Environment_General data storage folder on <a href="https://cloudstor.aarnet.edu.au/">Cloudstor</a>.</p>
+<p>To run the Air Health SWS for the first time:</p>
+<ol style="list-style-type: decimal">
+<li>Download and unzip or clone the <a href="https://github.com/cardat/air-health-sws-r-targets">air-health-sws-r-targets</a> repository from the <code>Code</code> dropdown button.</li>
+<li>Load the R project. Open the <code>_targets.R</code> script.</li>
+</ol>
+<ul>
+<li>Edit the global variables <code>years</code> and <code>states</code> to set the study coverage - note with the initial parameters in the pipeline, <code>years</code> is limited to 2010-2015.</li>
+<li>Set the <code>download_data</code> boolean and <code>dir_cardat</code> to the correct path (parent directory of Environment_General).</li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li>Open the <code>main..R</code> script. (This is not integral to the targets pipeline but is a place to keep all the useful commands for visualisiing, running and exploring the pipeline outside of the pipeline itself.) Begin running the script line-by-line from the top.</li>
+</ol>
+<ul>
+<li><code>renv</code> should automatically install and activate. Install the packages using <code>renv::restore()</code> or try the alternative custom installation function <code>install_pkgs()</code> (installs the latest version if library not already available). This step may take some time.</li>
+<li>If you have set <code>download_data &lt;- FALSE</code> in <code>_targets.R</code>, uncomment and run the lines at the top of the <em>Run pipeline</em> section to authenticate your cloudstoR package’s access to Cloudstor. You should not need to authenticate again unless your credentials have changed.</li>
+<li>Continue on to visualise and run the pipeline.</li>
+</ul>
+<ol start="4" style="list-style-type: decimal">
+<li>See the results of the desired target with <code>tar_read(target_name)</code>.</li>
+</ol>
+<p><code>_targets.R</code> and the custom functions called by targets (stored in <code>R/</code>) can be modified and extended to control pipeline output.</p>
+
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="epidemiological-study-designs-source-sample-and-study-populations.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="life-tables.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="code-overview.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

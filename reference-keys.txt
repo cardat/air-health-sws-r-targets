@@ -14,9 +14,16 @@ link-population-health-and-environment-data
 spatial-and-temporal-issues
 attributable-number
 life-tables
+getting-started
 code-overview
 r-targets-package
+function-oriented-programming
 directory-and-file-structure
 targets.r-script
+input-targets
+data-targets
+analysis-targets
+viz-targets
+pipeline-list
 metaprogramming
 case-study---who-guidelines
