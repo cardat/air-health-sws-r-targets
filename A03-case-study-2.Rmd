@@ -1,8 +1,8 @@
 # Case Study - WHO guidelines
 
-The provided pipeline uses a relative risk of 1.06 per 10 µg/m^3, with lower and upper confidence intervals (lci, uci) 1.02 and 1.08 respectively. This is based on **...........**. The counterfactual is set as the minimum PM2.5 by state.
+The provided pipeline uses a relative risk of 1.06 per 10 µg/m^3^, with lower and upper confidence intervals (lci, uci) 1.02 and 1.08 respectively. The counterfactual is set as the minimum PM~2.5~ by state.
 
-Updated WHO 2021 recommendations specify a target for annual PM2.5 of 5 µg/m^3. Interim targets are set at 35, 25, 15 and 10 µg/m^3. The review which contributed to the setting of these target PM2.5 levels used a hazard ratio of 1.08 per 10 µg/m^3.
+Updated [WHO 2021 recommendations][who-guidelines] specify a target for annual PM~2.5~ of 5 µg/m^3^. Interim targets are set at 35, 25, 15 and 10 µg/m^3^. The review which contributed to the setting of these target PM~2.5~ levels used a hazard ratio of 1.08 per 10 µg/m^3^.
 
 To explore the counterfactual scenario as described by the WHO recommended target, the calculation of counterfactual scenario and the health impact function must be modified.
 
@@ -12,7 +12,22 @@ To explore the counterfactual scenario as described by the WHO recommended targe
 
 The counterfactual exposure is calculated in the R target `combined_exposures`, The function call to `do_env_counterfactual` can be replaced with a block of code that adds the counterfactual exposure and delta to the output of target `data_env_exposure_pm25`. 
 
-However, the `do_env_counterfactual` already includes functionality to add these columns based on an absolute value rather than using the minimum exposure by state. To use a counterfactual scenario based on the WHO's recommended target of 5 µg/m^3, alter the `cf_mode` argument from `"min"` to `"abs"`, indicating the counterfactual is an absolute value. Provide a third argument `cf_value` as a numeric set to the WHO recommendation, 5.
+However, the `do_env_counterfactual` already includes functionality to add these columns based on an absolute value rather than using the minimum exposure by state. To use a counterfactual scenario based on the WHO's recommended target of 5 µg/m^3^, alter the `cf_mode` argument from `"min"` to `"abs"`, indicating the counterfactual is an absolute value. Provide a third argument `cf_value` as a numeric set to the WHO recommendation, 5.
+
+Your code will look similar to the following, in place of the `combined_exposures` target:
+
+```{r eval = FALSE}
+  ...
+# Provide counterfactual scenario and calculate delta
+  tar_target(
+    combined_exposures,
+    do_env_counterfactual(data_env_exposure_pm25,
+                          "abs",
+                          5),
+    pattern = map(data_env_exposure_pm25),
+  ),
+  ...
+```
 
 ----
 
@@ -20,10 +35,19 @@ However, the `do_env_counterfactual` already includes functionality to add these
 
 Next, modify the R target `health_impact_function` which returns a function to calculate the attributable number. In the `do_health_impact_function`, the argument `exposure_response_func` takes a three element numeric vector, representing the relative risk, lower confidence interval and upper confidence interval (in that order). Change the relative risk to that used by WHO, 1.08. If no confidence intervals are available, they may be set to `NA`.
 
+Your code should look similar to the following:
+
+```{r eval = FALSE}
+  ...
+  tar_target(health_impact_function,
+             do_health_impact_function(
+               case_definition = 'crd',
+               exposure_response_func = c(1.08, NA, NA),
+               theoretical_minimum_risk = 0
+             )
+  ),
+  ...
+```
 
 
-
-
-World Health Organization. (2021). WHO global air quality guidelines: particulate matter (PM2.5 and PM10)‎, ozone, nitrogen dioxide, sulfur dioxide and carbon monoxide. World Health Organization. https://apps.who.int/iris/handle/10665/345329
-
-
+[who-guidelines]: https://apps.who.int/iris/handle/10665/345329

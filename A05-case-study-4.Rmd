@@ -1,0 +1,29 @@
+# Case Study - Alternate Pollutant
+
+The pipeline can be modified and extended to process and assess the impact of alternate pollutants or mixed-pollutant effects. You will need a set of suitable exposure rasters of your pollutant(s) of interest.
+
+A [satellite-derived land use regression (SatLUR) modelled NO2 surface produced by Luke Knibbs][lk_satlur_no2] is available on request.
+
+----
+
+**Exposure input**
+New sets of pollutant rasters should be read and tidied in targets, similar to the code described in [Case Study - Alternate PM~2.5~ surfaces]. Give the targets unique appropriate names.
+
+For each pollutant, the tidied RasterBrick/RasterStack should be passed to the `do_env_exposure` to extract mean exposure at the meshblock level. The calculation of the counterfactual scenario follows (target `combined_exposures` in the initial pipeline) - either use the `do_env_counterfactual` function, or write your own custom code to calculate or read in a counterfactual.
+
+To ensure the pipeline does not rerun code needlessly, keep the processing of each pollutant in separate targets unless it is necessary or more efficient to process multiple pollutants at once. Consider a pipeline analysing both PM~2.5~ and NO~2~: if the source of NO~2~ data changes, only the NO~2~ exposure need be extracted, thus this target should be separate from the PM~2.5~ extraction step.
+
+----
+
+**Health Impact**
+
+You will most likely need to alter the `do_health_impact_function` or develop your own function to calculate attributable number (or other measure of health impact). Elements to consider include:
+
+- Health impact of interest
+- Relative risk and what unit change it is based on
+- Theoretical minimum risk (if applicable)
+- Multi-pollutant effects
+
+
+
+[lk_satlur_no2]: http://doi.org/10.1016/j.envres.2014.09.011
