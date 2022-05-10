@@ -2,6 +2,7 @@
 library(targets)
 if(!require(disentangle)) {
   library(devtools)
+  install_github("swish-climate-impact-assessment/swishdbtools")
   install_github("ivanhanigan/disentangle")
 }
 library(disentangle)
@@ -57,15 +58,15 @@ make_mindmap_png <- function(dot_filename = "mindmap_plan", showme = TRUE){
 # https://github.com/rich-iannone/DiagrammeR/issues/330#issuecomment-766090870
 # 1. Make a play graph
 #DiagrammeR::grViz("apmma_mindmap_plan.dot")
-tmp <- DiagrammeR::grViz(sprintf("%s.dot", dot_filename))
+tmp <- DiagrammeR::grViz(diagram = sprintf("%s.dot", dot_filename),engine = "neato")
 # 2. Convert to SVG, then save as png
 tmp <- DiagrammeRsvg::export_svg(tmp)
 tmp <- charToRaw(tmp) # flatten
 rsvg::rsvg_png(tmp, sprintf("%s.png", dot_filename)) # saved graph as png in current working directory
 
 # If graphviz is installed and on linux
-#system("dot -Tpdf apmma_mindmap_plan.dot -o apmma_mindmap_plan.pdf")
-#if(show_mindmap) browseURL("apmma_mindmap_plan.pdf")
+#system("dot -Tpdf -Kneato mindmap_plan.dot -o mindmap_plan.pdf")
+#if(show_mindmap) browseURL("mindmap_plan.pdf")
 if(showme){
 browseURL(sprintf("%s.png", dot_filename))
 }

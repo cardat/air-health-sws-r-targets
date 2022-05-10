@@ -17,6 +17,7 @@ tar_target(dat_study_pop_health,
            do_study_pop_health(
              study_population,
              standard_pop_health
+           )
            ),
 
 tar_target(dat_exposure1_prep,
