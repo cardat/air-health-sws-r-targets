@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>6 Attributable number | Air-Health SWS R targets (Last edited on 2022-05-10)</title>
-  <meta name="description" content="6 Attributable number | Air-Health SWS R targets (Last edited on 2022-05-10)" />
+  <title>E Case Study - Alternate Pollutant | Air-Health SWS R targets (Last edited on 2022-05-10)</title>
+  <meta name="description" content="E Case Study - Alternate Pollutant | Air-Health SWS R targets (Last edited on 2022-05-10)" />
   <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="6 Attributable number | Air-Health SWS R targets (Last edited on 2022-05-10)" />
+  <meta property="og:title" content="E Case Study - Alternate Pollutant | Air-Health SWS R targets (Last edited on 2022-05-10)" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="6 Attributable number | Air-Health SWS R targets (Last edited on 2022-05-10)" />
+  <meta name="twitter:title" content="E Case Study - Alternate Pollutant | Air-Health SWS R targets (Last edited on 2022-05-10)" />
   
   
   
@@ -28,8 +28,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="spatial-and-temporal-issues.html"/>
-<link rel="next" href="life-tables.html"/>
+<link rel="prev" href="case-study---alternate-pm2.5-surfaces.html"/>
+
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -195,17 +195,33 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="attributable-number" class="section level1 hasAnchor" number="6">
-<h1><span class="header-section-number">6</span> Attributable number<a href="attributable-number.html#attributable-number" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>This is the place to start</p>
+<div id="case-study---alternate-pollutant" class="section level1 hasAnchor" number="11">
+<h1><span class="header-section-number">E</span> Case Study - Alternate Pollutant<a href="case-study---alternate-pollutant.html#case-study---alternate-pollutant" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>The pipeline can be modified and extended to process and assess the impact of alternate pollutants or mixed-pollutant effects. You will need a set of suitable exposure rasters of your pollutant(s) of interest.</p>
+<p>A <a href="http://doi.org/10.1016/j.envres.2014.09.011">satellite-derived land use regression (SatLUR) modelled NO2 surface produced by Luke Knibbs</a> is available on request.</p>
+<hr />
+<p><strong>Exposure input</strong>
+New sets of pollutant rasters should be read and tidied in targets, similar to the code described in <a href="case-study---alternate-pm2.5-surfaces.html#case-study---alternate-pm2.5-surfaces">Case Study - Alternate PM<sub>2.5</sub> surfaces</a>. Give the targets unique appropriate names.</p>
+<p>For each pollutant, the tidied RasterBrick/RasterStack should be passed to the <code>do_env_exposure</code> to extract mean exposure at the meshblock level. The calculation of the counterfactual scenario follows (target <code>combined_exposures</code> in the initial pipeline) - either use the <code>do_env_counterfactual</code> function, or write your own custom code to calculate or read in a counterfactual.</p>
+<p>To ensure the pipeline does not rerun code needlessly, keep the processing of each pollutant in separate targets unless it is necessary or more efficient to process multiple pollutants at once. Consider a pipeline analysing both PM<sub>2.5</sub> and NO<sub>2</sub>: if the source of NO<sub>2</sub> data changes, only the NO<sub>2</sub> exposure need be extracted, thus this target should be separate from the PM<sub>2.5</sub> extraction step.</p>
+<hr />
+<p><strong>Health Impact</strong></p>
+<p>You will most likely need to alter the <code>do_health_impact_function</code> or develop your own function to calculate attributable number (or other measure of health impact). Elements to consider include:</p>
+<ul>
+<li>Health impact of interest</li>
+<li>Relative risk and what unit change it is based on</li>
+<li>Theoretical minimum risk (if applicable)</li>
+<li>Multi-pollutant effects</li>
+</ul>
+
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="spatial-and-temporal-issues.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="life-tables.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="case-study---alternate-pm2.5-surfaces.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

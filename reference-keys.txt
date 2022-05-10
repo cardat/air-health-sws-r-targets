@@ -27,3 +27,5 @@ viz-targets
 pipeline-list
 metaprogramming
 case-study---who-guidelines
+case-study---alternate-pm2.5-surfaces
+case-study---alternate-pollutant
