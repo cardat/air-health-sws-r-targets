@@ -1,0 +1,30 @@
+---
+title: "PM2.5 Health Impact Assessment"
+output: html_document
+---
+
+```{r setup, include=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+```
+
+## Health Impact Assessment
+
+In the study area (`r states`) over years `r min(years)`-`r max(years)`, the mean population-weighted exposure to PM2.5 is shown below by SA2 (averaged over meshblocks and years). Toggle the radio button to show the attributable number of deaths, summed over age groups, then averaged across years.
+
+```{r plot-sa2, echo=FALSE}
+targets::tar_read(leaflet_an) %>% leaflet::addProviderTiles("CartoDB.Positron")
+```
+
+Table format:
+
+```{r dt-sa2, echo=FALSE}
+dat_an <- targets::tar_read(calc_attributable_number)
+dat_an <- dat_an[,.(Population = sum(pop_study, na.rm = T),
+                    "Expected Deaths" = sum(expected, na.rm = T),
+                    "Attributable Deaths" = sum(attributable, na.rm = T),
+                    "Mean CF PM2.5 Exposure" = mean(v1, na.rm = T),
+                    "Mean baseline PM2.5 Exposure" = mean(x, na.rm = T)),
+                 by = .(State = state,  Year = year)]
+knitr::kable(dat_an,
+             caption = "Attributable number of deaths (PM2.5) by state and year with average PM2.5 (μg/m3) population-weighted exposure for baseline case and counterfactual.")
+```
