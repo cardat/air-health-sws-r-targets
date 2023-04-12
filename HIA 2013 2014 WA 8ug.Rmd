@@ -1,0 +1,150 @@
+---
+title: "WA HIA 2013 2014 8ug"
+output:
+  word_document: default
+  html_document:
+    df_print: paged
+date: "19/01/2023"
+always_allow_html: yes
+---
+
+```{r setup, include=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+library(dplyr)
+library(latexpdf)
+library(latex2exp)
+library(targets)
+```
+
+### **Aim**
+
+The analysis estimates the mortality burden due to annual exposure to ambient fine particulate matter <2.5 µg (PM2.5) above the current (8 µg) WHO annual PM2.5 guidelines in Western Australia during 2013-2014. 
+
+### **Methods**
+
+**Study Region and Period**
+
+The study region covers Western Australia including the Perth, from 2013 to 2014.
+
+**Population data**
+
+Age-specific population counts in 5-year age groups for each Statistical Area level 2 (SA2) geographical area (2016 ABS geographical boundaries) in Western Australia from 2013 to 2014 were accessed from the Australian Bureau of Statistics dataset “Population by Age and Sex, Regions of Australia, Estimated Residential Population 2006–2016” from ABS-TableBuilder (cat. no. 3235.0).
+
+As the PM2.5 and mortality risk function applied is for persons age 30+, the population used in the analysis was limited to 5-year age groups from 30 - 35 up to 100+. 
+
+**Health outcomes**
+
+Mortality data for the years 2013 and 2014 by 5-year age groups from 30 years up to and including 100 years + was accessed from the Australian Bureau of Statistics (Cat. No. 3302.0 – Deaths, Australia, available from the ABS.Stat website).  Baseline age specific annual mortality rates were calculated for each year by linking the mortality data with age-specific populations.
+
+**Air Pollution Exposure Data**
+
+We obtained annual average PM2.5 concentrations from a previously published and validate satellite land use regression model, as described by Knibbs et al. (1) This model incorporates observed PM2.5 measurements from air-monitoring stations with satellite data, chemical-transport model simulations and land-use data to predict concentrations across the region for the years and 2013 and 2014 by ABS mesh-block (MB) spatial unit. Data available upon request from the Australian Centre for Air pollution, energy, and health Research (CAR) https://cloudstor.aarnet.edu.au/plus/f/2454567279.
+
+Annual average PM2.5 concentrations were calculated for the centroids of Australian Bureau of Statistics (ABS) MBs from the 2011 census geography. MBs were then assigned to SA2s from 2016 to derive population-weighted average exposures. 
+
+**Attributable Mortality**
+
+Australia has a limited number of epidemiological studies of long-term exposure to PM2.5 and mortality and so attributable mortality was calculated by applying a relative risk (RR) function estimated from a meta-analysis of European and North American studies, as recommended by WHO (2). A pooled RR of 1.062 (95% CI 1.041, 1.084) per 10-g/m3 increment in annual average PM2.5 exposures of people aged ≥30 years is recommended for health-impact assessments of PM2.5 (2, 3). That is, for every 10µg/m3 increase in the PM2.5 annual average exposure, risk of death increases by 6.2% (95% CI 4.1, 8.4%) (2). 
+
+This RR was used to calculate the attributable numbers (AN) of deaths associated with PM2.5 exposure in each SA2. AN was calculated based on estimates of baseline PM2.5 compared to the counterfactual and then aggregated to the state using the following equation:
+
+$$ AN = \sum_{}(1 - e^{(-\beta\Delta X_{ij})}) \times Expected_{ij} $$
+
+Where $Expected_{ij}$ is the death count estimated by applying the mortality rate in age-group $i$ by age-specific population counts within SA2 $j$, $\beta = log(RR)/10$ and $∆X_{ij}$ is the change in annual PM2.5 concentration from baseline concentrations to counterfactuals concentrations in SA2 $j$. 
+
+Baseline concentrations were estimated as population weighted PM2.5 levels for each SA2 by year. Counterfactual exposure values were the previous and current WHO PM2.5 annual average guideline values of 8 µg and 5 µg respectively.  
+
+### **Results**
+
+##### **Population**
+
+```{r dt-sa2, echo=FALSE}
+dat_sumpop <- targets::tar_read(calc_attributable_number)
+dat_sumdeath <- targets::tar_read(tidy_impact_pop)
+
+dat_sumpop <- dat_sumpop[,.("Total Population" = sum(pop_study, na.rm = T),
+                            "Mean SA2 Population" = mean(pop_study, na.rm = T),
+                            "Min SA2 Population" = min(pop_study, na.rm = T),
+                            "25th percentile SA2 Pop" =  quantile(pop_study, probs = c(.25), na.rm = T),
+                            "50th percentile SA2 Pop" =  quantile(pop_study, probs = c(.5), na.rm = T),
+                            "75th percentile SA2 Pop" =  quantile(pop_study, probs = c(.75), na.rm = T),
+                            "Max SA2 Population" = max(pop_study, na.rm = T)),
+                 by = .(Year = year)]
+dat_sumdeath <- dat_sumdeath[,.("Total Deaths" = sum(deaths, na.rm = T),
+                                "Mean SA2 Deaths" = mean(deaths, na.rm = T)),
+                by = .(Year = year)]
+
+dat_sum <- merge(dat_sumpop, dat_sumdeath, all=TRUE)
+
+knitr::kable(dat_sum,
+             caption = "Table 1: Descriptive Statistics")
+```
+
+Table 1 summarizes the study population by year.
+
+##### **Exposure Assessment**
+
+**Table 2: Population-weighted mean baseline and counterfactual PM2.5 exposure by year under the WHO guideline scenario’s for Western Australia**
+
+```{r exposure, echo=FALSE}
+dat_an <- targets::tar_read(calc_attributable_number)
+dat_an <- dat_an[,.("Baseline SA2 average PM2.5 concentration (µg/m3)" = mean(x, na.rm = T),
+                    "SA2 average decrease in PM2.5 if all SA2’s complied with counterfactual current WHO guideline 8 µg/m3 " = mean(v1, na.rm = T),
+                    "SA2 average PM2.5 if all SA2’s complied with current WHO guideline of 8 µg/m3" = mean(x, na.rm = T) - mean(v1, na.rm = T)), 
+                 by = .(State = state,  Year = year)]
+
+## dat_an2 <- data.frame("SA2 average decrease in PM2.5 if all SA2’s complied with counterfactual WHO guideline of 5 µg/m3" = c(2.201, 2.348), "SA2 average PM2.5 if all SA2’s complied with current WHO guideline of 5 µg/m3" = c(4.297, 4.406))
+
+## dat_an3 <- merge(dat_an, dat_an2, all=TRUE)
+
+knitr::kable(dat_an,
+             caption = "Table 2: Population-weighted mean baseline and counterfactual PM2.5 exposure by year under the WHO guideline scenario’s for Western Australia")
+
+
+```
+
+Table 2 summarizes the average population weighted PM2.5 concentrations for the years 2013 and 2014 as well as the reductions in PM2.5 at the SA2 level if PM2.5 were to comply with the WHO guidelines of 8 µg/m3.
+
+**Figure 1: Map of Western Australia with modelled estimated of annual average PM2.5 (µg/m3) concentrations in 2013 and 2014**
+
+```{r plot-sa2, echo=FALSE}
+targets::tar_read(viz_an)
+```
+
+Figure 1 ... 
+
+**Figure 2: Map of Perth??**
+
+##### **Mortality Burden**
+
+**Table 3: Annual attributable number of deaths associated with PM2.5 pollution above current WHO guidelines of 8 µg in WA 2013 and 2014**
+
+```{r Attributable number 8, echo=FALSE}
+
+AN_8 <- tar_read(calc_attributable_number)
+AN_8 <- AN_8[,.(Population = sum(pop_study, na.rm = T),
+                    "Expected Deaths" = sum(expected, na.rm = T),
+                    "Attributable Deaths" = sum(attributable, na.rm = T),
+                    "SA2 average decrease in PM2.5 if all SA2’s complied with counterfactual current WHO guideline 8 µg/m3" = mean(v1, na.rm = T)),
+                 by = .(State = state,  Year = year)]
+knitr::kable(AN_8,
+             caption = "Table 3: Annual attributable number of deaths associated with PM2.5 pollution above current WHO guidelines of 8 µg in WA 2013 and 2014")
+```
+
+Table 3 summarizes the annual attributable deaths associated with PM2.5 above current WHO guidelines (8µg/m3) in WA in 2013 and 2014. 
+
+
+#### **Conclusions**
+
+In 2013 and 2014 respectively, 78.17 and 89.00 deaths are attributed to annual PM2.5 concentrations in WA above the WHO guideline value of 8µg/m3.
+
+#### **References:**
+
+
+1.	Knibbs LD, van Donkelaar A, Martin RV, Bechle MJ, Brauer M, Cohen DD, et al. Satellite-Based Land-Use Regression for Continental-Scale Long-Term Ambient PM(2.5) Exposure Assessment in Australia. Environ Sci Technol. 2018;52(21):12445-55.
+
+2.	Hoek G, Krishnan RM, Beelen R, Peters A, Ostro B, Brunekreef B, et al. Long-term air pollution exposure and cardio- respiratory mortality: a review. Environmental Health. 2013;12(1):43.
+
+3.	WHO. Health Risks of Air Pollution in Europe—HRAPIE Project: Recommendations for Concentration-Response Functions for Cost-Benefit Analysis of Particulate Matter, Ozone and Nitrogen Dioxide. World Health Organization: Geneva, Switzerland; 2013.
+
+
