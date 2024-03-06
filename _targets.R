@@ -19,23 +19,7 @@ sapply(list.files(pattern="[.]R$", path="R/func_helpers", full.names=TRUE), sour
 
 
 # Define global variables -------------------------------------------------
-
-#### study coverage
-years <- 2013:2014
-states <- c("WA") # character vector of state abbreviations
-
-#### data location and retrieval
-## boolean, set to TRUE to download data via cloudstoR - ensure you have authenticated before running pipeline
-download_data <- FALSE
-
-## path to directory mirroring required CARDAT data
-# if download_data is TRUE, this is the destination of downloaded data
-#     (ensure it is not a folder used by a sync client)
-# otherwise specify the location to which CARDAT's Environment_General should be mirrored
-dir_cardat <- "~/../cloudstor/Shared"
-
-## Environment General folder of CARDAT
-dir_envgen <- "Environment_General"
+source('config.R')
 
 # Set targets options -----------------------------------------------------
 
@@ -199,19 +183,20 @@ viz <- list(
 # List the targets in pipeline --------------------------------------------
 
 list(
-  ## target to check validity of data path
-  tar_target(check_data_loc,
-             {
-               if(download_data){ # if downloading, check it is not to a synced folder and cloudstoR can connect
-                 if(grepl("(Cloudstor|ownCloud)", dir_cardat, ignore.case = T)) stop("The download destination specified is likely used by a sync client. Please choose another destination.")
-                 test_cloudstor()
-               } else { # otherwise check the data path actually exists
-                 stopifnot("Data path not found. Check your specified datadir or toggle download_data to TRUE." = dir.exists(dir_cardat))
-               }
-             },
-             priority = 1 # run this first
-  ),
-  
+  # TODO fix or remove this
+  # ## target to check validity of data path
+  # tar_target(check_data_loc,
+  #            {
+  #              if(download_data){ # if downloading, check it is not to a synced folder and cloudstoR can connect
+  #                if(grepl("(Nextcloud|nextcloud)", dir_cardat, ignore.case = T)) stop("The download destination specified is likely used by a sync client. Please choose another destination.")
+  #                test_cloudstor()
+  #              } else { # otherwise check the data path actually exists
+  #                stopifnot("Data path not found. Check your specified datadir or toggle download_data to TRUE.", dir.exists(dir_cardat))
+  #              }
+  #            },
+  #            priority = 1 # run this first
+  # ),
+
   ## list HIA pipeline targets
   inputs = inputs,
   data = derive_data,
