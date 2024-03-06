@@ -2,7 +2,7 @@
 ##
 ## _targets.R describing pipeline for PM2.5 Health impact Assessment
 ## 
-## 
+## Cassandra Yuen and Ivan Hanigan
 ##
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 

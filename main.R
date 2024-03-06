@@ -1,36 +1,33 @@
 ##%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ##
 ## Construct and run a Health Impact Assessment (HIA) pipeline
-##
+## Cassandra Yuen and Ivan Hanigan
 ##
 ##%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-# Restore environment with renv -------------------------------------------
 
-## Opening this project should have autoloaded renv - if not, use install.package("renv") to install then renv::activate() to load the renv lockfile
-
-## restore the environment
-renv::restore()
-## or use this helper download function
-# source("R/func_helpers/helper_install_pkgs.R")
-# install_pkgs(repos = getOption("repos")) # provide a repository URL if necessary
+## use this helper download function
+source("R/func_helpers/helper_install_pkgs.R")
+install_pkgs(repos = getOption("repos")) # provide a repository URL if necessary
 
 # Load libraries and functions --------------------------------------------
 library(targets)
 
+# Define global variables -------------------------------------------------
+source('config.R')
+# check data storage exists
+if(length(grep("Environment_General", dir(dir_cardat))) == 0){ 
+  print("Environment_General folder not found, review your config.R")
+} else {
+  print("Good to go")
+}
+
+
 # Run pipeline ------------------------------------------------------------
-
-## If download_data is TRUE in _targets.R, please ensure you have authenticated cloudstoR's access to CloudStor
-## Uncomment and run the next couple of lines to check your cloudstoR access
-
-# source("R/func_helpers/helper_test_cloudstor.R")
-# test_cloudstor()
-# # run the next line if test_cloudstor() raises an authentication error
-# cloudstoR::cloud_auth()
-
 ## visualise targets
 tar_glimpse()
 tar_manifest() # or get a tibble
+
 ## run pipeline
 tar_make()
 
