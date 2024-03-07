@@ -11,7 +11,8 @@ download_data <- FALSE
 
 ## path to directory mirroring required CARDAT data
 # specify the location to which CARDAT's Environment_General should be mirrored
-dir_cardat <- "~/../Nextcloud"
+dir_cardat <- "INSERT_PATH_HERE"
+# E.G. ON COESRA dir_cardat <- "~/project_group_data/car"
 
 ## Environment General folder of CARDAT
 dir_envgen <- "Environment_General"
