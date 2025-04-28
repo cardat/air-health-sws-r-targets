@@ -8,7 +8,7 @@ The structure and syntax of an R targets pipeline may be unfamiliar to you depen
 
 # Background
 
-Health Impact Assessment (HIA) of ambient air pollution can quantify the impacts on human health using current and historical air pollution data and point directions for sustainable transitions that could promote policies, programmes, or projects to reduce air population. HIAs can be used to make recommendations for decision-makers and stakeholders, aiming to maximise a proposal's positive health effects and minimise its negative effects. [6] A HIA also provides a way to engage with the public sphere by producing meaningful numbers to quantify the health effects of air pollution. The Scientific Workflow System (SWS) R targets workflow is a tool for quantifying the impact on health for given air pollution policy intervention scenarios, illustrated by a WHO guideline case study.
+Health Impact Assessment (HIA) of ambient air pollution can quantify the impacts on human health using current and historical air pollution data and point directions for sustainable transitions that could promote policies, programmes, or projects to reduce air population. HIAs can be used to make recommendations for decision-makers and stakeholders, aiming to maximise a proposal's positive health effects and minimise its negative effects. [1] A HIA also provides a way to engage with the public sphere by producing meaningful numbers to quantify the health effects of air pollution. The Scientific Workflow System (SWS) R targets workflow is a tool for quantifying the impact on health for given air pollution policy intervention scenarios, illustrated by a WHO guideline case study.
 
 Further background information on the Epidemiological concepts underpinning HIAs and the methods utilised in this workflow can be found in Appendix B.
 
@@ -215,15 +215,15 @@ We have presented additional information about various concepts underpinning epi
 
 **Source and sample populations**
 
-One of the fundamental concepts underpinning all epidemiological research is the requirement to clearly define the study base or the source population. [3] The source population is the entire group of individuals or objects with a common characteristic or condition that interests the study. This may include all individuals living in a particular geographical area, all individuals of a particular age group, or all individuals with a specific disease or health condition. [12] The source population is the starting point for identifying potential study participants or units.
+One of the fundamental concepts underpinning all epidemiological research is the requirement to clearly define the study base or the source population. [2] The source population is the entire group of individuals or objects with a common characteristic or condition that interests the study. This may include all individuals living in a particular geographical area, all individuals of a particular age group, or all individuals with a specific disease or health condition. [3] The source population is the starting point for identifying potential study participants or units.
 
-On the other hand, a sample population is a subset of the source population selected for inclusion in the study. The sample population is usually selected through a sampling process that aims to ensure that the sample is representative of the source population in terms of the characteristics or conditions of interest. @RN12
+On the other hand, a sample population is a subset of the source population selected for inclusion in the study. The sample population is usually selected through a sampling process that aims to ensure that the sample is representative of the source population in terms of the characteristics or conditions of interest. [3]
 
 **Case definition**
 
-In epidemiology, a case definition is a set of standard criteria used to identify whether an individual has a particular disease or health condition of interest. The case definition usually includes specific clinical, laboratory, or other diagnostic criteria that are used to classify an individual as a case or non-case. [13]
+In epidemiology, a case definition is a set of standard criteria used to identify whether an individual has a particular disease or health condition of interest. The case definition usually includes specific clinical, laboratory, or other diagnostic criteria that are used to classify an individual as a case or non-case. [4]
 
-A case definition aims to ensure that all cases are identified consistently and accurately across different settings and by other investigators. This is critical in epidemiological studies, as the case definition's accuracy can affect the study findings' validity and reliability. [13]
+A case definition aims to ensure that all cases are identified consistently and accurately across different settings and by other investigators. This is critical in epidemiological studies, as the case definition's accuracy can affect the study findings' validity and reliability. [4]
 
 **Mortality**
 
@@ -235,9 +235,9 @@ In epidemiology, incidence and mortality are important measures of disease burde
 
 **Relative Risk**
 
-Relative risk (RR) measures the strength of association between exposure to a risk factor and the occurrence of an outcome. It is calculated by dividing the incidence rate of the outcome in the exposed group by the incidence rate of the outcome in the unexposed group. An RR of 1 indicates that there is no association between exposure and outcome, an RR greater than 1 indicates a positive association (i.e., the exposed group has a higher risk of experiencing the outcome), and an RR less than 1 indicates a negative association (i.e., the exposed group has a lower risk of experiencing the outcome). [14]
+Relative risk (RR) measures the strength of association between exposure to a risk factor and the occurrence of an outcome. It is calculated by dividing the incidence rate of the outcome in the exposed group by the incidence rate of the outcome in the unexposed group. An RR of 1 indicates that there is no association between exposure and outcome, an RR greater than 1 indicates a positive association (i.e., the exposed group has a higher risk of experiencing the outcome), and an RR less than 1 indicates a negative association (i.e., the exposed group has a lower risk of experiencing the outcome). [5]
 
-In air pollution studies, RR is expressed as the ratio by which the risk of mortality increases per given increase in air pollution level. RR for a unit change in pollution level is represented by the coefficient β derived from empirical studies. For example, the WHO case study example uses a β coefficient from a pooled RR estimated from a meta-analysis of European and North American studies, as recommended by WHO. [6] That is a RR of 1.062 (95% CI 1.041, 1.084) per 10-g/m3 increment in annual average PM2.5 exposures of people aged ≥30 years. [6]
+In air pollution studies, RR is expressed as the ratio by which the risk of mortality increases per given increase in air pollution level. RR for a unit change in pollution level is represented by the coefficient β derived from empirical studies. For example, the WHO case study example uses a β coefficient from a pooled RR estimated from a meta-analysis of European and North American studies, as recommended by WHO. [1] That is a RR of 1.062 (95% CI 1.041, 1.084) per 10-g/m3 increment in annual average PM2.5 exposures of people aged ≥30 years. [1]
 
 RR is a function of the difference in pollution levels $(x_1 – x_0)$. For any change in pollution level from $(x_1 – x_0)$, the relative risk is given by the formula:
 
@@ -249,9 +249,9 @@ The pollution level $x_1$ may be a target or cutoff level for which a policy or 
 
 **Odds Ratio**
 
-The odds ratio expresses the measure of the association between exposure and outcome, often used in case-control studies. It is calculated by dividing the odds of exposure in cases by the odds of exposure in controls. An OR of 1 indicates no association, an OR greater than 1 indicates a positive association and an OR less than 1 indicates a negative association. [14]
+The odds ratio expresses the measure of the association between exposure and outcome, often used in case-control studies. It is calculated by dividing the odds of exposure in cases by the odds of exposure in controls. An OR of 1 indicates no association, an OR greater than 1 indicates a positive association and an OR less than 1 indicates a negative association. [5]
 
-Relative risk and odds ratio assume that the exposure precedes the outcome, but they differ in how they account for temporality. Relative risk is calculated using incidence rates, which require follow-up time, and therefore assumes a temporal relationship between exposure and outcome. On the other hand, the odds ratio does not require follow-up time and therefore does not directly account for temporality. [14] However, careful study design and analysis can still establish the temporal relationship between exposure and outcome
+Relative risk and odds ratio assume that the exposure precedes the outcome, but they differ in how they account for temporality. Relative risk is calculated using incidence rates, which require follow-up time, and therefore assumes a temporal relationship between exposure and outcome. On the other hand, the odds ratio does not require follow-up time and therefore does not directly account for temporality. [5] However, careful study design and analysis can still establish the temporal relationship between exposure and outcome
 
 **Hazard Ratio**
 
@@ -267,7 +267,7 @@ $$
 
 Population attributable fraction (PAF) estimates the proportion of disease or adverse health outcomes in a population that can be attributed to a specific risk factor or exposure.
 
-PAF is calculated by comparing the incidence of the disease or outcome in the total population to the incidence that would be expected if the population were not exposed to the risk factor or exposure of interest. The difference between these two incidences represents the proportion of cases attributable to the exposure. [8]
+PAF is calculated by comparing the incidence of the disease or outcome in the total population to the incidence that would be expected if the population were not exposed to the risk factor or exposure of interest. The difference between these two incidences represents the proportion of cases attributable to the exposure. [6]
 
 Mathematically, PAF can be expressed as:
 
@@ -306,13 +306,13 @@ Mortality data by 5-year age groups from 30 years up to and including 100 years 
 
 Accurate and reliable exposure assessment is critical to the validity and generalization of environmental epidemiological studies. Errors in exposure assessment can lead to biased or inaccurate estimates of the association between exposure and health outcomes, potentially leading to erroneous conclusions about the health risks of environmental agents. Exposure assessment of PM2.5 can be challenging, as the pollutant is widespread and varies in concentration over time and space.
 
-The R targets workflow estimates population exposure to PM2.5 by obtaining annual average PM2.5 concentrations from a validated satellite-based land-use regression (LUR) model, as described by Knibbs et al. [4] This model incorporates observed PM2.5 measurements from air-monitoring stations with satellite data, chemical-transport model simulations and land-use data to predict concentrations across the study region by ABS mesh-block (MB) spatial unit. Data are available upon request from the [Australian Centre for Air pollution, energy, and health Research (CAR)](https://cloudstor.aarnet.edu.au/plus/f/2454567279).
+The R targets workflow estimates population exposure to PM2.5 by obtaining annual average PM2.5 concentrations from a validated satellite-based land-use regression (LUR) model, as described by Knibbs et al. [7] This model incorporates observed PM2.5 measurements from air-monitoring stations with satellite data, chemical-transport model simulations and land-use data to predict concentrations across the study region by ABS mesh-block (MB) spatial unit. Data are available upon request from the [Australian Centre for Air pollution, energy, and health Research (CAR)](https://cloudstor.aarnet.edu.au/plus/f/2454567279).
 
 Annual average PM2.5 concentrations are calculated for the centroids of Australian Bureau of Statistics (ABS) MBs from the 2011 census geography. MBs are then assigned to SA2s from 2016 to derive population-weighted average exposures.
 
 **Attributable number**
 
-Australia has a limited number of epidemiological studies of long-term exposure to PM2.5 and mortality, so attributable mortality was calculated by applying a relative risk (RR) function estimated from a meta-analysis of European and North American studies, as recommended by WHO [5]. A pooled RR of 1.062 (95% CI 1.041, 1.084) per 10-g/m3 increment in annual average PM2.5 exposures of people aged ≥30 years is recommended for health-impact assessments of PM2.5. [5, 6] That is, for every 10µg/m3 increase in the PM2.5 annual average exposure, the risk of death increases by 6.2% (95% CI 4.1, 8.4%). [5]
+Australia has a limited number of epidemiological studies of long-term exposure to PM2.5 and mortality, so attributable mortality was calculated by applying a relative risk (RR) function estimated from a meta-analysis of European and North American studies, as recommended by WHO [8]. A pooled RR of 1.062 (95% CI 1.041, 1.084) per 10-g/m3 increment in annual average PM2.5 exposures of people aged ≥30 years is recommended for health-impact assessments of PM2.5. [1] That is, for every 10µg/m3 increase in the PM2.5 annual average exposure, the risk of death increases by 6.2% (95% CI 4.1, 8.4%). [8]
 
 This RR was used to calculate the attributable numbers (AN) of deaths associated with PM2.5 exposure in each SA2. AN was calculated based on estimates of baseline PM2.5 compared to the counterfactual and then aggregated to the state using the following equation:
 
