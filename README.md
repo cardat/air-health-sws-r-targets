@@ -320,7 +320,7 @@ $$
 AN = \sum (1 - e^{(1 - \beta \Delta_{ij})}) \times \text{Expected}_{ij}
 $$
 
-Where $\text{Expected}_{ij}$ is the death count estimated by applying the mortality rate in age group $i$ to age-specific population counts within SA2 $j$, $\beta = \log(RR)/10$, and $\Delta X_{ij}$ is the change in annual PM$_{2.5}$ concentration from baseline concentrations to counterfactual concentrations in SA2 $j$. Baseline concentrations were estimated as the population-weighted PM$_{2.5}$ levels for each SA2 by year.
+Where $Expected_{ij}$ is the death count estimated by applying the mortality rate in age group $i$ to age-specific population counts within SA2 $j$, $\beta = \log(RR)/10$, and $\Delta X_{ij}$ is the change in annual PM$_{2.5}$ concentration from baseline concentrations to counterfactual concentrations in SA2 $j$. Baseline concentrations were estimated as the population-weighted PM$_{2.5}$ levels for each SA2 by year.
 
 **Counterfactual exposure concentrations**
 
