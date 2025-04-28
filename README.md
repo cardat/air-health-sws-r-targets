@@ -102,7 +102,6 @@ tar_target(health_impact_function,
 
 * Requires many packages to be installed. Depending on your existing setup, it could take up to an hour to install everything
 * Packages `visNetwork` and `rgdal` may need to be installed manually for all code to work
-* The `CloudstoR` package, used to download datasets from CloudStor, may fail during download for an unknown reason
 
 **Error:**
 ```r
@@ -125,15 +124,6 @@ Uncomment out help download function:
 source("R/func_helpers/helper_install_pkgs.R")
 install_pkgs(repos = getOption("repos"))
 ```
-
----
-
-**Error:**
-Unable to authenticate access to CloudStor.  
-
-**Solution:**
-Need to create app password in CloudStor to link data to R.
-View this support page for instructions on how to do this [here].(https://support.aarnet.edu.au/hc/en-us/articles/236034707-How-do-I-manage-change-my-passwords-)  
 
 ---
 
