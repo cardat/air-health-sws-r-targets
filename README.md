@@ -1,10 +1,4 @@
----
-title: "README_targets"
-output: 
-  html_document: default
-bibliography: "HIA.bib"
-csl: vancouver.csl
----
+# Readme
 
 This is an [R targets](https://github.com/ropensci/targets) pipeline for environmental health impact assessment using air pollution as a case study. It has been developed on R 4.1.2 "Bird Hippie" and RStudio 2021.09.2 "Ghost Orchid". It requires R \>= 4.0.0 and access to CARDAT's Environment_General data storage folder on [Cloudstor](https://cloudstor.aarnet.edu.au/).
 
@@ -12,7 +6,7 @@ The structure and syntax of an R targets pipeline may be unfamiliar to you depen
 
 ***
 
-#### Background
+# Background
 
 Health Impact Assessment (HIA) of ambient air pollution can quantify the impacts on human health using current and historical air pollution data and point directions for sustainable transitions that could promote policies, programmes, or projects to reduce air population. HIAs can be used to make recommendations for decision-makers and stakeholders, aiming to maximise a proposal's positive health effects and minimise its negative effects. @RN6 A HIA also provides a way to engage with the public sphere by producing meaningful numbers to quantify the health effects of air pollution. The Scientific Workflow System (SWS) R targets workflow is a tool for quantifying the impact on health for given air pollution policy intervention scenarios, illustrated by a WHO guideline case study. 
 
@@ -20,7 +14,7 @@ Further background information on the Epidemiological concepts underpinning HIAs
 
 ***
 
-#### Initial setup and run-through: 
+# Initial setup and run-through: 
 
 To run the Air Health SWS for the first time:
 
@@ -55,7 +49,7 @@ To run the Air Health SWS for the first time:
 
 ***
 
-#### WHO Use Case Example:
+# WHO Use Case Example:
 
 Estimate the mortality burden due to annual exposure to ambient fine particulate matter <2.5 µg (PM2.5) above the current (8 µg) WHO annual PM2.5 guidelines in Western Australia during 2013-2014.
 
@@ -102,7 +96,7 @@ tar_target(health_impact_function,
 
 ***
 
-#### Appendix A
+# Appendix A
 
 **Known errors**
 
@@ -221,11 +215,11 @@ pal1 <- colorNumeric(
 This creates a continuous pallet rather than a categorical palette. 
 
 ***
-#### Appendix B – Additional Epidemiological and Methodological Background information 
+# Appendix B – Additional Epidemiological and Methodological Background information 
 
 We have presented additional information about various concepts underpinning epidemiological study design that you may find helpful in understanding health impact assessment methodology.
 
-##### Epidemiological study designs
+## Epidemiological study designs
 
 **Source and sample populations**  
 
@@ -245,7 +239,7 @@ Mortality is a special type of incidence in epidemiology because it represents t
 
 In epidemiology, incidence and mortality are important measures of disease burden, but they provide different types of information. Incidence data provides information about the number of people newly diagnosed with a disease or health condition. In contrast, mortality data includes information about the number of people who die because of a disease or health condition.  
 
-##### Relative risk, odds ratio and hazard ratio  
+## Relative risk, odds ratio and hazard ratio  
 
 **Relative Risk**  
 
@@ -307,7 +301,7 @@ The TMREL is based on a risk assessment of the available evidence on the health 
 
 Setting a TMREL involves balancing the need to protect public health and avoid unnecessary economic or social costs associated with reducing pollution levels. The TMREL can be influenced by various factors, including the nature and severity of the health effects associated with exposure, the size and characteristics of the exposed population, and the feasibility and costs of reducing exposure levels.  
 
-##### R targets Workflow - Methods
+## R targets Workflow - Methods
 
 **Population data**
 
@@ -347,4 +341,20 @@ An example of a counterfactual exposure value is the WHO PM2.5 annual average gu
 
 ***
 
-#### References
+# References
+
+1. WHO. *Health risks of air pollution in Europe—HRAPIE project: Recommendations for concentration-response functions for cost-benefit analysis of particulate matter, ozone and nitrogen dioxide.* 2013.
+
+2. Checkoway H, Pearce N, Kriebel D. Selecting appropriate study designs to address specific research questions in occupational epidemiology. *Occup Environ Med.* 2007;64(9):633–8.
+
+3. Banerjee A, Chaudhury S. Statistics without tears: Populations and samples. *Ind Psychiatry J.* 2010;19(1):60–5.
+
+4. Sharma SK. Importance of case definition in epidemiological studies. *Neuroepidemiology.* 2011;37(2):141–2.
+
+5. Viera AJ. Odds ratios and risk ratios: What’s the difference and why does it matter? *South Med J.* 2008;101(7):730–4.
+
+6. Health AI of, Welfare. Australian burden of disease study 2015: Interactive data on risk factor burden [Internet]. *AIHW*; 2020. Available from: [https://www.aihw.gov.au/reports/burden-of-disease/interactive-data-risk-factor-burden](https://www.aihw.gov.au/reports/burden-of-disease/interactive-data-risk-factor-burden)
+
+7. Knibbs LD, van Donkelaar A, Martin RV, Bechle MJ, Brauer M, Cohen DD, et al. Satellite-based land-use regression for continental-scale long-term ambient PM$_{2.5}$ exposure assessment in Australia. *Environ Sci Technol.* 2018;52(21):12445–55.
+
+8. Hoek G, Krishnan RM, Beelen R, Peters A, Ostro B, Brunekreef B, et al. Long-term air pollution exposure and cardiorespiratory mortality: A review. *Environmental Health* [Internet]. 2013;12(1):43. Available from: [https://doi.org/10.1186/1476-069X-12-43](https://doi.org/10.1186/1476-069X-12-43)
