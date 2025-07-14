@@ -1,11 +1,21 @@
 --- 
 title: "Air-Health SWS R targets (Last edited on `r Sys.Date()`)"
 site: bookdown::bookdown_site
-authors: Ivan Hanigan and Cassandra Yuen.
+authors: Lucas Hertzog, Cassandra Yuen and Ivan Hanigan.
+bibliography: references.bib
+link-citations: true
+biblio-style: apalike
 output: bookdown::gitbook
 ---
 
-
 # Introduction
 
-This is a summary of the project.
+This is an [R targets](https://github.com/ropensci/targets) pipeline for environmental health impact assessment using air pollution as a case study. Data is drawn from the Australian Bureau of Statistics (statistical area boundaries, population and mortality) and the Atmospheric Composition Analysis Group (Satellite-derived PM~2.5~).
+
+Instructions on how to get started with the code as provided is given in section [Getting started](#getting-started) with further details in [Methods](#methods) and [Code guide](#code-guide). Known issues are detailed in [Issues](#issues). A series of case studies developed by tweaking the initial pipeline is then described.
+
+The theoretical and epidemiological concepts underpinning health impact assessments in this context is then outlined in the sections [Background](#background) and [Epidemiological Concepts](#epi-concepts)
+
+
+[cardat-home]: https://cardat.github.io/
+[repository-home]: https://github.com/cardat/air-health-sws-r-targets

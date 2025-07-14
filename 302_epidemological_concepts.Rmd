@@ -1,0 +1,82 @@
+# Epidemiological concepts {#epi-concepts}
+
+We have presented additional information about various concepts underpinning epidemiological study design that you may find helpful in understanding health impact assessment methodology.
+
+## Epidemiological study designs
+
+**Source and sample populations**
+
+One of the fundamental concepts underpinning all epidemiological research is the requirement to clearly define the study base or the source population [@checkoway_selecting_2007].  The source population is the entire group of individuals or objects with a common characteristic or condition that interests the study. This may include all individuals living in a particular geographical area, all individuals of a particular age group, or all individuals with a specific disease or health condition. The source population is the starting point for identifying potential study participants or units.
+
+On the other hand, a sample population is a subset of the source population selected for inclusion in the study. The sample population is usually selected through a sampling process that aims to ensure that the sample is representative of the source population in terms of the characteristics or conditions of interest. [@sharma_importance_2011]
+
+**Case definition**
+
+In epidemiology, a case definition is a set of standard criteria used to identify whether an individual has a particular disease or health condition of interest. The case definition usually includes specific clinical, laboratory, or other diagnostic criteria that are used to classify an individual as a case or non-case. [@sharma_importance_2011]
+
+A case definition aims to ensure that all cases are identified consistently and accurately across different settings and by other investigators. This is critical in epidemiological studies, as the case definition's accuracy can affect the study findings' validity and reliability. 
+
+**Mortality**
+
+Mortality is a special type of incidence in epidemiology because it represents the ultimate outcome of disease or health conditions. While incidence refers to the number of new cases of a disease or health condition that occur in a population over a specified period, mortality refers to the number of deaths that occur in a population over the same period.
+
+In epidemiology, incidence and mortality are important measures of disease burden, but they provide different types of information. Incidence data provides information about the number of people newly diagnosed with a disease or health condition. In contrast, mortality data includes information about the number of people who die because of a disease or health condition.
+
+## Relative risk, odds ratio and hazard ratio
+
+**Relative Risk**
+
+Relative risk (RR) measures the strength of association between exposure to a risk factor and the occurrence of an outcome. It is calculated by dividing the incidence rate of the outcome in the exposed group by the incidence rate of the outcome in the unexposed group. An RR of 1 indicates that there is no association between exposure and outcome, an RR greater than 1 indicates a positive association (i.e., the exposed group has a higher risk of experiencing the outcome), and an RR less than 1 indicates a negative association (i.e., the exposed group has a lower risk of experiencing the outcome) [@viera_odds_2008]. 
+
+In air pollution studies, RR is expressed as the ratio by which the risk of mortality increases per given increase in air pollution level. RR for a unit change in pollution level is represented by the coefficient β derived from empirical studies. For example, the WHO case study example uses a β coefficient from a pooled RR estimated from a meta-analysis of European and North American studies, as recommended by WHO. That is a RR of 1.062 (95% CI 1.041, 1.084) per 10-g/m3 increment in annual average PM2.5 exposures of people aged ≥30 years [@WHO2013].
+
+RR is a function of the difference in pollution levels $(x_1 – x_0)$. For any change in pollution level from $(x_1 – x_0)$, the relative risk is given by the formula:
+
+$$
+RR(x_1 - x_0) = \exp(\beta(x_1 - x_0))
+$$
+
+The pollution level $x_1$ may be a target or cutoff level for which a policy or legislation aims, and it is likely to be lower than $x_0$.
+
+**Odds Ratio**
+
+The odds ratio expresses the measure of the association between exposure and outcome, often used in case-control studies. It is calculated by dividing the odds of exposure in cases by the odds of exposure in controls. An OR of 1 indicates no association, an OR greater than 1 indicates a positive association and an OR less than 1 indicates a negative association [@viera_odds_2008]
+
+Relative risk and odds ratio assume that the exposure precedes the outcome, but they differ in how they account for temporality. Relative risk is calculated using incidence rates, which require follow-up time, and therefore assumes a temporal relationship between exposure and outcome. On the other hand, the odds ratio does not require follow-up time and therefore does not directly account for temporality [@viera_odds_2008]. However, careful study design and analysis can still establish the temporal relationship between exposure and outcome
+
+**Hazard Ratio**
+
+Hazard ratios (HR) measure the strength of association between an exposure and a time-to-event outcome, such as the onset of a disease or death. Hazard ratios are commonly used in epidemiology and survival analysis to compare the risk of an outcome between two or more groups while accounting for differences in follow-up time. This is important because the time at risk for an event may differ between the two groups due to differences in the onset of exposure, the time of diagnosis, or the study duration. By accounting for differences in follow-up time, hazard ratios can provide a more accurate estimate of the risk of the outcome associated with the exposure.
+
+Within the context of air pollution epidemiological studies, a hazard ratio (HR) is the ratio of hazard rates corresponding to the conditions characterised by two distinct air pollution levels. The hazard rate (H) at pollution level $x_1$ is derived from those at level $x_0$ by:
+
+$$
+H(x_1) = RR(x_1 - x_0) \times h(x_0)
+$$
+
+**The PAF (population attributable fraction)**
+
+Population attributable fraction (PAF) estimates the proportion of disease or adverse health outcomes in a population that can be attributed to a specific risk factor or exposure.
+
+PAF is calculated by comparing the incidence of the disease or outcome in the total population to the incidence that would be expected if the population were not exposed to the risk factor or exposure of interest. The difference between these two incidences represents the proportion of cases attributable to the exposure [@australian_institute_of_health_and_welfare_australian_2015].
+
+Mathematically, PAF can be expressed as:
+
+$$
+PAF = \frac{P_e \times (RR - 1)}{1 + P_e \times (RR - 1)}
+$$
+
+Where:
+
+$P_e$ = proportion of the population exposed to the risk factor or exposure\
+$RR$ = relative risk (or hazard ratio) associated with the exposure
+
+PAF can be interpreted as the proportion of cases that would be prevented if the exposure was eliminated from the population. A PAF of 0% indicates that the exposure is not associated with the disease or outcome, while a PAF of 100% indicates that all cases of the disease or outcome in the population can be attributed to the exposure.
+
+**TMREL – Theoretical minimum risk exposure level**
+
+The theoretical minimum risk exposure level (TMREL) is the level of exposure to a pollutant below which no adverse health effects are expected to occur. It is often used in air pollution epidemiology to inform regulatory decision-making and to set air quality standards.
+
+The TMREL is based on a risk assessment of the available evidence on the health effects of exposure to the pollutant of interest. The TMREL is typically set at a level well below the lowest level of exposure associated with adverse health effects in the available studies.
+
+Setting a TMREL involves balancing the need to protect public health and avoid unnecessary economic or social costs associated with reducing pollution levels. The TMREL can be influenced by various factors, including the nature and severity of the health effects associated with exposure, the size and characteristics of the exposed population, and the feasibility and costs of reducing exposure levels.

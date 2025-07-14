@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Air-Health SWS R targets (Last edited on 2025-07-14)</title>
-  <meta name="description" content="Air-Health SWS R targets (Last edited on 2025-07-14)" />
+  <title>5 Issues | Air-Health SWS R targets (Last edited on 2025-07-14)</title>
+  <meta name="description" content="5 Issues | Air-Health SWS R targets (Last edited on 2025-07-14)" />
   <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Air-Health SWS R targets (Last edited on 2025-07-14)" />
+  <meta property="og:title" content="5 Issues | Air-Health SWS R targets (Last edited on 2025-07-14)" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Air-Health SWS R targets (Last edited on 2025-07-14)" />
+  <meta name="twitter:title" content="5 Issues | Air-Health SWS R targets (Last edited on 2025-07-14)" />
   
   
   
@@ -28,8 +28,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="getting-started.html"/>
+<link rel="prev" href="code-overview.html"/>
+<link rel="next" href="case-study---australian-nepm-standard.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -211,23 +211,95 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Air-Health SWS R targets (Last edited on 2025-07-14)</h1>
-</div>
-<div id="introduction" class="section level1 hasAnchor" number="1">
-<h1><span class="header-section-number">1</span> Introduction<a href="index.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>This is an <a href="https://github.com/ropensci/targets">R targets</a> pipeline for environmental health impact assessment using air pollution as a case study. Data is drawn from the Australian Bureau of Statistics (statistical area boundaries, population and mortality) and the Atmospheric Composition Analysis Group (Satellite-derived PM<sub>2.5</sub>).</p>
-<p>Instructions on how to get started with the code as provided is given in section <a href="getting-started.html#getting-started">Getting started</a> with further details in <a href="methods.html#methods">Methods</a> and <a href="#code-guide">Code guide</a>. Known issues are detailed in <a href="issues.html#issues">Issues</a>. A series of case studies developed by tweaking the initial pipeline is then described.</p>
-<p>The theoretical and epidemiological concepts underpinning health impact assessments in this context is then outlined in the sections <a href="background.html#background">Background</a> and <a href="epi-concepts.html#epi-concepts">Epidemiological Concepts</a></p>
+<div id="issues" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">5</span> Issues<a href="issues.html#issues" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<ul>
+<li>Requires many packages to be installed. Depending on your existing setup, it could take up to an hour to install everything</li>
+<li>Packages <code>visNetwork</code> and <code>rgdal</code> may need to be installed manually for all code to work</li>
+</ul>
+<p><strong>Error:</strong></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="issues.html#cb5-1" tabindex="-1"></a>Error installing package <span class="st">&#39;ps&#39;</span><span class="sc">:</span></span>
+<span id="cb5-2"><a href="issues.html#cb5-2" tabindex="-1"></a><span class="er">==============================</span></span>
+<span id="cb5-3"><a href="issues.html#cb5-3" tabindex="-1"></a><span class="er">*</span> installing to library <span class="st">&#39;C:/Users/djor8013/OneDrive - The University of Sydney (Staff)/En Health/air-health-sws-r-targets-main/renv/staging/1&#39;</span></span>
+<span id="cb5-4"><a href="issues.html#cb5-4" tabindex="-1"></a><span class="sc">*</span> installing <span class="sc">*</span>source<span class="sc">*</span> package <span class="st">&#39;ps&#39;</span> ...</span>
+<span id="cb5-5"><a href="issues.html#cb5-5" tabindex="-1"></a><span class="sc">**</span> package <span class="st">&#39;ps&#39;</span> successfully unpacked and MD5 sums checked</span>
+<span id="cb5-6"><a href="issues.html#cb5-6" tabindex="-1"></a><span class="sc">**</span> using staged installation</span>
+<span id="cb5-7"><a href="issues.html#cb5-7" tabindex="-1"></a>Warning <span class="cf">in</span> <span class="fu">system</span>(<span class="st">&quot;sh ./configure.win&quot;</span>) <span class="sc">:</span> <span class="st">&#39;sh&#39;</span> not found</span>
+<span id="cb5-8"><a href="issues.html#cb5-8" tabindex="-1"></a>ERROR<span class="sc">:</span> configuration failed <span class="cf">for</span> package <span class="st">&#39;ps&#39;</span></span>
+<span id="cb5-9"><a href="issues.html#cb5-9" tabindex="-1"></a><span class="sc">*</span> removing <span class="st">&#39;C:/Users/djor8013/OneDrive - The University of Sydney (Staff)/En Health/air-health-sws-r-targets-main/renv/staging/1/ps&#39;</span></span>
+<span id="cb5-10"><a href="issues.html#cb5-10" tabindex="-1"></a>Error<span class="sc">:</span> install of package <span class="st">&#39;ps&#39;</span> failed [error code <span class="dv">1</span>]</span></code></pre></div>
+<p><strong>Solution:</strong> Uncomment out help download function:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="issues.html#cb6-1" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;R/func_helpers/helper_install_pkgs.R&quot;</span>)</span>
+<span id="cb6-2"><a href="issues.html#cb6-2" tabindex="-1"></a><span class="fu">install_pkgs</span>(<span class="at">repos =</span> <span class="fu">getOption</span>(<span class="st">&quot;repos&quot;</span>))</span></code></pre></div>
+<hr />
+<p><strong>Error:</strong></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="issues.html#cb7-1" tabindex="-1"></a><span class="sc">!</span> Error running targets<span class="sc">::</span><span class="fu">tar_make</span>()</span>
+<span id="cb7-2"><a href="issues.html#cb7-2" tabindex="-1"></a>  Target errors<span class="sc">:</span> targets<span class="sc">::</span><span class="fu">tar_meta</span>(<span class="at">fields =</span> error, <span class="at">complete_only =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-3"><a href="issues.html#cb7-3" tabindex="-1"></a>  Tips<span class="sc">:</span> https<span class="sc">:</span><span class="er">//</span>books.ropensci.org<span class="sc">/</span>targets<span class="sc">/</span>debugging.html</span>
+<span id="cb7-4"><a href="issues.html#cb7-4" tabindex="-1"></a>  Last error<span class="sc">:</span> The download destination specified is likely used by a sync client. Please choose another destination.</span></code></pre></div>
+<p><strong>Solution:</strong></p>
+<ul>
+<li>Create destination folder for CARDAT mirroring that is not a sync client (e.g. on local computer)<br />
+</li>
+<li>Save <code>_targets.R</code> after doing this</li>
+</ul>
+<hr />
+<p><strong>Error:</strong></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="issues.html#cb8-1" tabindex="-1"></a><span class="sc">!</span> Error running targets<span class="sc">::</span><span class="fu">tar_make</span>()</span>
+<span id="cb8-2"><a href="issues.html#cb8-2" tabindex="-1"></a>  Target errors<span class="sc">:</span> targets<span class="sc">::</span><span class="fu">tar_meta</span>(<span class="at">fields =</span> error, <span class="at">complete_only =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb8-3"><a href="issues.html#cb8-3" tabindex="-1"></a>  Tips<span class="sc">:</span> https<span class="sc">:</span><span class="er">//</span>books.ropensci.org<span class="sc">/</span>targets<span class="sc">/</span>debugging.html</span>
+<span id="cb8-4"><a href="issues.html#cb8-4" tabindex="-1"></a>  Last error<span class="sc">:</span> Failed to open file C<span class="sc">:</span><span class="er">/</span>Users<span class="sc">/</span>djor8013<span class="sc">/</span>OneDrive <span class="sc">-</span> The University of <span class="fu">Sydney</span> (Staff)<span class="sc">/</span>Desktop<span class="sc">/</span>air<span class="sc">-</span>health<span class="sc">-</span>sws<span class="sc">-</span>r<span class="sc">-</span>targets<span class="sc">-</span>main<span class="sc">/</span>data_provided<span class="sc">/</span>Environment_General<span class="sc">/</span>Air_pollution_model_</span>
+<span id="cb8-5"><a href="issues.html#cb8-5" tabindex="-1"></a>GlobalGWR_PM25<span class="sc">/</span>GlobalGWR_PM25_V4GL02<span class="sc">/</span>data_derived<span class="sc">/</span></span>
+<span id="cb8-6"><a href="issues.html#cb8-6" tabindex="-1"></a>GlobalGWR_PM25_GL_201301_201312<span class="sc">-</span>RH35<span class="sc">-</span>NoNegs_AUS_20180618.tif.curltmp,</span></code></pre></div>
+<p><strong>Solution:</strong></p>
+<ul>
+<li>File path name too long<br />
+</li>
+<li>Shorten <code>dir_cardat</code> pathname in <code>_targets.R</code>
+<ul>
+<li>For example: remove “OneDrive - The University of Sydney (Staff)”</li>
+</ul></li>
+</ul>
+<hr />
+<p><strong>Error:</strong></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="issues.html#cb9-1" tabindex="-1"></a><span class="sc">!</span> Error running targets<span class="sc">::</span><span class="fu">tar_make</span>()</span>
+<span id="cb9-2"><a href="issues.html#cb9-2" tabindex="-1"></a>  Target errors<span class="sc">:</span> targets<span class="sc">::</span><span class="fu">tar_meta</span>(<span class="at">fields =</span> error, <span class="at">complete_only =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-3"><a href="issues.html#cb9-3" tabindex="-1"></a>  Tips<span class="sc">:</span> https<span class="sc">:</span><span class="er">//</span>books.ropensci.org<span class="sc">/</span>targets<span class="sc">/</span>debugging.html</span>
+<span id="cb9-4"><a href="issues.html#cb9-4" tabindex="-1"></a>  Last error<span class="sc">:</span> error <span class="cf">in</span> evaluating the argument <span class="st">&#39;x&#39;</span> <span class="cf">in</span> selecting a method <span class="cf">for</span> <span class="cf">function</span> <span class="st">&#39;brick&#39;</span><span class="sc">:</span> Cannot create RasterLayer object from this file; perhaps you need to install rgdal first</span></code></pre></div>
+<p><strong>Solution:</strong> Install and load package <code>rgdal</code></p>
+<hr />
+<p><strong>Error:</strong></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="issues.html#cb10-1" tabindex="-1"></a>Error<span class="sc">:</span></span>
+<span id="cb10-2"><a href="issues.html#cb10-2" tabindex="-1"></a><span class="sc">!</span> Error running targets<span class="sc">::</span><span class="fu">tar_make</span>()</span>
+<span id="cb10-3"><a href="issues.html#cb10-3" tabindex="-1"></a>  Target errors<span class="sc">:</span> targets<span class="sc">::</span><span class="fu">tar_meta</span>(<span class="at">fields =</span> error, <span class="at">complete_only =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-4"><a href="issues.html#cb10-4" tabindex="-1"></a>  Tips<span class="sc">:</span> https<span class="sc">:</span><span class="er">//</span>books.ropensci.org<span class="sc">/</span>targets<span class="sc">/</span>debugging.html</span>
+<span id="cb10-5"><a href="issues.html#cb10-5" tabindex="-1"></a>  Last error<span class="sc">:</span> <span class="st">&#39;breaks&#39;</span> are not unique</span></code></pre></div>
+<p><strong>Solution:</strong><br />
+Attributable number for some scenarios can be very small – colourQuantile in r script viz_leaflet_an cannot handle these small numbers, will have quantile cutoffs with same break numbers.</p>
+<p>Open <code>viz_leaflet_an.R</code><br />
+Change:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="issues.html#cb11-1" tabindex="-1"></a>pal1 <span class="ot">&lt;-</span> <span class="fu">colorQuantile</span>(</span>
+<span id="cb11-2"><a href="issues.html#cb11-2" tabindex="-1"></a>    <span class="at">palette =</span> <span class="st">&quot;RdYlBu&quot;</span>,</span>
+<span id="cb11-3"><a href="issues.html#cb11-3" tabindex="-1"></a>    <span class="at">domain =</span> sf_an<span class="sc">$</span>attributable, <span class="at">n =</span> <span class="dv">5</span>, <span class="at">reverse =</span> <span class="cn">TRUE</span></span>
+<span id="cb11-4"><a href="issues.html#cb11-4" tabindex="-1"></a>  )</span></code></pre></div>
+<p>To:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="issues.html#cb12-1" tabindex="-1"></a>pal1 <span class="ot">&lt;-</span> <span class="fu">colorNumeric</span>(</span>
+<span id="cb12-2"><a href="issues.html#cb12-2" tabindex="-1"></a>    <span class="at">palette =</span> <span class="st">&quot;RdYlBu&quot;</span>,</span>
+<span id="cb12-3"><a href="issues.html#cb12-3" tabindex="-1"></a>    <span class="at">domain =</span> sf_an<span class="sc">$</span>attributable</span>
+<span id="cb12-4"><a href="issues.html#cb12-4" tabindex="-1"></a>  )</span></code></pre></div>
+<p>This creates a continuous pallet rather than a categorical palette.</p>
 
 </div>
+
+
+
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="getting-started.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="code-overview.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="case-study---australian-nepm-standard.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

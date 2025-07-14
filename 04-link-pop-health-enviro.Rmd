@@ -1,5 +1,0 @@
-# Link population, health and environment data
-
-## Spatial and temporal issues
-
-Some useful background

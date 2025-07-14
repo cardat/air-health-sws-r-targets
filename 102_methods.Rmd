@@ -1,0 +1,37 @@
+# Methods {#methods}
+
+**Population data**
+
+The R targets workflow uses age-specific population counts in 5-year age groups for each Statistical Area level 2 (SA2) geographical area (2016 ABS geographical boundaries), freely available from the Australian Bureau of Statistics dataset “Population by Age and Sex, Regions of Australia, Estimated Residential Population 2006–2016” from ABS-TableBuilder (cat. no. 3235.0).
+
+As the PM2.5 and mortality risk function applied is for persons age 30+, the population used analyses is limited to 5-year age groups from 30 - 35 up to 100+.
+
+**Health data**
+
+Mortality data by 5-year age groups from 30 years up to and including 100 years + is used, freely accessible from the Australian Bureau of Statistics (Cat. No. 3302.0 – Deaths, Australia, available from the ABS.Stat website). Baseline age-specific annual mortality rates are calculated for each year by linking the mortality data with age-specific populations.
+
+**Exposure assessment**
+
+Accurate and reliable exposure assessment is critical to the validity and generalization of environmental epidemiological studies. Errors in exposure assessment can lead to biased or inaccurate estimates of the association between exposure and health outcomes, potentially leading to erroneous conclusions about the health risks of environmental agents. Exposure assessment of PM2.5 can be challenging, as the pollutant is widespread and varies in concentration over time and space.
+
+The R targets workflow estimates population exposure to PM2.5 by obtaining annual average PM2.5 concentrations from a validated satellite-based land-use regression (LUR) model, as described in @Knibbs2018. This model incorporates observed PM2.5 measurements from air-monitoring stations with satellite data, chemical-transport model simulations and land-use data to predict concentrations across the study region by ABS mesh-block (MB) spatial unit. Data are available upon request from the [Australian Centre for Air pollution, energy, and health Research (CAR)](https://cloudstor.aarnet.edu.au/plus/f/2454567279).
+
+Annual average PM2.5 concentrations are calculated for the centroids of Australian Bureau of Statistics (ABS) MBs from the 2011 census geography. MBs are then assigned to SA2s from 2016 to derive population-weighted average exposures.
+
+**Attributable number**
+
+Australia has a limited number of epidemiological studies of long-term exposure to PM2.5 and mortality, so attributable mortality was calculated by applying a relative risk (RR) function estimated from a meta-analysis of European and North American studies, as recommended by WHO [@hoek_long-term_2013]. A pooled RR of 1.062 (95% CI 1.041, 1.084) per 10-g/m3 increment in annual average PM2.5 exposures of people aged ≥30 years is recommended for health-impact assessments of PM2.5 [@WHO2013]. That is, for every 10µg/m3 increase in the PM2.5 annual average exposure, the risk of death increases by 6.2% (95% CI 4.1, 8.4%).
+
+This RR was used to calculate the attributable numbers (AN) of deaths associated with PM2.5 exposure in each SA2. AN was calculated based on estimates of baseline PM2.5 compared to the counterfactual and then aggregated to the state using the following equation:
+
+$$
+AN = \sum (1 - e^{(1 - \beta \Delta_{ij})}) \times \text{Expected}_{ij}
+$$
+
+Where $Expected_{ij}$ is the death count estimated by applying the mortality rate in age group $i$ to age-specific population counts within SA2 $j$, $\beta = \log(RR)/10$, and $\Delta X_{ij}$ is the change in annual PM$_{2.5}$ concentration from baseline concentrations to counterfactual concentrations in SA2 $j$. Baseline concentrations were estimated as the population-weighted PM$_{2.5}$ levels for each SA2 by year.
+
+**Counterfactual exposure concentrations**
+
+A counterfactual exposure concentration is a hypothetical exposure level that represents what would have happened if an individual or population had been exposed to a different level of an environmental agent than they actually were. It is a crucial concept in assessing the causal relationship between environmental exposures and health outcomes.
+
+An example of a counterfactual exposure value is the WHO PM2.5 annual average guideline value of 5µg/m3. An alternative scenario is using the MB with the lowest annual average PM2.5 value for the study region.

@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Air-Health SWS R targets (Last edited on 2025-07-14)</title>
-  <meta name="description" content="Air-Health SWS R targets (Last edited on 2025-07-14)" />
+  <title>8 Case Study - WHO recommended target guidelines | Air-Health SWS R targets (Last edited on 2025-07-14)</title>
+  <meta name="description" content="8 Case Study - WHO recommended target guidelines | Air-Health SWS R targets (Last edited on 2025-07-14)" />
   <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Air-Health SWS R targets (Last edited on 2025-07-14)" />
+  <meta property="og:title" content="8 Case Study - WHO recommended target guidelines | Air-Health SWS R targets (Last edited on 2025-07-14)" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Air-Health SWS R targets (Last edited on 2025-07-14)" />
+  <meta name="twitter:title" content="8 Case Study - WHO recommended target guidelines | Air-Health SWS R targets (Last edited on 2025-07-14)" />
   
   
   
@@ -28,8 +28,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="getting-started.html"/>
+<link rel="prev" href="case-study---alternate-pm2.5-surfaces.html"/>
+<link rel="next" href="case-study---alternate-pollutant.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -211,14 +211,39 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Air-Health SWS R targets (Last edited on 2025-07-14)</h1>
-</div>
-<div id="introduction" class="section level1 hasAnchor" number="1">
-<h1><span class="header-section-number">1</span> Introduction<a href="index.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>This is an <a href="https://github.com/ropensci/targets">R targets</a> pipeline for environmental health impact assessment using air pollution as a case study. Data is drawn from the Australian Bureau of Statistics (statistical area boundaries, population and mortality) and the Atmospheric Composition Analysis Group (Satellite-derived PM<sub>2.5</sub>).</p>
-<p>Instructions on how to get started with the code as provided is given in section <a href="getting-started.html#getting-started">Getting started</a> with further details in <a href="methods.html#methods">Methods</a> and <a href="#code-guide">Code guide</a>. Known issues are detailed in <a href="issues.html#issues">Issues</a>. A series of case studies developed by tweaking the initial pipeline is then described.</p>
-<p>The theoretical and epidemiological concepts underpinning health impact assessments in this context is then outlined in the sections <a href="background.html#background">Background</a> and <a href="epi-concepts.html#epi-concepts">Epidemiological Concepts</a></p>
+<div id="case-study---who-recommended-target-guidelines" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">8</span> Case Study - WHO recommended target guidelines<a href="case-study---who-recommended-target-guidelines.html#case-study---who-recommended-target-guidelines" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>The provided pipeline uses a relative risk of 1.06 per 10 µg/m<sup>3</sup>, with lower and upper confidence intervals (lci, uci) 1.02 and 1.08 respectively. The counterfactual is set as the minimum PM<sub>2.5</sub> by state.</p>
+<p>Updated <a href="https://apps.who.int/iris/handle/10665/345329">WHO 2021 recommendations</a> specify a target for annual PM<sub>2.5</sub> of 5 µg/m<sup>3</sup>. Interim targets are set at 35, 25, 15 and 10 µg/m<sup>3</sup>. The review which contributed to the setting of these target PM<sub>2.5</sub> levels used a hazard ratio of 1.08 per 10 µg/m<sup>3</sup>.</p>
+<p>To explore the counterfactual scenario as described by the WHO recommended target, the calculation of counterfactual scenario and the health impact function must be modified.</p>
+<hr />
+<p><strong>Counterfactual scenario</strong></p>
+<p>The counterfactual exposure is calculated in the R target <code>combined_exposures</code>, The function call to <code>do_env_counterfactual</code> can be replaced with a block of code that adds the counterfactual exposure and delta to the output of target <code>data_env_exposure_pm25</code>.</p>
+<p>However, the <code>do_env_counterfactual</code> already includes functionality to add these columns based on an absolute value rather than using the minimum exposure by state. To use a counterfactual scenario based on the WHO’s recommended target of 5 µg/m<sup>3</sup>, alter the <code>cf_mode</code> argument from <code>"min"</code> to <code>"abs"</code>, indicating the counterfactual is an absolute value. Provide a third argument <code>cf_value</code> as a numeric set to the WHO recommendation, 5.</p>
+<p>Your code will look similar to the following, in place of the <code>combined_exposures</code> target:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="case-study---who-recommended-target-guidelines.html#cb17-1" tabindex="-1"></a>  ...</span>
+<span id="cb17-2"><a href="case-study---who-recommended-target-guidelines.html#cb17-2" tabindex="-1"></a><span class="co"># Provide counterfactual scenario and calculate delta</span></span>
+<span id="cb17-3"><a href="case-study---who-recommended-target-guidelines.html#cb17-3" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb17-4"><a href="case-study---who-recommended-target-guidelines.html#cb17-4" tabindex="-1"></a>    combined_exposures,</span>
+<span id="cb17-5"><a href="case-study---who-recommended-target-guidelines.html#cb17-5" tabindex="-1"></a>    <span class="fu">do_env_counterfactual</span>(data_env_exposure_pm25,</span>
+<span id="cb17-6"><a href="case-study---who-recommended-target-guidelines.html#cb17-6" tabindex="-1"></a>                          <span class="st">&quot;abs&quot;</span>,</span>
+<span id="cb17-7"><a href="case-study---who-recommended-target-guidelines.html#cb17-7" tabindex="-1"></a>                          <span class="dv">5</span>),</span>
+<span id="cb17-8"><a href="case-study---who-recommended-target-guidelines.html#cb17-8" tabindex="-1"></a>    <span class="at">pattern =</span> <span class="fu">map</span>(data_env_exposure_pm25),</span>
+<span id="cb17-9"><a href="case-study---who-recommended-target-guidelines.html#cb17-9" tabindex="-1"></a>  ),</span>
+<span id="cb17-10"><a href="case-study---who-recommended-target-guidelines.html#cb17-10" tabindex="-1"></a>  ...</span></code></pre></div>
+<hr />
+<p><strong>Health impact response</strong></p>
+<p>Next, modify the R target <code>health_impact_function</code> which returns a function to calculate the attributable number. In the <code>do_health_impact_function</code>, the argument <code>exposure_response_func</code> takes a three element numeric vector, representing the relative risk, lower confidence interval and upper confidence interval (in that order). Change the relative risk to that used by WHO, 1.08. If no confidence intervals are available, they may be set to <code>NA</code>.</p>
+<p>Your code should look similar to the following:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="case-study---who-recommended-target-guidelines.html#cb18-1" tabindex="-1"></a>  ...</span>
+<span id="cb18-2"><a href="case-study---who-recommended-target-guidelines.html#cb18-2" tabindex="-1"></a>  <span class="fu">tar_target</span>(health_impact_function,</span>
+<span id="cb18-3"><a href="case-study---who-recommended-target-guidelines.html#cb18-3" tabindex="-1"></a>             <span class="fu">do_health_impact_function</span>(</span>
+<span id="cb18-4"><a href="case-study---who-recommended-target-guidelines.html#cb18-4" tabindex="-1"></a>               <span class="at">case_definition =</span> <span class="st">&#39;crd&#39;</span>,</span>
+<span id="cb18-5"><a href="case-study---who-recommended-target-guidelines.html#cb18-5" tabindex="-1"></a>               <span class="at">exposure_response_func =</span> <span class="fu">c</span>(<span class="fl">1.08</span>, <span class="cn">NA</span>, <span class="cn">NA</span>),</span>
+<span id="cb18-6"><a href="case-study---who-recommended-target-guidelines.html#cb18-6" tabindex="-1"></a>               <span class="at">theoretical_minimum_risk =</span> <span class="dv">0</span></span>
+<span id="cb18-7"><a href="case-study---who-recommended-target-guidelines.html#cb18-7" tabindex="-1"></a>             )</span>
+<span id="cb18-8"><a href="case-study---who-recommended-target-guidelines.html#cb18-8" tabindex="-1"></a>  ),</span>
+<span id="cb18-9"><a href="case-study---who-recommended-target-guidelines.html#cb18-9" tabindex="-1"></a>  ...</span></code></pre></div>
 
 </div>
             </section>
@@ -226,8 +251,8 @@ div.csl-indent {
           </div>
         </div>
       </div>
-
-<a href="getting-started.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="case-study---alternate-pm2.5-surfaces.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="case-study---alternate-pollutant.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

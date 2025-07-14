@@ -1,7 +1,0 @@
-# Study population and health outcomes
-
-This is the place to start
-
-## Source, sample and study population
-
-Some useful epidemiology background

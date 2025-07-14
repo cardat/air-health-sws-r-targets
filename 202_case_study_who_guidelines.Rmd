@@ -1,4 +1,4 @@
-# Case Study - WHO guidelines
+# Case Study - WHO recommended target guidelines
 
 The provided pipeline uses a relative risk of 1.06 per 10 µg/m^3^, with lower and upper confidence intervals (lci, uci) 1.02 and 1.08 respectively. The counterfactual is set as the minimum PM~2.5~ by state.
 

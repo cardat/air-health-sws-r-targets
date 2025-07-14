@@ -1,0 +1,35 @@
+# Getting started {#getting-started}
+
+This [R targets](https://github.com/ropensci/targets) pipeline for environmental health impact assessment has been developed on R 4.1.2 "Bird Hippie" and RStudio 2021.09.2 "Ghost Orchid". It requires `R` \>= 4.0.0 and access to the [CARDAT][cardat-home] platform's Environment_General data storage folder on Nextcloud.
+
+The structure and syntax of an R targets pipeline may be unfamiliar to you depending on your level of coding experience. Depending on your intended usage, some or all of the following may guide your understanding of the workflow. Links to further useful examples and documentation are provided in the references.
+
+## Initial setup and run-through
+  
+To run the Air Health SWS for the first time:
+  
+1.  Download and unzip or clone the [air-health-sws-r-targets][repository-home] repository from the Code dropdown button.
+2.  Load the R project. Open the `_targets.R` script.
+
+    -   `_targets.R` script is where you customise the workflow to suit your study needs.\
+    -   Define global variables – line 21
+        -   Set your analysis year and states (location) to set the study coverage – note with the initial parameters in the pipeline, years are limited to 2010-2015.
+        -   Set your directory pathway to CARDAT data
+            -   Set the `download_data` boolean and `dir_cardat` to the correct path (parent directory of Environment_General).
+    -   Line 86 – data extraction and derivation
+        -   Provide counterfactual scenario(s) and calculate the delta
+        -   Counterfactual being the alternative air pollution exposure level
+        -   This can either be an absolute number (e.g. a guideline value such as the WHO guidelines)
+        -   Or a derived value – e.g. the minimum value from monitoring data.
+    -   Line 126 – Analysis
+        -   Input risk estimate:
+            -   Relative risk, including 95% confidence intervals, uses 1.062 (1.041, 1.084) is the default – as per WHO guidelines
+
+3.  Open the `main.R` script. (This is not integral to the targets pipeline but is a place to keep all the useful commands for visualising, running and exploring the pipeline outside of the pipeline itself.) Begin running the script line-by-line from the top.
+
+    -   `renv` should automatically install and activate. Install the packages using `renv::restore()` or try the alternative custom installation function `install_pkgs()` (installs the latest version of the library if it is not already available). This step may take some time.
+    -   If you have set `download_data <- FALSE` in `_targets.R`, uncomment and run the lines at the top of the *Run pipeline* section to authenticate your cloudstoR package's access to Cloudstor. You should not need to authenticate again unless your credentials have changed.\
+    -   Continue to visualise and run the pipeline.
+        -   See appendix A for known error codes and troubleshooting.
+
+4.  See the results of the desired target with `tar_read(target_name)`.

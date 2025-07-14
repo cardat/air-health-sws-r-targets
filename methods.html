@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Air-Health SWS R targets (Last edited on 2025-07-14)</title>
-  <meta name="description" content="Air-Health SWS R targets (Last edited on 2025-07-14)" />
+  <title>3 Methods | Air-Health SWS R targets (Last edited on 2025-07-14)</title>
+  <meta name="description" content="3 Methods | Air-Health SWS R targets (Last edited on 2025-07-14)" />
   <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Air-Health SWS R targets (Last edited on 2025-07-14)" />
+  <meta property="og:title" content="3 Methods | Air-Health SWS R targets (Last edited on 2025-07-14)" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Air-Health SWS R targets (Last edited on 2025-07-14)" />
+  <meta name="twitter:title" content="3 Methods | Air-Health SWS R targets (Last edited on 2025-07-14)" />
   
   
   
@@ -28,8 +28,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="getting-started.html"/>
+<link rel="prev" href="getting-started.html"/>
+<link rel="next" href="code-overview.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -211,23 +211,48 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Air-Health SWS R targets (Last edited on 2025-07-14)</h1>
-</div>
-<div id="introduction" class="section level1 hasAnchor" number="1">
-<h1><span class="header-section-number">1</span> Introduction<a href="index.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>This is an <a href="https://github.com/ropensci/targets">R targets</a> pipeline for environmental health impact assessment using air pollution as a case study. Data is drawn from the Australian Bureau of Statistics (statistical area boundaries, population and mortality) and the Atmospheric Composition Analysis Group (Satellite-derived PM<sub>2.5</sub>).</p>
-<p>Instructions on how to get started with the code as provided is given in section <a href="getting-started.html#getting-started">Getting started</a> with further details in <a href="methods.html#methods">Methods</a> and <a href="#code-guide">Code guide</a>. Known issues are detailed in <a href="issues.html#issues">Issues</a>. A series of case studies developed by tweaking the initial pipeline is then described.</p>
-<p>The theoretical and epidemiological concepts underpinning health impact assessments in this context is then outlined in the sections <a href="background.html#background">Background</a> and <a href="epi-concepts.html#epi-concepts">Epidemiological Concepts</a></p>
+<div id="methods" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">3</span> Methods<a href="methods.html#methods" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><strong>Population data</strong></p>
+<p>The R targets workflow uses age-specific population counts in 5-year age groups for each Statistical Area level 2 (SA2) geographical area (2016 ABS geographical boundaries), freely available from the Australian Bureau of Statistics dataset “Population by Age and Sex, Regions of Australia, Estimated Residential Population 2006–2016” from ABS-TableBuilder (cat. no. 3235.0).</p>
+<p>As the PM2.5 and mortality risk function applied is for persons age 30+, the population used analyses is limited to 5-year age groups from 30 - 35 up to 100+.</p>
+<p><strong>Health data</strong></p>
+<p>Mortality data by 5-year age groups from 30 years up to and including 100 years + is used, freely accessible from the Australian Bureau of Statistics (Cat. No. 3302.0 – Deaths, Australia, available from the ABS.Stat website). Baseline age-specific annual mortality rates are calculated for each year by linking the mortality data with age-specific populations.</p>
+<p><strong>Exposure assessment</strong></p>
+<p>Accurate and reliable exposure assessment is critical to the validity and generalization of environmental epidemiological studies. Errors in exposure assessment can lead to biased or inaccurate estimates of the association between exposure and health outcomes, potentially leading to erroneous conclusions about the health risks of environmental agents. Exposure assessment of PM2.5 can be challenging, as the pollutant is widespread and varies in concentration over time and space.</p>
+<p>The R targets workflow estimates population exposure to PM2.5 by obtaining annual average PM2.5 concentrations from a validated satellite-based land-use regression (LUR) model, as described in <span class="citation">Knibbs et al. (<a href="#ref-Knibbs2018">2018</a>)</span>. This model incorporates observed PM2.5 measurements from air-monitoring stations with satellite data, chemical-transport model simulations and land-use data to predict concentrations across the study region by ABS mesh-block (MB) spatial unit. Data are available upon request from the <a href="https://cloudstor.aarnet.edu.au/plus/f/2454567279">Australian Centre for Air pollution, energy, and health Research (CAR)</a>.</p>
+<p>Annual average PM2.5 concentrations are calculated for the centroids of Australian Bureau of Statistics (ABS) MBs from the 2011 census geography. MBs are then assigned to SA2s from 2016 to derive population-weighted average exposures.</p>
+<p><strong>Attributable number</strong></p>
+<p>Australia has a limited number of epidemiological studies of long-term exposure to PM2.5 and mortality, so attributable mortality was calculated by applying a relative risk (RR) function estimated from a meta-analysis of European and North American studies, as recommended by WHO <span class="citation">(<a href="#ref-hoek_long-term_2013">Hoek et al. 2013</a>)</span>. A pooled RR of 1.062 (95% CI 1.041, 1.084) per 10-g/m3 increment in annual average PM2.5 exposures of people aged ≥30 years is recommended for health-impact assessments of PM2.5 <span class="citation">(<a href="#ref-WHO2013">WHO 2013</a>)</span>. That is, for every 10µg/m3 increase in the PM2.5 annual average exposure, the risk of death increases by 6.2% (95% CI 4.1, 8.4%).</p>
+<p>This RR was used to calculate the attributable numbers (AN) of deaths associated with PM2.5 exposure in each SA2. AN was calculated based on estimates of baseline PM2.5 compared to the counterfactual and then aggregated to the state using the following equation:</p>
+<p><span class="math display">\[
+AN = \sum (1 - e^{(1 - \beta \Delta_{ij})}) \times \text{Expected}_{ij}
+\]</span></p>
+<p>Where <span class="math inline">\(Expected_{ij}\)</span> is the death count estimated by applying the mortality rate in age group <span class="math inline">\(i\)</span> to age-specific population counts within SA2 <span class="math inline">\(j\)</span>, <span class="math inline">\(\beta = \log(RR)/10\)</span>, and <span class="math inline">\(\Delta X_{ij}\)</span> is the change in annual PM<span class="math inline">\(_{2.5}\)</span> concentration from baseline concentrations to counterfactual concentrations in SA2 <span class="math inline">\(j\)</span>. Baseline concentrations were estimated as the population-weighted PM<span class="math inline">\(_{2.5}\)</span> levels for each SA2 by year.</p>
+<p><strong>Counterfactual exposure concentrations</strong></p>
+<p>A counterfactual exposure concentration is a hypothetical exposure level that represents what would have happened if an individual or population had been exposed to a different level of an environmental agent than they actually were. It is a crucial concept in assessing the causal relationship between environmental exposures and health outcomes.</p>
+<p>An example of a counterfactual exposure value is the WHO PM2.5 annual average guideline value of 5µg/m3. An alternative scenario is using the MB with the lowest annual average PM2.5 value for the study region.</p>
 
+</div>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-hoek_long-term_2013" class="csl-entry">
+Hoek, Gerard, Ranjini M Krishnan, Rob Beelen, Annette Peters, Bart Ostro, Bert Brunekreef, and Joel D Kaufman. 2013. <span>“Long-Term Air Pollution Exposure and Cardio- Respiratory Mortality: A Review.”</span> <em>Environmental Health</em> 12 (1). <a href="https://doi.org/10.1186/1476-069x-12-43">https://doi.org/10.1186/1476-069x-12-43</a>.
+</div>
+<div id="ref-Knibbs2018" class="csl-entry">
+Knibbs, Luke D., Aaron Van Donkelaar, Randall V. Martin, Matthew J. Bechle, Michael Brauer, David D. Cohen, Christine T. Cowie, et al. 2018. <span>“Satellite-<span>Based</span> <span>Land</span>-<span>Use</span> <span>Regression</span> for <span>Continental</span>-<span>Scale</span> <span>Long</span>-<span>Term</span> <span>Ambient</span> <span>PM</span> 2.5 <span>Exposure</span> <span>Assessment</span> in <span>Australia</span>.”</span> <em>Environmental Science and Technology</em> 52 (21): 12445–55. <a href="https://doi.org/10.1021/acs.est.8b02328">https://doi.org/10.1021/acs.est.8b02328</a>.
+</div>
+<div id="ref-WHO2013" class="csl-entry">
+WHO. 2013. <span>“Health Risks of Air Pollution in <span>Europe</span> – <span>HRAPIE</span> Project: <span>Recommendations</span> for Concentration–Response Functions for Cost–Benefit Analysis of Particulate Matter, Ozone and Nitrogen Dioxide.”</span> <em>World Health Organization</em>, 65. <a href="https://doi.org/10.1021/acs.est.5b05833">https://doi.org/10.1021/acs.est.5b05833</a>.
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="getting-started.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="getting-started.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="code-overview.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

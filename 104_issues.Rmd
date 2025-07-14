@@ -1,0 +1,110 @@
+# Issues
+
+-   Requires many packages to be installed. Depending on your existing setup, it could take up to an hour to install everything
+-   Packages `visNetwork` and `rgdal` may need to be installed manually for all code to work
+
+**Error:**
+
+``` r
+Error installing package 'ps':
+==============================
+* installing to library 'C:/Users/djor8013/OneDrive - The University of Sydney (Staff)/En Health/air-health-sws-r-targets-main/renv/staging/1'
+* installing *source* package 'ps' ...
+** package 'ps' successfully unpacked and MD5 sums checked
+** using staged installation
+Warning in system("sh ./configure.win") : 'sh' not found
+ERROR: configuration failed for package 'ps'
+* removing 'C:/Users/djor8013/OneDrive - The University of Sydney (Staff)/En Health/air-health-sws-r-targets-main/renv/staging/1/ps'
+Error: install of package 'ps' failed [error code 1]
+```
+
+**Solution:** Uncomment out help download function:
+
+``` r
+source("R/func_helpers/helper_install_pkgs.R")
+install_pkgs(repos = getOption("repos"))
+```
+
+------------------------------------------------------------------------
+
+**Error:**
+
+``` r
+! Error running targets::tar_make()
+  Target errors: targets::tar_meta(fields = error, complete_only = TRUE)
+  Tips: https://books.ropensci.org/targets/debugging.html
+  Last error: The download destination specified is likely used by a sync client. Please choose another destination.
+```
+
+**Solution:**
+
+-   Create destination folder for CARDAT mirroring that is not a sync client (e.g. on local computer)\
+-   Save `_targets.R` after doing this
+
+------------------------------------------------------------------------
+
+**Error:**
+
+``` r
+! Error running targets::tar_make()
+  Target errors: targets::tar_meta(fields = error, complete_only = TRUE)
+  Tips: https://books.ropensci.org/targets/debugging.html
+  Last error: Failed to open file C:/Users/djor8013/OneDrive - The University of Sydney (Staff)/Desktop/air-health-sws-r-targets-main/data_provided/Environment_General/Air_pollution_model_
+GlobalGWR_PM25/GlobalGWR_PM25_V4GL02/data_derived/
+GlobalGWR_PM25_GL_201301_201312-RH35-NoNegs_AUS_20180618.tif.curltmp,
+```
+
+**Solution:**
+
+-   File path name too long\
+-   Shorten `dir_cardat` pathname in `_targets.R`
+    -   For example: remove “OneDrive - The University of Sydney (Staff)”
+
+------------------------------------------------------------------------
+
+**Error:**
+
+``` r
+! Error running targets::tar_make()
+  Target errors: targets::tar_meta(fields = error, complete_only = TRUE)
+  Tips: https://books.ropensci.org/targets/debugging.html
+  Last error: error in evaluating the argument 'x' in selecting a method for function 'brick': Cannot create RasterLayer object from this file; perhaps you need to install rgdal first
+```
+
+**Solution:** Install and load package `rgdal`
+
+------------------------------------------------------------------------
+
+**Error:**
+
+``` r
+Error:
+! Error running targets::tar_make()
+  Target errors: targets::tar_meta(fields = error, complete_only = TRUE)
+  Tips: https://books.ropensci.org/targets/debugging.html
+  Last error: 'breaks' are not unique
+```
+
+**Solution:**\
+Attributable number for some scenarios can be very small – colourQuantile in r script viz_leaflet_an cannot handle these small numbers, will have quantile cutoffs with same break numbers.
+
+Open `viz_leaflet_an.R`\
+Change:
+
+``` r
+pal1 <- colorQuantile(
+    palette = "RdYlBu",
+    domain = sf_an$attributable, n = 5, reverse = TRUE
+  )
+```
+
+To:
+
+``` r
+pal1 <- colorNumeric(
+    palette = "RdYlBu",
+    domain = sf_an$attributable
+  )
+```
+
+This creates a continuous pallet rather than a categorical palette.

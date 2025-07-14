@@ -1,0 +1,9 @@
+# (PART) Health impact assessments {-}
+
+# Background {#background}
+
+Health Impact Assessment (HIA) of ambient air pollution can quantify the impacts on human health using current and historical air pollution data and point directions for sustainable transitions that could promote policies, programmes, or projects to reduce air population. HIAs can be used to make recommendations for decision-makers and stakeholders, aiming to maximise a proposal's positive health effects and minimise its negative effects [@WHO2013].  A HIA also provides a way to engage with the public sphere by producing meaningful numbers to quantify the health effects of air pollution. The Scientific Workflow System (SWS) R targets workflow is a tool for quantifying the impact on health for given air pollution policy intervention scenarios, illustrated by a WHO guideline case study.
+
+Further background information on the Epidemiological concepts underpinning HIAs and the methods utilised in this workflow can be found in Appendix B.
+
+

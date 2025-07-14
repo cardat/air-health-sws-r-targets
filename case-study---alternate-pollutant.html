@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>E Case Study - Alternate Pollutant | Air-Health SWS R targets (Last edited on 2025-07-03)</title>
-  <meta name="description" content="E Case Study - Alternate Pollutant | Air-Health SWS R targets (Last edited on 2025-07-03)" />
+  <title>9 Case Study - Alternate Pollutant | Air-Health SWS R targets (Last edited on 2025-07-14)</title>
+  <meta name="description" content="9 Case Study - Alternate Pollutant | Air-Health SWS R targets (Last edited on 2025-07-14)" />
   <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="E Case Study - Alternate Pollutant | Air-Health SWS R targets (Last edited on 2025-07-03)" />
+  <meta property="og:title" content="9 Case Study - Alternate Pollutant | Air-Health SWS R targets (Last edited on 2025-07-14)" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="E Case Study - Alternate Pollutant | Air-Health SWS R targets (Last edited on 2025-07-03)" />
+  <meta name="twitter:title" content="9 Case Study - Alternate Pollutant | Air-Health SWS R targets (Last edited on 2025-07-14)" />
   
   
   
@@ -28,8 +28,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="case-study---alternate-pm2.5-surfaces.html"/>
-
+<link rel="prev" href="case-study---who-recommended-target-guidelines.html"/>
+<link rel="next" href="background.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -121,6 +121,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 </style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 </head>
 
@@ -135,53 +158,42 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <ul class="summary">
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
-<li class="chapter" data-level="2" data-path="health-impact-function.html"><a href="health-impact-function.html"><i class="fa fa-check"></i><b>2</b> Health impact function</a>
+<li class="chapter" data-level="2" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>2</b> Getting started</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="epidemiological-study-designs-source-sample-and-study-populations.html"><a href="epidemiological-study-designs-source-sample-and-study-populations.html"><i class="fa fa-check"></i><b>2.1</b> Epidemiological study designs: source, sample and study populations</a></li>
-<li class="chapter" data-level="2.2" data-path="case-definition.html"><a href="case-definition.html"><i class="fa fa-check"></i><b>2.2</b> Case definition</a></li>
-<li class="chapter" data-level="2.3" data-path="relative-risk-odds-ratio-and-hazard-ratio.html"><a href="relative-risk-odds-ratio-and-hazard-ratio.html"><i class="fa fa-check"></i><b>2.3</b> Relative risk, odds ratio and hazard ratio</a></li>
-<li class="chapter" data-level="2.4" data-path="the-paf-population-attributable-fraction.html"><a href="the-paf-population-attributable-fraction.html"><i class="fa fa-check"></i><b>2.4</b> The PAF (population attributable fraction)</a></li>
-<li class="chapter" data-level="2.5" data-path="tmrel.html"><a href="tmrel.html"><i class="fa fa-check"></i><b>2.5</b> TMREL</a></li>
+<li class="chapter" data-level="2.1" data-path="getting-started.html"><a href="getting-started.html#initial-setup-and-run-through"><i class="fa fa-check"></i><b>2.1</b> Initial setup and run-through</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="study-population-and-health-outcomes.html"><a href="study-population-and-health-outcomes.html"><i class="fa fa-check"></i><b>3</b> Study population and health outcomes</a>
+<li class="chapter" data-level="3" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>3</b> Methods</a></li>
+<li class="chapter" data-level="4" data-path="code-overview.html"><a href="code-overview.html"><i class="fa fa-check"></i><b>4</b> Code overview</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="source-sample-and-study-population.html"><a href="source-sample-and-study-population.html"><i class="fa fa-check"></i><b>3.1</b> Source, sample and study population</a></li>
-</ul></li>
-<li class="chapter" data-level="4" data-path="exposure-assessment.html"><a href="exposure-assessment.html"><i class="fa fa-check"></i><b>4</b> Exposure assessment</a>
+<li class="chapter" data-level="4.1" data-path="code-overview.html"><a href="code-overview.html#r-targets-package"><i class="fa fa-check"></i><b>4.1</b> R targets package</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="spatial-modelling-and-dealing-with-coverage-issues-or-missingness.html"><a href="spatial-modelling-and-dealing-with-coverage-issues-or-missingness.html"><i class="fa fa-check"></i><b>4.1</b> Spatial modelling and dealing with coverage issues or missingness</a></li>
-<li class="chapter" data-level="4.2" data-path="counterfactual.html"><a href="counterfactual.html"><i class="fa fa-check"></i><b>4.2</b> Counterfactual</a></li>
+<li class="chapter" data-level="4.1.1" data-path="code-overview.html"><a href="code-overview.html#function-oriented-programming"><i class="fa fa-check"></i><b>4.1.1</b> Function-oriented programming</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="link-population-health-and-environment-data.html"><a href="link-population-health-and-environment-data.html"><i class="fa fa-check"></i><b>5</b> Link population, health and environment data</a>
+<li class="chapter" data-level="4.2" data-path="code-overview.html"><a href="code-overview.html#directory-and-file-structure"><i class="fa fa-check"></i><b>4.2</b> Directory and File Structure</a></li>
+<li class="chapter" data-level="4.3" data-path="code-overview.html"><a href="code-overview.html#targets.r-script"><i class="fa fa-check"></i><b>4.3</b> _targets.R script</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="spatial-and-temporal-issues.html"><a href="spatial-and-temporal-issues.html"><i class="fa fa-check"></i><b>5.1</b> Spatial and temporal issues</a></li>
+<li class="chapter" data-level="4.3.1" data-path="code-overview.html"><a href="code-overview.html#input-targets"><i class="fa fa-check"></i><b>4.3.1</b> input targets</a></li>
+<li class="chapter" data-level="4.3.2" data-path="code-overview.html"><a href="code-overview.html#data-targets"><i class="fa fa-check"></i><b>4.3.2</b> data targets</a></li>
+<li class="chapter" data-level="4.3.3" data-path="code-overview.html"><a href="code-overview.html#analysis-targets"><i class="fa fa-check"></i><b>4.3.3</b> analysis targets</a></li>
+<li class="chapter" data-level="4.3.4" data-path="code-overview.html"><a href="code-overview.html#viz-targets"><i class="fa fa-check"></i><b>4.3.4</b> viz targets</a></li>
+<li class="chapter" data-level="4.3.5" data-path="code-overview.html"><a href="code-overview.html#pipeline-list"><i class="fa fa-check"></i><b>4.3.5</b> Pipeline list</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="attributable-number.html"><a href="attributable-number.html"><i class="fa fa-check"></i><b>6</b> Attributable number</a>
+<li class="chapter" data-level="4.4" data-path="code-overview.html"><a href="code-overview.html#metaprogramming"><i class="fa fa-check"></i><b>4.4</b> Metaprogramming</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="issues.html"><a href="issues.html"><i class="fa fa-check"></i><b>5</b> Issues</a></li>
+<li class="part"><span><b>I Case studies</b></span></li>
+<li class="chapter" data-level="6" data-path="case-study---australian-nepm-standard.html"><a href="case-study---australian-nepm-standard.html"><i class="fa fa-check"></i><b>6</b> Case Study - Australian NEPM standard</a></li>
+<li class="chapter" data-level="7" data-path="case-study---alternate-pm2.5-surfaces.html"><a href="case-study---alternate-pm2.5-surfaces.html"><i class="fa fa-check"></i><b>7</b> Case Study - Alternate PM<sub>2.5</sub> surfaces</a></li>
+<li class="chapter" data-level="8" data-path="case-study---who-recommended-target-guidelines.html"><a href="case-study---who-recommended-target-guidelines.html"><i class="fa fa-check"></i><b>8</b> Case Study - WHO recommended target guidelines</a></li>
+<li class="chapter" data-level="9" data-path="case-study---alternate-pollutant.html"><a href="case-study---alternate-pollutant.html"><i class="fa fa-check"></i><b>9</b> Case Study - Alternate Pollutant</a></li>
+<li class="part"><span><b>II Health impact assessments</b></span></li>
+<li class="chapter" data-level="10" data-path="background.html"><a href="background.html"><i class="fa fa-check"></i><b>10</b> Background</a></li>
+<li class="chapter" data-level="11" data-path="epi-concepts.html"><a href="epi-concepts.html"><i class="fa fa-check"></i><b>11</b> Epidemiological concepts</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="life-tables.html"><a href="life-tables.html"><i class="fa fa-check"></i><b>6.1</b> Life tables</a></li>
+<li class="chapter" data-level="11.1" data-path="epi-concepts.html"><a href="epi-concepts.html#epidemiological-study-designs"><i class="fa fa-check"></i><b>11.1</b> Epidemiological study designs</a></li>
+<li class="chapter" data-level="11.2" data-path="epi-concepts.html"><a href="epi-concepts.html#relative-risk-odds-ratio-and-hazard-ratio"><i class="fa fa-check"></i><b>11.2</b> Relative risk, odds ratio and hazard ratio</a></li>
 </ul></li>
-<li class="appendix"><span><b>Appendix</b></span></li>
-<li class="chapter" data-level="A" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>A</b> Getting started</a></li>
-<li class="chapter" data-level="B" data-path="code-overview.html"><a href="code-overview.html"><i class="fa fa-check"></i><b>B</b> Code overview</a>
-<ul>
-<li class="chapter" data-level="B.1" data-path="r-targets-package.html"><a href="r-targets-package.html"><i class="fa fa-check"></i><b>B.1</b> R targets package</a>
-<ul>
-<li class="chapter" data-level="B.1.1" data-path="r-targets-package.html"><a href="r-targets-package.html#function-oriented-programming"><i class="fa fa-check"></i><b>B.1.1</b> Function-oriented programming</a></li>
-</ul></li>
-<li class="chapter" data-level="B.2" data-path="directory-and-file-structure.html"><a href="directory-and-file-structure.html"><i class="fa fa-check"></i><b>B.2</b> Directory and File Structure</a></li>
-<li class="chapter" data-level="B.3" data-path="targets.r-script.html"><a href="targets.r-script.html"><i class="fa fa-check"></i><b>B.3</b> _targets.R script</a>
-<ul>
-<li class="chapter" data-level="B.3.1" data-path="targets.r-script.html"><a href="targets.r-script.html#input-targets"><i class="fa fa-check"></i><b>B.3.1</b> input targets</a></li>
-<li class="chapter" data-level="B.3.2" data-path="targets.r-script.html"><a href="targets.r-script.html#data-targets"><i class="fa fa-check"></i><b>B.3.2</b> data targets</a></li>
-<li class="chapter" data-level="B.3.3" data-path="targets.r-script.html"><a href="targets.r-script.html#analysis-targets"><i class="fa fa-check"></i><b>B.3.3</b> analysis targets</a></li>
-<li class="chapter" data-level="B.3.4" data-path="targets.r-script.html"><a href="targets.r-script.html#viz-targets"><i class="fa fa-check"></i><b>B.3.4</b> viz targets</a></li>
-<li class="chapter" data-level="B.3.5" data-path="targets.r-script.html"><a href="targets.r-script.html#pipeline-list"><i class="fa fa-check"></i><b>B.3.5</b> Pipeline list</a></li>
-</ul></li>
-<li class="chapter" data-level="B.4" data-path="metaprogramming.html"><a href="metaprogramming.html"><i class="fa fa-check"></i><b>B.4</b> Metaprogramming</a></li>
-</ul></li>
-<li class="chapter" data-level="C" data-path="case-study---who-guidelines.html"><a href="case-study---who-guidelines.html"><i class="fa fa-check"></i><b>C</b> Case Study - WHO guidelines</a></li>
-<li class="chapter" data-level="D" data-path="case-study---alternate-pm2.5-surfaces.html"><a href="case-study---alternate-pm2.5-surfaces.html"><i class="fa fa-check"></i><b>D</b> Case Study - Alternate PM<sub>2.5</sub> surfaces</a></li>
-<li class="chapter" data-level="E" data-path="case-study---alternate-pollutant.html"><a href="case-study---alternate-pollutant.html"><i class="fa fa-check"></i><b>E</b> Case Study - Alternate Pollutant</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 </ul>
 
       </nav>
@@ -191,7 +203,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Air-Health SWS R targets (Last edited on 2025-07-03)</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Air-Health SWS R targets (Last edited on 2025-07-14)</a>
           </h1>
         </div>
 
@@ -199,8 +211,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="case-study---alternate-pollutant" class="section level1 hasAnchor" number="11">
-<h1><span class="header-section-number">E</span> Case Study - Alternate Pollutant<a href="case-study---alternate-pollutant.html#case-study---alternate-pollutant" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="case-study---alternate-pollutant" class="section level1 hasAnchor" number="9">
+<h1><span class="header-section-number">9</span> Case Study - Alternate Pollutant<a href="case-study---alternate-pollutant.html#case-study---alternate-pollutant" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>The pipeline can be modified and extended to process and assess the impact of alternate pollutants or mixed-pollutant effects. You will need a set of suitable exposure rasters of your pollutant(s) of interest.</p>
 <p>A <a href="http://doi.org/10.1016/j.envres.2014.09.011">satellite-derived land use regression (SatLUR) modelled NO2 surface produced by Luke Knibbs</a> is available on request.</p>
 <hr />
@@ -219,13 +231,16 @@ New sets of pollutant rasters should be read and tidied in targets, similar to t
 </ul>
 
 </div>
+
+
+
             </section>
 
           </div>
         </div>
       </div>
-<a href="case-study---alternate-pm2.5-surfaces.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="case-study---who-recommended-target-guidelines.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="background.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
