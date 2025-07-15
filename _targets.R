@@ -20,9 +20,9 @@ source('config.R')
 
 tar_option_set(
   packages = c("sf", # packages to load before target builds
-               "data.table",
-               "raster",
+               "terra",
                "exactextractr",
+               "data.table",
                "leaflet",
                "ggplot2")
 )

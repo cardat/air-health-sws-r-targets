@@ -13,16 +13,6 @@ install_pkgs(repos = getOption("repos")) # provide a repository URL if necessary
 # Load libraries and functions --------------------------------------------
 library(targets)
 
-# Define global variables -------------------------------------------------
-source('config.R')
-# check data storage exists
-if(length(grep("Environment_General", dir(dir_cardat))) == 0){ 
-  print("Environment_General folder not found, review your config.R")
-} else {
-  print("Good to go")
-}
-
-
 # Run pipeline ------------------------------------------------------------
 ## visualise targets
 tar_glimpse()
@@ -54,7 +44,7 @@ browseURL("report.html")
 # Debugging help ----------------------------------------------------------
 
 tar_meta(fields = warnings)
-tar_meta(fields = error)
+tar_meta(tar_errored(), fields = error)
 
 ## lOad libraries here
 # library(data.table)

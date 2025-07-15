@@ -18,13 +18,12 @@ install_pkgs <- function(repos = getOption("repos")){
     "visNetwork", # suggested by targets to visualise pipeline
     "tarchetypes",
     "sf",
-    "data.table",
-    "raster",
+    "terra",
     "exactextractr",
+    "data.table",
     "leaflet",
     "ggplot2",
-    "rmarkdown",
-    "cloudstoR"
+    "rmarkdown"
   )
   
   ## get installed packages

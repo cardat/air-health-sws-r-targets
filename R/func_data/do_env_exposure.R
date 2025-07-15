@@ -1,20 +1,21 @@
 #' Extract mean exposure for polygon features from raster
 #'
-#' @param exposure A RasterBrick with layers labelled with associated year.
+#' @param exposure A SpatRaster with layers labelled with associated year.
 #' @param sf_geog An sf object of Polygons or MultiPolygons.
 #' @param variable A string naming the pollutant, recorded in the output data table.
 #'
 #' @return A data.table in long format of input geometry attributes, state, variable (pollutant), year and value (concentration).
 #' 
 #' @example 
-#' do_env_exposure(brick_pm25, sf_abs_meshblock, "pm25")
+#' do_env_exposure(spatraster_pm25, sf_abs_meshblock, "pm25")
 
 do_env_exposure <- function(exposure, sf_geog, variable){
+  exposure <- terra::unwrap(exposure)
   
   # check inputs
-  stopifnot("'exposure' must be RasterBrick" = class(exposure) == "RasterBrick")
-  stopifnot("Names of exposure RasterBrick must contain 4 digit year" = 
-              all(grepl("[0-9]{4}", names(exposure))))
+  stopifnot("'exposure' must be SpatRaster" = class(exposure) == "SpatRaster")
+  stopifnot("exposure SpatRaster must have year in time attribute" = 
+              length(setdiff(time(exposure), 1950:2100)) == 0) 
   stopifnot("'sf_geog' must be sf object of Polygon or MultiPolygon geometries" = 
               any(class(sf_geog) == "sf") & all(st_geometry_type(sf_geog) %in% c("POLYGON", "MULTIPOLYGON")))
   
@@ -37,14 +38,18 @@ do_env_exposure <- function(exposure, sf_geog, variable){
   }
   
   ## attach extracted exposures
-  e <- as.data.table(e)
-  names(e) <- gsub(".*([0-9]{4}).*", "\\1", names(exposure))
+  setDT(e)
+  setnames(e, sprintf("%04i", time(exposure))) 
   dt <- cbind(dt, e)
   
   # to long format
-  dt <- data.table::melt(dt, measure.vars = names(e), variable.name = "year", value.name = "value")
-  dt[, year := as.integer(levels(year))[year]]
+  dt <- data.table::melt(dt, measure.vars = names(e), 
+                         variable.name = "year", 
+                         variable.factor = F,
+                         value.name = "value")
+  dt[, year := as.integer(year)]
   dt[, ste_code16 := substr(sa2_main16, 1, 1)]
+  setcolorder(dt, "ste_code16")
   
   return(dt)
 }

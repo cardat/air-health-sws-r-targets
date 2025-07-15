@@ -1,6 +1,6 @@
 # Define global variables -------------------------------------------------
 
-#### study coverage
+## Study coverage ####
 years <- 2013:2014
 states <- c("WA") # character vector of state abbreviations
 
