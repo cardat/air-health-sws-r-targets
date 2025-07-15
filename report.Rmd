@@ -26,5 +26,6 @@ dat_an <- dat_an[,.(Population = sum(pop_study, na.rm = T),
                     "Mean baseline PM2.5 Exposure" = mean(x, na.rm = T)),
                  by = .(State = state,  Year = year)]
 knitr::kable(dat_an,
-             caption = "Attributable number of deaths (PM2.5) by state and year with average PM2.5 (μg/m3) population-weighted exposure for baseline case and counterfactual.")
+             caption = "Attributable number of deaths (PM2.5) by state and year with average PM2.5 (μg/m3) population-weighted exposure for baseline case and counterfactual.",
+             digits = c(0,0,0,0,0,1,1))
 ```
