@@ -1,4 +1,4 @@
-# Issues
+# Issues {#issues}
 
 -   Requires many packages to be installed. Depending on your existing setup, it could take up to an hour to install everything
 -   Packages `visNetwork` and `rgdal` may need to be installed manually for all code to work

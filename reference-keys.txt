@@ -2,12 +2,12 @@ introduction
 getting-started
 initial-setup-and-run-through
 methods
-code-overview
+code-guide
 r-targets-package
 function-oriented-programming
 directory-and-file-structure
 targets.r-script
-input-targets
+input-and-tidy-targets
 data-targets
 analysis-targets
 viz-targets

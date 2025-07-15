@@ -11,25 +11,26 @@ To run the Air Health SWS for the first time:
 1.  Download and unzip or clone the [air-health-sws-r-targets][repository-home] repository from the Code dropdown button.
 2.  Load the R project. Open the `_targets.R` script.
 
-    -   `_targets.R` script is where you customise the workflow to suit your study needs.\
-    -   Define global variables – line 21
-        -   Set your analysis year and states (location) to set the study coverage – note with the initial parameters in the pipeline, years are limited to 2010-2015.
+    -   `_targets.R` and `config.R` scripts are where you customise the workflow to suit your study needs.
+    -   Define global variables in `config.R`
+        -   Set your analysis year and states (location) to set the study coverage – note with the initial data inputs in the pipeline, years are limited to 2010-2015.
         -   Set your directory pathway to CARDAT data
-            -   Set the `download_data` boolean and `dir_cardat` to the correct path (parent directory of Environment_General).
-    -   Line 86 – data extraction and derivation
-        -   Provide counterfactual scenario(s) and calculate the delta
-        -   Counterfactual being the alternative air pollution exposure level
-        -   This can either be an absolute number (e.g. a guideline value such as the WHO guidelines)
-        -   Or a derived value – e.g. the minimum value from monitoring data.
-    -   Line 126 – Analysis
+            -   Set `dir_cardat` to the correct path (parent directory of the CARDAT Environment_General folder).
+    -   Line 112 – data extraction and derivation
+        -   Provide counterfactual scenario(s) and calculate the delta, counterfactual being the alternative air pollution exposure level
+            -   This can either be an absolute number (e.g. a guideline value such as the WHO guidelines)
+            -   Or a derived value – e.g. the minimum value from monitoring data.
+    -   Line 147 – Analysis
         -   Input risk estimate:
             -   Relative risk, including 95% confidence intervals, uses 1.062 (1.041, 1.084) is the default – as per WHO guidelines
 
 3.  Open the `main.R` script. (This is not integral to the targets pipeline but is a place to keep all the useful commands for visualising, running and exploring the pipeline outside of the pipeline itself.) Begin running the script line-by-line from the top.
 
-    -   `renv` should automatically install and activate. Install the packages using `renv::restore()` or try the alternative custom installation function `install_pkgs()` (installs the latest version of the library if it is not already available). This step may take some time.
-    -   If you have set `download_data <- FALSE` in `_targets.R`, uncomment and run the lines at the top of the *Run pipeline* section to authenticate your cloudstoR package's access to Cloudstor. You should not need to authenticate again unless your credentials have changed.\
-    -   Continue to visualise and run the pipeline.
-        -   See appendix A for known error codes and troubleshooting.
+    - On opening the project, RStudio may prompt you to install packages. Alternatively, use the custom installation function `install_pkgs()` (installs the latest version of the library if it is not already available). This step may take some time.
+    - Visualise and examine metadata of the targets pipeline
+    - Run the pipeline
+    - Examine pipeline outputs
 
 4.  See the results of the desired target with `tar_read(target_name)`.
+
+See [Issues](#issues) for known error codes and troubleshooting.

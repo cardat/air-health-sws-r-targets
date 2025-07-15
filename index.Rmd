@@ -1,7 +1,8 @@
 --- 
-title: "Air-Health SWS R targets (Last edited on `r Sys.Date()`)"
+title: "Air-Health SWS R targets"
+date: "Last edited on `r Sys.Date()`"
 site: bookdown::bookdown_site
-authors: Lucas Hertzog, Cassandra Yuen and Ivan Hanigan.
+author: Lucas Hertzog, Cassandra Yuen and Ivan Hanigan.
 bibliography: references.bib
 link-citations: true
 biblio-style: apalike
