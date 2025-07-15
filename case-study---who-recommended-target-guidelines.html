@@ -222,29 +222,29 @@ div.csl-indent {
 <p>The counterfactual exposure is calculated in the R target <code>combined_exposures</code>, The function call to <code>do_env_counterfactual</code> can be replaced with a block of code that adds the counterfactual exposure and delta to the output of target <code>data_env_exposure_pm25</code>.</p>
 <p>However, the <code>do_env_counterfactual</code> already includes functionality to add these columns based on an absolute value rather than using the minimum exposure by state. To use a counterfactual scenario based on the WHO’s recommended target of 5 µg/m<sup>3</sup>, alter the <code>cf_mode</code> argument from <code>"min"</code> to <code>"abs"</code>, indicating the counterfactual is an absolute value. Provide a third argument <code>cf_value</code> as a numeric set to the WHO recommendation, 5.</p>
 <p>Your code will look similar to the following, in place of the <code>combined_exposures</code> target:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="case-study---who-recommended-target-guidelines.html#cb17-1" tabindex="-1"></a>  ...</span>
-<span id="cb17-2"><a href="case-study---who-recommended-target-guidelines.html#cb17-2" tabindex="-1"></a><span class="co"># Provide counterfactual scenario and calculate delta</span></span>
-<span id="cb17-3"><a href="case-study---who-recommended-target-guidelines.html#cb17-3" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
-<span id="cb17-4"><a href="case-study---who-recommended-target-guidelines.html#cb17-4" tabindex="-1"></a>    combined_exposures,</span>
-<span id="cb17-5"><a href="case-study---who-recommended-target-guidelines.html#cb17-5" tabindex="-1"></a>    <span class="fu">do_env_counterfactual</span>(data_env_exposure_pm25,</span>
-<span id="cb17-6"><a href="case-study---who-recommended-target-guidelines.html#cb17-6" tabindex="-1"></a>                          <span class="st">&quot;abs&quot;</span>,</span>
-<span id="cb17-7"><a href="case-study---who-recommended-target-guidelines.html#cb17-7" tabindex="-1"></a>                          <span class="dv">5</span>),</span>
-<span id="cb17-8"><a href="case-study---who-recommended-target-guidelines.html#cb17-8" tabindex="-1"></a>    <span class="at">pattern =</span> <span class="fu">map</span>(data_env_exposure_pm25),</span>
-<span id="cb17-9"><a href="case-study---who-recommended-target-guidelines.html#cb17-9" tabindex="-1"></a>  ),</span>
-<span id="cb17-10"><a href="case-study---who-recommended-target-guidelines.html#cb17-10" tabindex="-1"></a>  ...</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="case-study---who-recommended-target-guidelines.html#cb16-1" tabindex="-1"></a>  ...</span>
+<span id="cb16-2"><a href="case-study---who-recommended-target-guidelines.html#cb16-2" tabindex="-1"></a><span class="co"># Provide counterfactual scenario and calculate delta</span></span>
+<span id="cb16-3"><a href="case-study---who-recommended-target-guidelines.html#cb16-3" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb16-4"><a href="case-study---who-recommended-target-guidelines.html#cb16-4" tabindex="-1"></a>    combined_exposures,</span>
+<span id="cb16-5"><a href="case-study---who-recommended-target-guidelines.html#cb16-5" tabindex="-1"></a>    <span class="fu">do_env_counterfactual</span>(data_env_exposure_pm25,</span>
+<span id="cb16-6"><a href="case-study---who-recommended-target-guidelines.html#cb16-6" tabindex="-1"></a>                          <span class="st">&quot;abs&quot;</span>,</span>
+<span id="cb16-7"><a href="case-study---who-recommended-target-guidelines.html#cb16-7" tabindex="-1"></a>                          <span class="dv">5</span>),</span>
+<span id="cb16-8"><a href="case-study---who-recommended-target-guidelines.html#cb16-8" tabindex="-1"></a>    <span class="at">pattern =</span> <span class="fu">map</span>(data_env_exposure_pm25),</span>
+<span id="cb16-9"><a href="case-study---who-recommended-target-guidelines.html#cb16-9" tabindex="-1"></a>  ),</span>
+<span id="cb16-10"><a href="case-study---who-recommended-target-guidelines.html#cb16-10" tabindex="-1"></a>  ...</span></code></pre></div>
 <hr />
 <p><strong>Health impact response</strong></p>
 <p>Next, modify the R target <code>health_impact_function</code> which returns a function to calculate the attributable number. In the <code>do_health_impact_function</code>, the argument <code>exposure_response_func</code> takes a three element numeric vector, representing the relative risk, lower confidence interval and upper confidence interval (in that order). Change the relative risk to that used by WHO, 1.08. If no confidence intervals are available, they may be set to <code>NA</code>.</p>
 <p>Your code should look similar to the following:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="case-study---who-recommended-target-guidelines.html#cb18-1" tabindex="-1"></a>  ...</span>
-<span id="cb18-2"><a href="case-study---who-recommended-target-guidelines.html#cb18-2" tabindex="-1"></a>  <span class="fu">tar_target</span>(health_impact_function,</span>
-<span id="cb18-3"><a href="case-study---who-recommended-target-guidelines.html#cb18-3" tabindex="-1"></a>             <span class="fu">do_health_impact_function</span>(</span>
-<span id="cb18-4"><a href="case-study---who-recommended-target-guidelines.html#cb18-4" tabindex="-1"></a>               <span class="at">case_definition =</span> <span class="st">&#39;crd&#39;</span>,</span>
-<span id="cb18-5"><a href="case-study---who-recommended-target-guidelines.html#cb18-5" tabindex="-1"></a>               <span class="at">exposure_response_func =</span> <span class="fu">c</span>(<span class="fl">1.08</span>, <span class="cn">NA</span>, <span class="cn">NA</span>),</span>
-<span id="cb18-6"><a href="case-study---who-recommended-target-guidelines.html#cb18-6" tabindex="-1"></a>               <span class="at">theoretical_minimum_risk =</span> <span class="dv">0</span></span>
-<span id="cb18-7"><a href="case-study---who-recommended-target-guidelines.html#cb18-7" tabindex="-1"></a>             )</span>
-<span id="cb18-8"><a href="case-study---who-recommended-target-guidelines.html#cb18-8" tabindex="-1"></a>  ),</span>
-<span id="cb18-9"><a href="case-study---who-recommended-target-guidelines.html#cb18-9" tabindex="-1"></a>  ...</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="case-study---who-recommended-target-guidelines.html#cb17-1" tabindex="-1"></a>  ...</span>
+<span id="cb17-2"><a href="case-study---who-recommended-target-guidelines.html#cb17-2" tabindex="-1"></a>  <span class="fu">tar_target</span>(health_impact_function,</span>
+<span id="cb17-3"><a href="case-study---who-recommended-target-guidelines.html#cb17-3" tabindex="-1"></a>             <span class="fu">do_health_impact_function</span>(</span>
+<span id="cb17-4"><a href="case-study---who-recommended-target-guidelines.html#cb17-4" tabindex="-1"></a>               <span class="at">case_definition =</span> <span class="st">&#39;crd&#39;</span>,</span>
+<span id="cb17-5"><a href="case-study---who-recommended-target-guidelines.html#cb17-5" tabindex="-1"></a>               <span class="at">exposure_response_func =</span> <span class="fu">c</span>(<span class="fl">1.08</span>, <span class="cn">NA</span>, <span class="cn">NA</span>),</span>
+<span id="cb17-6"><a href="case-study---who-recommended-target-guidelines.html#cb17-6" tabindex="-1"></a>               <span class="at">theoretical_minimum_risk =</span> <span class="dv">0</span></span>
+<span id="cb17-7"><a href="case-study---who-recommended-target-guidelines.html#cb17-7" tabindex="-1"></a>             )</span>
+<span id="cb17-8"><a href="case-study---who-recommended-target-guidelines.html#cb17-8" tabindex="-1"></a>  ),</span>
+<span id="cb17-9"><a href="case-study---who-recommended-target-guidelines.html#cb17-9" tabindex="-1"></a>  ...</span></code></pre></div>
 
 </div>
             </section>
