@@ -46,7 +46,7 @@ browseURL("report.html")
 tar_meta(fields = warnings)
 tar_meta(tar_errored(), fields = error)
 
-## lOad libraries here
+## load libraries here
 # library(data.table)
 # library(sf)
 # library(raster)
