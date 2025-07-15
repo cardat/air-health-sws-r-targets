@@ -2,12 +2,12 @@
 
 # Case Study - Australian NEPM standard
 
-Estimate the mortality burden due to annual exposure to ambient fine particulate matter \<2.5 µg (PM2.5) above the current (8 µg) WHO annual PM2.5 guidelines in Western Australia during 2013-2014.
+Estimate the mortality burden due to annual exposure to ambient fine particulate matter \< 2.5µg (PM~2.5~) above the current (8µg) Australian NEPM annual PM~2.5~ standard in Western Australia during 2013-2014.
 
-1.  Set Global variables – line 21
+1.  Set Global variables in the `config.R` file
     -   `years <- 2013:2014`
     -   `states <- c("WA")`
-2.  Provide counterfactual scenario – line 104
+2.  Provide counterfactual scenario in target `combined_exposures`
     -   In this use case, a scenario is an absolute number. However, it can be a derived value.
     -   Provide counterfactual scenario(s) and calculate delta
         -   abs = absolute value
@@ -23,7 +23,7 @@ tar_target(
   )
 ```
 
-3.  Input relative risk estimate used for case scenario (default RR as defined by WHO guidelines) – line 128
+3.  Input relative risk estimate used for case scenario (default RR as defined by WHO guidelines) in the target `health_impact_function`
     -   RR input as c(RR, lower 95% CI bound, upper 95% CI bound)
 
 ``` r
@@ -40,5 +40,5 @@ tar_target(health_impact_function,
   )
 ```
 
-4.  Run pipeline from `Main.R`
+4.  Run pipeline from `main.R`
 5.  Create an HIA report by running `HIA 2013 2014 WA 8ug.Rmd`

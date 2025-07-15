@@ -214,14 +214,14 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="case-study---australian-nepm-standard" class="section level1 hasAnchor" number="6">
 <h1><span class="header-section-number">6</span> Case Study - Australian NEPM standard<a href="case-study---australian-nepm-standard.html#case-study---australian-nepm-standard" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Estimate the mortality burden due to annual exposure to ambient fine particulate matter &lt;2.5 µg (PM2.5) above the current (8 µg) WHO annual PM2.5 guidelines in Western Australia during 2013-2014.</p>
+<p>Estimate the mortality burden due to annual exposure to ambient fine particulate matter &lt; 2.5µg (PM<sub>2.5</sub>) above the current (8µg) Australian NEPM annual PM<sub>2.5</sub> standard in Western Australia during 2013-2014.</p>
 <ol style="list-style-type: decimal">
-<li>Set Global variables – line 21
+<li>Set Global variables in the <code>config.R</code> file
 <ul>
 <li><code>years &lt;- 2013:2014</code></li>
 <li><code>states &lt;- c("WA")</code></li>
 </ul></li>
-<li>Provide counterfactual scenario – line 104
+<li>Provide counterfactual scenario in target <code>combined_exposures</code>
 <ul>
 <li>In this use case, a scenario is an absolute number. However, it can be a derived value.</li>
 <li>Provide counterfactual scenario(s) and calculate delta
@@ -239,7 +239,7 @@ div.csl-indent {
 <span id="cb13-6"><a href="case-study---australian-nepm-standard.html#cb13-6" tabindex="-1"></a>    <span class="at">pattern =</span> <span class="fu">map</span>(data_env_exposure_pm25)</span>
 <span id="cb13-7"><a href="case-study---australian-nepm-standard.html#cb13-7" tabindex="-1"></a>  )</span></code></pre></div>
 <ol start="3" style="list-style-type: decimal">
-<li>Input relative risk estimate used for case scenario (default RR as defined by WHO guidelines) – line 128
+<li>Input relative risk estimate used for case scenario (default RR as defined by WHO guidelines) in the target <code>health_impact_function</code>
 <ul>
 <li>RR input as c(RR, lower 95% CI bound, upper 95% CI bound)</li>
 </ul></li>
@@ -256,7 +256,7 @@ div.csl-indent {
 <span id="cb14-10"><a href="case-study---australian-nepm-standard.html#cb14-10" tabindex="-1"></a>             )</span>
 <span id="cb14-11"><a href="case-study---australian-nepm-standard.html#cb14-11" tabindex="-1"></a>  )</span></code></pre></div>
 <ol start="4" style="list-style-type: decimal">
-<li>Run pipeline from <code>Main.R</code></li>
+<li>Run pipeline from <code>main.R</code></li>
 <li>Create an HIA report by running <code>HIA 2013 2014 WA 8ug.Rmd</code></li>
 </ol>
 
