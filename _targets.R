@@ -11,12 +11,7 @@ library(tarchetypes)
 
 # Load custom functions ---------------------------------------------------
 
-sapply(list.files(pattern="[.]R$", path="R/import_data", full.names=TRUE), source)
-sapply(list.files(pattern="[.]R$", path="R/func_data", full.names=TRUE), source)
-sapply(list.files(pattern="[.]R$", path="R/func_analysis", full.names=TRUE), source)
-sapply(list.files(pattern="[.]R$", path="R/func_viz", full.names=TRUE), source)
-sapply(list.files(pattern="[.]R$", path="R/func_helpers", full.names=TRUE), source)
-
+tar_source()
 
 # Define global variables -------------------------------------------------
 source('config.R')
@@ -39,32 +34,77 @@ tar_option_set(
 # use custom functions to import data and tidy
 inputs <- list(
   # meshblock geometry
-  geog = import_abs_mb_2016(states, 
-                            download = download_data, 
-                            datadir_envgen = file.path(dir_cardat, dir_envgen)),
+  tar_files_input(
+    infile_abs_mb_2016,
+    file.path(dir_envgen, sprintf("ABS_data/ABS_meshblocks/abs_meshblocks_2016_data_provided/MB_2016_%s.shp", states))
+  ),
+
   # sa2 geometry
-  geog_agg = import_abs_sa2_2016(states, 
-                                 download = download_data, 
-                                 datadir_envgen = file.path(dir_cardat, dir_envgen)),
+  tar_files_input(
+    infile_abs_sa2_2016, 
+    file.path(dir_envgen, sprintf("ABS_data/ABS_Census_2016/abs_sa2_2016_data_derived/SA2_2016_%s.shp", states))
+  ),
   
   # meshblock populations
-  exp_pop = import_abs_pop_mb_2016(states, 
-                                   download = download_data, 
-                                   datadir_envgen = file.path(dir_cardat, dir_envgen)), 
+  tar_target(
+    infile_abs_mb_pop_2016,
+    file.path(dir_envgen, "ABS_data/ABS_meshblocks/abs_meshblocks_2016_pops_data_provided/2016 census mesh block counts.csv"),
+    format = "file"
+  ),
   
   # exposure rasters
-  exposure = import_globalgwr_pm25_2010_2015(years, 
-                                             download = download_data, 
-                                             datadir_envgen = file.path(dir_cardat, dir_envgen)), 
+  tar_files_input(
+    infile_globalgwr_pm25_2010_2015, 
+    file.path(dir_envgen, sprintf("Air_pollution_model_GlobalGWR_PM25/GlobalGWR_PM25_V4GL02/data_derived/GlobalGWR_PM25_GL_%s01_%s12-RH35-NoNegs_AUS_20180618.tif", years, years))
+  ),
   
   # age-mortality
-  impact_pop = import_abs_mortality_sa2_2006_2016(states, years, smooth_yy = 3,
-                                                  download = download_data, 
-                                                  datadir_envgen = file.path(dir_cardat, dir_envgen)), 
+  tar_target(
+    infile_abs_mortality_sa2_2006_2016,
+    file.path(dir_envgen, "Australian_Mortality_ABS/ABS_MORT_2006_2016/data_provided/DEATHS_AGESPECIFIC_OCCURENCEYEAR_04042018231304281.csv"),
+    format = "file"
+  ),
+  
   # age-pop study population
-  study_pop = import_abs_sa2_pop_age_2016(states, 
-                                          download = download_data, 
-                                          datadir_envgen = file.path(dir_cardat, dir_envgen))
+  tar_target(
+    infile_abs_sa2_pop_age_2016,
+    file.path(dir_envgen, "ABS_data/ABS_Census_2016/abs_gcp_2016_data_derived/abs_sa2_2016_agecatsV2_total_persons_20180405.csv"),
+    format = "file"
+  )
+)
+
+tidy <- list(
+  tar_target(
+    tidy_geom_mb_2016,
+    do_tidy_geom_mb_2016(infile_abs_mb_2016),
+    pattern = map(infile_abs_mb_2016)
+  ),
+  
+  tar_target(
+    tidy_geom_sa2_2016,
+    do_tidy_geom_sa2_2016(infile_abs_sa2_2016)
+  ),
+  
+  tar_target(
+    tidy_exp_pop, 
+    do_tidy_exp_pop(infile_abs_mb_pop_2016)
+  ),
+  
+  tar_target(
+    tidy_env_exposure_pm25,
+    do_tidy_env_exposure_pm25(infile_globalgwr_pm25_2010_2015)
+  ),
+  
+  tar_target(
+    tidy_impact_pop,
+    do_tidy_impact_pop(infile_abs_mortality_sa2_2006_2016,
+                       smooth_yy = 3)
+  ),
+  
+  tar_target(
+    tidy_study_pop,
+    do_tidy_study_pop(infile_abs_sa2_pop_age_2016)
+  )
 )
 
 ## Data extraction and derivation -----------------------------------------
@@ -183,22 +223,9 @@ viz <- list(
 # List the targets in pipeline --------------------------------------------
 
 list(
-  # TODO fix or remove this
-  # ## target to check validity of data path
-  # tar_target(check_data_loc,
-  #            {
-  #              if(download_data){ # if downloading, check it is not to a synced folder and cloudstoR can connect
-  #                if(grepl("(Nextcloud|nextcloud)", dir_cardat, ignore.case = T)) stop("The download destination specified is likely used by a sync client. Please choose another destination.")
-  #                test_cloudstor()
-  #              } else { # otherwise check the data path actually exists
-  #                stopifnot("Data path not found. Check your specified datadir or toggle download_data to TRUE.", dir.exists(dir_cardat))
-  #              }
-  #            },
-  #            priority = 1 # run this first
-  # ),
-
   ## list HIA pipeline targets
   inputs = inputs,
+  tidy = tidy,
   data = derive_data,
   analysis = analysis,
   viz = viz
