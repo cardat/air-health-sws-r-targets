@@ -4,6 +4,7 @@ This is an [R targets](https://github.com/ropensci/targets) pipeline for environ
 
 The structure and syntax of an R targets pipeline may be unfamiliar to you depending on your level of coding experience. Depending on your intended usage, some or all of the following may guide your understanding of the workflow. Links to further useful examples and documentation are provided in the references.
 
+Input datasets as shown in the pipeline are publicly available. These are also available in the [CARDAT repository](https://cloud.car-dat.org/), `Environment_General` directory. Alternative source datasets can be found in the [CARDAT data inventory](https://cardat.github.io/data_inventory/index.html) and requested via the access request form.
 
 ## Acknowledgements
 
